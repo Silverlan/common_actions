@@ -16,6 +16,11 @@ runs:
   steps: 
     - name: Build
       shell: bash
+      env:
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          CC:   gcc-11
+          CXX:  g++-11
+        fi
       run: |
         cmake -S . -B . ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ matrix.config.build_type }}
