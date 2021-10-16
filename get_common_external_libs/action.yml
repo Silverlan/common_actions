@@ -23,6 +23,12 @@ runs:
       run: |
         echo "OUTPUT:"
         echo ${{ steps.init-env.outputs.random-number }}
+        ${{ steps.init-env.outputs.env-string 
+        echo "VARS"
+        echo $VAR1
+        echo $VAR2
+        echo $VARN
+        
         export ASDF=Test13
         echo "TEST DEPENDENCY:"
         echo $DEPENDENCY_MATHUTIL_INCLUDE
