@@ -21,7 +21,7 @@ runs:
     - name: Pre Test
       shell: bash
       run: |
-        $GA_VAR="-DSHAREDUTILS_STATIC=ON"
+        GA_VAR="-DSHAREDUTILS_STATIC=ON"
         
     - name: Print Test
       shell: bash
