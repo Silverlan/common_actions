@@ -29,6 +29,14 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
+  cmake_include_var_name:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
+  include_dir:
+    description: 'Name of the include directory'
+    required: true
+    default: 'include'
 runs:
   using: "composite"
   steps: 
@@ -40,6 +48,10 @@ runs:
         git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
+        
+        if [ "${{ inputs.cmake_include_var_name }}" != "" ]; then
+          ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
+        fi
     #- name: Build
     #  shell: bash
     #  run: |
