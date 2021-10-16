@@ -9,6 +9,9 @@ runs:
       
     - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
+      with:
+        cmake_var: 'DEPENDENCY_GLM_INCLUDE'
+        cmake_definitions: $cmake_definitions
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@actions
@@ -69,12 +72,6 @@ runs:
         cmake_var: 'DEPENDENCY_BZIP2_INCLUDE'
         cmake_definitions: $cmake_definitions
         include_dir: '.'
-        
-    - name: Print Test
-      shell: bash
-      run: |
-        echo "FINAL CMAKE DEFS:"
-        echo "$cmake_definitions"
 
     - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@actions
