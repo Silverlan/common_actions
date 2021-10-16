@@ -35,9 +35,9 @@ runs:
     - name: Clone
       shell: bash
       run: |
-        mkdir ${{ inputs.dir }}
+        mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
-        git clone ${{ inputs.repo }}
+        git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
     #- name: Build
