@@ -10,16 +10,16 @@ runs:
     - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
       
-    - name: Pre Test
-      shell: bash
-      run: |
-        echo "shared_cmake_definitions2=-DSHAREDUTILS_STATIC=ON" >> $GITHUB_ENV
+    #- name: Pre Test
+    #  shell: bash
+    #  run: |
+    #    echo "shared_cmake_definitions2=-DSHAREDUTILS_STATIC=ON" >> $GITHUB_ENV
       
-    - name: Pre Test
-      shell: bash
-      run: |
-        echo "TEST3: $shared_cmake_definitions2"
-        echo "TEST4: ${{ env.shared_cmake_definitions2 }}"
+    #- name: Pre Test
+    #  shell: bash
+    #  run: |
+    #    echo "TEST3: $shared_cmake_definitions2"
+    #    echo "TEST4: ${{ env.shared_cmake_definitions2 }}"
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@actions
@@ -27,14 +27,14 @@ runs:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
         dir: 'external_libs'
-        cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
-        cmake_vars: $shared_cmake_definitions2 TESTQQQQQQQQQQQQQQQQQQQQQQQQQ
+        cmake_var: '-DDEPENDENCY_MATHUTIL_INCLUDE'
+        cmake_definitions: $cmake_definitions
         
     - name: Print Test
       shell: bash
       run: |
         echo "NEW CMAKE VARS:"
-        echo "$shared_cmake_definitions2"
+        echo "$cmake_definitions"
         echo "GA_VAR:"
         echo "$GA_VAR"
         echo "ROOT DIR:"
