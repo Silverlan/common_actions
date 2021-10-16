@@ -17,7 +17,7 @@ runs:
     - name: Curl Download
       shell: bash
       run: |
-        mkdir ${{ inputs.download_dir }}
+        mkdir -p ${{ inputs.download_dir }}
         cd ${{ inputs.download_dir }}
 
         curl -LJO ${{ inputs.download_url }}
