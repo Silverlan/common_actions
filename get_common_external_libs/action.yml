@@ -10,7 +10,7 @@ runs:
       uses: Silverlan/common_actions/get_glm@main
 
     - name: Download mathutil
-      uses: Silverlan/common_actions/get_submodule@actions
+      uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
@@ -26,7 +26,7 @@ runs:
         echo $GA_SHARED_LINK_LIBRARY_EXT
 
     - name: Download sharedutils
-      uses: Silverlan/common_actions/get_submodule@actions
+      uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
