@@ -26,6 +26,14 @@ inputs:
     description: 'CMake definitions'
     required: true
     default: ''
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
+  cmake_var_lib:
+    description: 'Name of the CMake variable to set to the library path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -36,6 +44,8 @@ runs:
         repo: ${{ inputs.repo }}
         repo_name: ${{ inputs.repo_name }}
         repo_branch: ${{ inputs.repo_branch }}
+        cmake_definitions: ${{ inputs.cmake_definitions }}
+        cmake_var: ${{ inputs.cmake_var }}
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
@@ -46,4 +56,6 @@ runs:
         build_target: ${{ inputs.build_target }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}'
+        cmake_definitions: ${{ inputs.cmake_definitions }}
+        cmake_var: ${{ inputs.cmake_var_lib }}
   
