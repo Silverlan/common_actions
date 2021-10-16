@@ -26,4 +26,4 @@ runs:
         mkdir -p build
         cd build
         cmake ../ ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
-        cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ matrix.config.build_target }}
+        cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}
