@@ -51,7 +51,7 @@ runs:
         build_dir: 'build/external_libs/mathutil'
         cmake_script_location: 'external_libs/mathutil'
         cmake_var: 'DEPENDENCY_MATHUTIL_LIBRARY'
-        cmake_definitions: $cmake_definitions
+        cmake_definitions: ${{ env.cmake_definitions }}
         
     - name: Build sharedutils
       uses: Silverlan/common_actions/build_cmake@actions
@@ -62,7 +62,7 @@ runs:
         build_dir: 'build/external_libs/sharedutils'
         cmake_script_location: 'external_libs/sharedutils'
         cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY'
-        cmake_definitions: $cmake_definitions
+        cmake_definitions: ${{ env.cmake_definitions }}
 
     - name: Download bzip2
       uses: Silverlan/common_actions/get_submodule@actions
@@ -72,7 +72,7 @@ runs:
         repo_name: 'bzip2'
         repo_branch: 'cmake'
         cmake_var: 'DEPENDENCY_BZIP2_INCLUDE'
-        cmake_definitions: $cmake_definitions
+        cmake_definitions: ${{ env.cmake_definitions }}
         include_dir: '.'
 
     - name: Build vfilesystem
@@ -82,6 +82,6 @@ runs:
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         root_dir: 'external_libs'
-        cmake_definitions: $cmake_definitions
+        cmake_definitions: ${{ env.cmake_definitions }}
         cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
         cmake_var_lib: 'DEPENDENCY_VFILESYSTEM_LIBRARY'
