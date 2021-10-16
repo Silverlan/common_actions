@@ -7,7 +7,7 @@ runs:
       uses: Silverlan/common_actions/get_glm@main
 
     - name: Build submodule - mathutil
-      uses: Silverlan/common_actions/build_submodule@main
+      uses: Silverlan/common_actions/build_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
@@ -15,7 +15,7 @@ runs:
         root_dir: 'external_libs'
 
     - name: Build submodule - sharedutils
-      uses: Silverlan/common_actions/build_submodule@main
+      uses: Silverlan/common_actions/build_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
@@ -23,7 +23,7 @@ runs:
         root_dir: 'external_libs'
 
     - name: Build submodule - vfilesystem
-      uses: Silverlan/common_actions/build_submodule@main
+      uses: Silverlan/common_actions/build_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
