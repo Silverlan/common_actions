@@ -1,0 +1,41 @@
+name: 'Initialize Env'
+description: 'Initialize common env variables'
+inputs:
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: ''
+  build_type:
+    description: 'Build Type'
+    required: true
+  build_generator:
+    description: 'Build Generator'
+    required: true
+  build_target:
+    description: 'Main target to build'
+    required: true
+  build_dir:
+    description: 'The directory to write the build files to'
+    required: true
+    default: 'build'
+  cmake_script_location:
+    description: 'The location of the CMake script'
+    required: true
+    default: '.'
+runs:
+  using: "composite"
+  steps: 
+    - name: Build
+      shell: bash
+      run: |
+        GA_ROOT_DIR=$PWD
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          GA_STATIC_LINK_LIBRARY_EXT=.a
+          GA_SHARED_LINK_LIBRARY_EXT=.so
+          GA_SHARED_BINARY_LIBRARY_EXT=.so
+        else
+          GA_STATIC_LINK_LIBRARY_EXT=.lib
+          GA_SHARED_LINK_LIBRARY_EXT=.lib
+          GA_SHARED_BINARY_LIBRARY_EXT=.dll
+        fi
+        
