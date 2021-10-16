@@ -13,9 +13,7 @@ runs:
     - name: Pre Test
       shell: bash
       run: |
-        export shared_cmake_definitions2="-DSHAREDUTILS_STATIC=ON"
-        echo "TEST: $shared_cmake_definitions2"
-        echo "TEST2: ${{ env.shared_cmake_definitions2 }}"
+        echo "shared_cmake_definitions2=-DSHAREDUTILS_STATIC=ON" >> $GITHUB_ENV
       
     - name: Pre Test
       shell: bash
