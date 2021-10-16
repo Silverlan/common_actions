@@ -1,10 +1,6 @@
 name: 'Generic CMake build'
 description: 'Builds the specified project'
 inputs:
-  cmake_definitions:
-    description: 'CMake definitions'
-    required: true
-    default: ''
   build_type:
     description: 'Build Type'
     required: true
