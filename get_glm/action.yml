@@ -1,11 +1,11 @@
-name: 'Get GLM'
-description: 'Downloads the GLM library'
+name: 'Get GLI'
+description: 'Downloads the GLI library'
 runs:
   using: "composite"
   steps: 
-    - name: Download submodule - GLM 0.9.9.8
+    - name: Download submodule - GLI 0.8.2.0
       uses: Silverlan/common_actions/curl_download@main
       with:
-        download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
-        file_name: 'glm-0.9.9.8.zip'
+        download_url: 'https://github.com/g-truc/gli/releases/download/0.8.2.0/gli-0.8.2.0.zip'
+        file_name: 'gli-0.8.2.0.zip'
   
