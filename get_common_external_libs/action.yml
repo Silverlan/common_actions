@@ -30,6 +30,26 @@ runs:
         build_target: 'sharedutils'
         build_dir: 'build/external_libs/sharedutils-static'
         cmake_script_location: 'external_libs/sharedutils'
+        
+    - name: Build mathutil
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include
+        build_target: 'mathutil'
+        build_dir: 'build/external_libs/mathutil'
+        cmake_script_location: 'external_libs/mathutil'
+        
+    - name: Build sharedutils
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include
+        build_target: 'sharedutils'
+        build_dir: 'build/external_libs/sharedutils'
+        cmake_script_location: 'external_libs/sharedutils'
 
     - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@actions
@@ -38,5 +58,6 @@ runs:
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         root_dir: 'external_libs'
+        cmake_definitions: -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include
         
 
