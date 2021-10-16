@@ -29,7 +29,7 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
-  cmake_include_var_name:
+  cmake_vars:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
@@ -49,9 +49,10 @@ runs:
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
         
-        if [ "${{ inputs.cmake_include_var_name }}" != "" ]; then
-          export ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
-        fi
+        echo "shared_cmake_definitions=${{ inputs.cmake_vars }} -NEW_DEF" >> $GITHUB_ENV
+        #if [ "${{ inputs.cmake_include_var_name }}" != "" ]; then
+        #  export ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
+        #fi
     #- name: Build
     #  shell: bash
     #  run: |
