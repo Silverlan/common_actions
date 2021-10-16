@@ -51,6 +51,14 @@ runs:
         build_dir: 'build/external_libs/sharedutils'
         cmake_script_location: 'external_libs/sharedutils'
 
+    - name: Download bzip2
+      uses: Silverlan/common_actions/get_submodule@main
+      with:
+        dir: 'third_party_libs'
+        repo: 'https://github.com/sergiud/bzip2.git'
+        repo_name: 'bzip2'
+        repo_branch: 'cmake'
+
     - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@actions
       with:
@@ -58,6 +66,6 @@ runs:
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         root_dir: 'external_libs'
-        cmake_definitions: -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include
+        cmake_definitions: -DDEPENDENCY_BZIP2_INCLUDE=$GA_ROOT_DIR/third_party_libs/bzip2 -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include
         
 
