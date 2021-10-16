@@ -50,7 +50,7 @@ runs:
         git checkout ${{ inputs.repo_branch }}
         
         if [ "${{ inputs.cmake_include_var_name }}" != "" ]; then
-          ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
+          export ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
         fi
     #- name: Build
     #  shell: bash
