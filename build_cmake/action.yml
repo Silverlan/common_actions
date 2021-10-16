@@ -14,6 +14,14 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  build_dir:
+    description: 'The directory to write the build files to'
+    required: true
+    default: 'build'
+  cmake_script_location:
+    description: 'The location of the CMake script'
+    required: true
+    default: '.'
 runs:
   using: "composite"
   steps: 
@@ -23,7 +31,8 @@ runs:
         CC:   gcc-11
         CXX:  g++-11
       run: |
-        mkdir -p build
-        cd build
-        cmake ../ ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        GA_ROOT_DIR=$PWD
+        mkdir -p ${{ inputs.build_dir }}
+        cd ${{ inputs.build_dir }}
+        cmake $GA_ROOT_DIR/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}

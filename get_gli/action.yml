@@ -1,0 +1,11 @@
+name: 'Get GLI'
+description: 'Downloads the GLI library'
+runs:
+  using: "composite"
+  steps: 
+    - name: Download submodule - GLI 0.8.2.0
+      uses: Silverlan/common_actions/curl_download@main
+      with:
+        download_url: 'https://github.com/g-truc/gli/releases/download/0.8.2.0/gli-0.8.2.0.zip'
+        file_name: 'gli-0.8.2.0.zip'
+  

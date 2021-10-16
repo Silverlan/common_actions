@@ -1,0 +1,19 @@
+name: 'Initialize Env'
+description: 'Initialize common env variables'
+runs:
+  using: "composite"
+  steps: 
+    - name: Build
+      shell: bash
+      run: |
+        export GA_ROOT_DIR=$PWD
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          export GA_STATIC_LINK_LIBRARY_EXT=".a"
+          export GA_SHARED_LINK_LIBRARY_EXT=".so"
+          export GA_SHARED_BINARY_LIBRARY_EXT=".so"
+        else
+          export GA_STATIC_LINK_LIBRARY_EXT=".lib"
+          export GA_SHARED_LINK_LIBRARY_EXT=".lib"
+          export GA_SHARED_BINARY_LIBRARY_EXT=".dll"
+        fi
+        

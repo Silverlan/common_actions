@@ -3,23 +3,81 @@ description: 'Downloads and builds the common external Pragma libraries.'
 runs:
   using: "composite"
   steps: 
-    - name: Download submodule - GLM
+    - name: Initialize Env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
+    - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
 
-    - name: Download submodule - mathutil
+    - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
+        dir: 'external_libs'
+        cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
+        
+    - name: Print Test
+      shell: bash
+      run: |
+        echo "TEST DEPENDENCY:"
+        echo $DEPENDENCY_MATHUTIL_INCLUDE
+        echo "LIB EXT:"
+        echo $GA_SHARED_LINK_LIBRARY_EXT
 
-    - name: Download submodule - sharedutils
+    - name: Download sharedutils
       uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
+        dir: 'external_libs'
+        
+    # Build
+    - name: Build sharedutils-static
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DSHAREDUTILS_STATIC=ON -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include
+        build_target: 'sharedutils'
+        build_dir: 'build/external_libs/sharedutils-static'
+        cmake_script_location: 'external_libs/sharedutils'
+        
+    - name: Build mathutil
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include -DDEPENDENCY_SHAREDUTILS_LIBRARY_STATIC=$GA_ROOT_DIR/build/external_libs/sharedutils-static/${{ matrix.config.build_type }}/sharedutils"$GA_SHARED_LINK_LIBRARY_EXT"
+        build_target: 'mathutil'
+        build_dir: 'build/external_libs/mathutil'
+        cmake_script_location: 'external_libs/mathutil'
+        
+    - name: Build sharedutils
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil"$GA_SHARED_LINK_LIBRARY_EXT"
+        build_target: 'sharedutils'
+        build_dir: 'build/external_libs/sharedutils'
+        cmake_script_location: 'external_libs/sharedutils'
 
-    - name: Download submodule - vfilesystem
+    - name: Download bzip2
       uses: Silverlan/common_actions/get_submodule@main
+      with:
+        dir: 'third_party_libs'
+        repo: 'https://github.com/sergiud/bzip2.git'
+        repo_name: 'bzip2'
+        repo_branch: 'cmake'
+
+    - name: Build vfilesystem
+      uses: Silverlan/common_actions/build_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
+        build_target: 'vfilesystem'
+        root_dir: 'external_libs'
+        cmake_definitions: -DDEPENDENCY_BZIP2_INCLUDE=$GA_ROOT_DIR/third_party_libs/bzip2 -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil"$GA_SHARED_LINK_LIBRARY_EXT" -DDEPENDENCY_SHAREDUTILS_LIBRARY=$GA_ROOT_DIR/build/external_libs/sharedutils/${{ matrix.config.build_type }}/sharedutils"$GA_SHARED_LINK_LIBRARY_EXT"
+        
+
