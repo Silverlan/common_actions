@@ -34,5 +34,5 @@ runs:
         GA_ROOT_DIR=$PWD
         mkdir -p ${{ inputs.build_dir }}
         cd ${{ inputs.build_dir }}
-        cmake ../ ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
-        cmake --build $GA_ROOT_DIR/${{ inputs.cmake_script_location }} --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}
+        cmake $GA_ROOT_DIR/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}
