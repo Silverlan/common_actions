@@ -32,7 +32,7 @@ inputs:
   cmake_definitions:
     description: 'CMake definitions'
     required: true
-    default: 'external_libs'
+    default: ''
   cmake_var:
     description: 'Name of the CMake variable to set to the include path'
     required: true
