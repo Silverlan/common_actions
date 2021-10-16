@@ -28,6 +28,7 @@ runs:
         echo $VAR1
         echo $VAR2
         echo $VARN
+        echo $VARN2
         
         export ASDF=Test13
         echo "TEST DEPENDENCY:"
