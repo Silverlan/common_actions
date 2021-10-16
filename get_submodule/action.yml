@@ -48,8 +48,9 @@ runs:
         git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
-        
-        echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=./${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=./${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
+        fi
     #- name: Build
     #  shell: bash
     #  run: |
