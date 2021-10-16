@@ -6,7 +6,8 @@ runs:
     - name: Build
       shell: bash
       run: |
-        echo "::set-env XENVVAR=999998::"
+        # echo "::set-env XENVVAR=999998::"
+        echo "XENVVAR=999998" >> $GITHUB_ENV
         GA_TEST_VALUE="HelloWorld"
         export GA_TEST_VALUE2="ByeWorld"
         export GA_ROOT_DIR=$PWD
