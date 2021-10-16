@@ -36,7 +36,7 @@ runs:
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
-        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include -DDEPENDENCY_SHAREDUTILS_LIBRARY_STATIC=$GA_ROOT_DIR/build/external_libs/sharedutils-static/${{ matrix.config.build_type }}/sharedutils.lib
         build_target: 'mathutil'
         build_dir: 'build/external_libs/mathutil'
         cmake_script_location: 'external_libs/mathutil'
@@ -46,7 +46,7 @@ runs:
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
-        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil.lib
         build_target: 'sharedutils'
         build_dir: 'build/external_libs/sharedutils'
         cmake_script_location: 'external_libs/sharedutils'
