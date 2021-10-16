@@ -29,6 +29,10 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
+  branchName:
+    description: 'Name of the branch to clone'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -37,7 +41,11 @@ runs:
       run: |
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
-        git clone ${{ inputs.repo }}
+        if [ "${{ inputs.branchName }}" != "" ]; then
+          git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.branchName }}
+        else
+          git clone ${{ inputs.repo }}
+        fi
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
     #- name: Build
