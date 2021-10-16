@@ -42,10 +42,8 @@ runs:
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
         if [ "${{ inputs.branchName }}" != "" ]; then
-          echo "CHECKING OUT BRANCH!!"
           git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.branchName }}
         else
-          echo "CHECKING OUT MAIN!!"
           git clone ${{ inputs.repo }}
         fi
         cd ${{ inputs.repo_name }}
