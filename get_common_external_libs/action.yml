@@ -11,6 +11,7 @@ runs:
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
+        build_target: 'mathutil'
         root_dir: 'external_libs'
 
     - name: Build submodule - sharedutils
@@ -18,6 +19,7 @@ runs:
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
+        build_target: 'sharedutils'
         root_dir: 'external_libs'
 
     - name: Build submodule - vfilesystem
@@ -25,4 +27,5 @@ runs:
       with:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
+        build_target: 'vfilesystem'
         root_dir: 'external_libs'
