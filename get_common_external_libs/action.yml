@@ -14,6 +14,14 @@ runs:
       shell: bash
       run: |
         export shared_cmake_definitions2="-DSHAREDUTILS_STATIC=ON"
+        echo "TEST: $shared_cmake_definitions2"
+        echo "TEST2: ${{ env.shared_cmake_definitions2 }}"
+      
+    - name: Pre Test
+      shell: bash
+      run: |
+        echo "TEST3: $shared_cmake_definitions2"
+        echo "TEST4: ${{ env.shared_cmake_definitions2 }}"
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@actions
