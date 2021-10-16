@@ -26,6 +26,10 @@ inputs:
     description: 'CMake definitions'
     required: true
     default: 'external_libs'
+  cmake_definitions_tmp:
+    description: 'Temporary CMake definitions'
+    required: true
+    default: ''
   cmake_var:
     description: 'Name of the CMake variable to set to the include path'
     required: true
@@ -42,7 +46,7 @@ runs:
         GA_ROOT_DIR=$PWD
         mkdir -p ${{ inputs.build_dir }}
         cd ${{ inputs.build_dir }}
-        cmake $GA_ROOT_DIR/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        cmake $GA_ROOT_DIR/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=./${{ inputs.build_dir }}/{{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT" >> $GITHUB_ENV
