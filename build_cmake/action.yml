@@ -21,7 +21,7 @@ inputs:
   cmake_definitions:
     description: 'CMake definitions'
     required: true
-    default: 'external_libs'
+    default: ''
   cmake_definitions_tmp:
     description: 'Temporary CMake definitions'
     required: true
