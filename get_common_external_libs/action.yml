@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         echo "GA_VAR:"
-        echo $GA_VAR
+        echo "$GA_VAR"
         echo "ROOT DIR:"
         echo $GA_ROOT_DIR
         echo ${{ env.GA_ROOT_DIR }}
@@ -37,8 +37,10 @@ runs:
         echo "VARS"
         echo $VAR1
         echo $VAR2
-        echo $VARN
-        echo $VARN2
+        echo "VARN:"
+        echo "$VARN"
+        echo "VARN2:"
+        echo "$VARN2"
         echo $XENVVAR
         echo ${{ env.XENVVAR }}
         
