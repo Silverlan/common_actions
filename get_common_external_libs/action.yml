@@ -23,7 +23,7 @@ runs:
       run: |
         echo "OUTPUT:"
         echo ${{ steps.init-env.outputs.random-number }}
-        ${{ steps.init-env.outputs.env-string 
+        ${{ steps.init-env.outputs.env-string }}
         echo "VARS"
         echo $VAR1
         echo $VAR2
