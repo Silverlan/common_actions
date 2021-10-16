@@ -18,9 +18,16 @@ runs:
         dir: 'external_libs'
         cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
         
+    - name: Pre Test
+      shell: bash
+      run: |
+        $GA_VAR="-DSHAREDUTILS_STATIC=ON"
+        
     - name: Print Test
       shell: bash
       run: |
+        echo "GA_VAR:"
+        echo $GA_VAR
         echo "ROOT DIR:"
         echo $GA_ROOT_DIR
         echo ${{ env.GA_ROOT_DIR }}
