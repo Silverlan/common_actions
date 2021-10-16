@@ -26,6 +26,8 @@ runs:
         echo "LIB EXT:"
         echo $GA_SHARED_LINK_LIBRARY_EXT
         echo $ASDF
+        echo "FELIS:"
+        echo ${{ env.TEST_ENV_VAR }}
 
     - name: Download sharedutils
       uses: Silverlan/common_actions/get_submodule@main
