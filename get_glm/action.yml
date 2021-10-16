@@ -20,5 +20,5 @@ runs:
     - shell: bash
       run: |
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=./third_party_libs/glm" >> $GITHUB_ENV
+          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm" >> $GITHUB_ENV
         fi
