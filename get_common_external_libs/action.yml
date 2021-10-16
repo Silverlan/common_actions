@@ -28,7 +28,7 @@ runs:
       shell: bash
       run: |
         echo "NEW CMAKE VARS:"
-        echo "$shared_cmake_definitionsx"
+        echo "$shared_cmake_definitions2"
         echo "GA_VAR:"
         echo "$GA_VAR"
         echo "ROOT DIR:"
