@@ -27,4 +27,4 @@ outputs:
     value: 12734
   env-string:
     description: "Random numberX"
-    value: "export VAR1=value1 VAR2=555 VARN=$GA_TEST_VALUE VARN2=$GA_TEST_VALUE2"
+    value: "export VAR1=value1 VAR2=555 VARN=$GA_VAR VARN2=${{ env.GA_VAR }}"
