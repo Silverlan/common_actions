@@ -21,6 +21,9 @@ runs:
     - name: Print Test
       shell: bash
       run: |
+        echo "ROOT DIR:"
+        echo $GA_ROOT_DIR
+        echo ${{ env.GA_ROOT_DIR }}
         echo "OUTPUT:"
         echo ${{ steps.init-env.outputs.random-number }}
         ${{ steps.init-env.outputs.env-string }}
