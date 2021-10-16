@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps: 
     - name: Initialize Env
+      id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@actions
       
     - name: Download GLM
@@ -20,6 +21,8 @@ runs:
     - name: Print Test
       shell: bash
       run: |
+        echo "OUTPUT:"
+        echo ${{ steps.init-env.outputs.random-number }}
         export ASDF=Test13
         echo "TEST DEPENDENCY:"
         echo $DEPENDENCY_MATHUTIL_INCLUDE
