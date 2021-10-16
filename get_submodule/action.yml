@@ -15,10 +15,6 @@ inputs:
     description: 'Clone directory'
     required: true
     default: 'external_libs'
-  cmake_definitions:
-    description: 'CMake definitions'
-    required: true
-    default: 'external_libs'
   should_build:
     description: 'Should build?'
     required: true
@@ -29,14 +25,18 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
-  cmake_var:
-    description: 'Name of the CMake variable to set to the include path'
-    required: true
-    default: ''
   include_dir:
     description: 'Name of the include directory'
     required: true
     default: 'include'
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: 'external_libs'
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
