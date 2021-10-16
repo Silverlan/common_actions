@@ -28,12 +28,6 @@ runs:
         cmake_var: 'DEPENDENCY_SHAREDUTILS_INCLUDE'
         cmake_definitions: $cmake_definitions
         
-    - name: Print Test
-      shell: bash
-      run: |
-        echo "NEW CMAKE VARS:"
-        echo "$cmake_definitions"
-        
     # Build
     - name: Build sharedutils-static
       uses: Silverlan/common_actions/build_cmake@actions
@@ -66,12 +60,21 @@ runs:
         cmake_script_location: 'external_libs/sharedutils'
 
     - name: Download bzip2
-      uses: Silverlan/common_actions/get_submodule@main
+      uses: Silverlan/common_actions/get_submodule@actions
       with:
         dir: 'third_party_libs'
         repo: 'https://github.com/sergiud/bzip2.git'
         repo_name: 'bzip2'
         repo_branch: 'cmake'
+        cmake_var: 'DEPENDENCY_BZIP2_INCLUDE'
+        cmake_definitions: $cmake_definitions
+        include_dir: '.'
+        
+    - name: Print Test
+      shell: bash
+      run: |
+        echo "FINAL CMAKE DEFS:"
+        echo "$cmake_definitions"
 
     - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@actions
@@ -80,6 +83,7 @@ runs:
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         root_dir: 'external_libs'
-        cmake_definitions: -DDEPENDENCY_BZIP2_INCLUDE=$GA_ROOT_DIR/third_party_libs/bzip2 -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include -DDEPENDENCY_SHAREDUTILS_INCLUDE=$GA_ROOT_DIR/external_libs/sharedutils/include -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil"$GA_SHARED_LINK_LIBRARY_EXT" -DDEPENDENCY_SHAREDUTILS_LIBRARY=$GA_ROOT_DIR/build/external_libs/sharedutils/${{ matrix.config.build_type }}/sharedutils"$GA_SHARED_LINK_LIBRARY_EXT"
-        
+        cmake_definitions: $cmake_definitions -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil"$GA_SHARED_LINK_LIBRARY_EXT" -DDEPENDENCY_SHAREDUTILS_LIBRARY=$GA_ROOT_DIR/build/external_libs/sharedutils/${{ matrix.config.build_type }}/sharedutils"$GA_SHARED_LINK_LIBRARY_EXT"
+        cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
+        cmake_definitions: 
 
