@@ -9,6 +9,11 @@ runs:
       
     - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
+      
+    - name: Pre Test
+      shell: bash
+      run: |
+        shared_cmake_definitions="-DSHAREDUTILS_STATIC=ON"
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@main
@@ -17,15 +22,13 @@ runs:
         repo_name: 'mathutil'
         dir: 'external_libs'
         cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
-        
-    - name: Pre Test
-      shell: bash
-      run: |
-        GA_VAR="-DSHAREDUTILS_STATIC=ON"
+        cmake_vars: $shared_cmake_definitions
         
     - name: Print Test
       shell: bash
       run: |
+        echo "NEW CMAKE VARS:"
+        echo "$shared_cmake_definitions"
         echo "GA_VAR:"
         echo "$GA_VAR"
         echo "ROOT DIR:"
