@@ -13,7 +13,7 @@ runs:
     - name: Pre Test
       shell: bash
       run: |
-        shared_cmake_definitionsx="-DSHAREDUTILS_STATIC=ON"
+        shared_cmake_definitions2="-DSHAREDUTILS_STATIC=ON"
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@actions
