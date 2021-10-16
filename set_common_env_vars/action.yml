@@ -1,27 +1,5 @@
 name: 'Initialize Env'
 description: 'Initialize common env variables'
-inputs:
-  cmake_definitions:
-    description: 'CMake definitions'
-    required: true
-    default: ''
-  build_type:
-    description: 'Build Type'
-    required: true
-  build_generator:
-    description: 'Build Generator'
-    required: true
-  build_target:
-    description: 'Main target to build'
-    required: true
-  build_dir:
-    description: 'The directory to write the build files to'
-    required: true
-    default: 'build'
-  cmake_script_location:
-    description: 'The location of the CMake script'
-    required: true
-    default: '.'
 runs:
   using: "composite"
   steps: 
