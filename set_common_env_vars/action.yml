@@ -16,4 +16,6 @@ runs:
           export GA_SHARED_LINK_LIBRARY_EXT=".lib"
           export GA_SHARED_BINARY_LIBRARY_EXT=".dll"
         fi
+      env:
+        TEST_ENV_VAR: FelisCatus
         
