@@ -3,29 +3,40 @@ description: 'Downloads and builds the common external Pragma libraries.'
 runs:
   using: "composite"
   steps: 
-    - name: Download submodule - GLM
+    - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
 
-    - name: Build submodule - mathutil
-      uses: Silverlan/common_actions/build_submodule@actions
+    - name: Download mathutil
+      uses: Silverlan/common_actions/get_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
-        build_target: 'mathutil'
-        root_dir: 'external_libs'
+        dir: 'external_libs'
 
-    - name: Build submodule - sharedutils
-      uses: Silverlan/common_actions/build_submodule@actions
+    - name: Download sharedutils
+      uses: Silverlan/common_actions/get_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
-        build_target: 'sharedutils'
-        root_dir: 'external_libs'
+        dir: 'external_libs'
+        
+    # Build
+    - name: Build sharedutils-static
+      uses: Silverlan/common_actions/build_cmake@actions
+      with:
+        build_type: ${{ matrix.config.build_type }}
+        build_generator: ${{ matrix.config.generators }}
+        cmake_definitions: ${{ env.shared_cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include
+        build_target: ${{ inputs.build_target }}
+        build_dir: 'build/external_libs/sharedutils-static'
+        cmake_script_location: 'external_libs/sharedutils-static'
 
-    - name: Build submodule - vfilesystem
+    - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         root_dir: 'external_libs'
+        
+
