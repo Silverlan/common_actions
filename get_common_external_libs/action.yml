@@ -30,6 +30,7 @@ runs:
         echo $VARN
         echo $VARN2
         echo $XENVVAR
+        echo ${{ env.XENVVAR }}
         
         export ASDF=Test13
         echo "TEST DEPENDENCY:"
