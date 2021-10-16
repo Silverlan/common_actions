@@ -15,6 +15,14 @@ runs:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
         dir: 'external_libs'
+        cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
+        
+    - name: Print Test
+      run: |
+        echo "TEST DEPENDENCY:"
+        echo $DEPENDENCY_MATHUTIL_INCLUDE
+        echo "LIB EXT:"
+        echo $GA_SHARED_LINK_LIBRARY_EXT
 
     - name: Download sharedutils
       uses: Silverlan/common_actions/get_submodule@actions
