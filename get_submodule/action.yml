@@ -35,7 +35,7 @@ runs:
     - name: Clone
       shell: bash
       run: |
-        mkdir ${{ inputs.dir }}
+        mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
         git clone ${{ inputs.repo }}
         cd ${{ inputs.repo_name }}
