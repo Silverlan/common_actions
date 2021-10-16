@@ -11,6 +11,9 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
+  build_target:
+    description: 'Main target to build'
+    required: true
 runs:
   using: "composite"
   steps: 
@@ -20,5 +23,7 @@ runs:
         CC:   gcc-11
         CXX:  g++-11
       run: |
-        cmake -S . -B . ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
-        cmake --build ./ --config ${{ matrix.config.build_type }}
+        mkdir -p build
+        cd build
+        cmake ../ ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ matrix.config.build_target }}
