@@ -18,6 +18,7 @@ runs:
         cmake_include_var_name: 'DEPENDENCY_MATHUTIL_INCLUDE'
         
     - name: Print Test
+      shell: bash
       run: |
         echo "TEST DEPENDENCY:"
         echo $DEPENDENCY_MATHUTIL_INCLUDE
