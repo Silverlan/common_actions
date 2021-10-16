@@ -16,7 +16,7 @@ runs:
         shared_cmake_definitionsx="-DSHAREDUTILS_STATIC=ON"
 
     - name: Download mathutil
-      uses: Silverlan/common_actions/get_submodule@main
+      uses: Silverlan/common_actions/get_submodule@actions
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
