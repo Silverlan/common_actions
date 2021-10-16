@@ -8,7 +8,7 @@ runs:
       uses: Silverlan/common_actions/set_common_env_vars@actions
       
     - name: Download GLM
-      uses: Silverlan/common_actions/get_glm@main
+      uses: Silverlan/common_actions/get_glm@actions
       with:
         cmake_var: 'DEPENDENCY_GLM_INCLUDE'
         cmake_definitions: $cmake_definitions
@@ -51,6 +51,8 @@ runs:
         build_target: 'mathutil'
         build_dir: 'build/external_libs/mathutil'
         cmake_script_location: 'external_libs/mathutil'
+        cmake_var: 'DEPENDENCY_MATHUTIL_LIBRARY'
+        cmake_definitions: $cmake_definitions
         
     - name: Build sharedutils
       uses: Silverlan/common_actions/build_cmake@actions
@@ -61,6 +63,8 @@ runs:
         build_target: 'sharedutils'
         build_dir: 'build/external_libs/sharedutils'
         cmake_script_location: 'external_libs/sharedutils'
+        cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY'
+        cmake_definitions: $cmake_definitions
 
     - name: Download bzip2
       uses: Silverlan/common_actions/get_submodule@actions
@@ -82,4 +86,4 @@ runs:
         root_dir: 'external_libs'
         cmake_definitions: $cmake_definitions -DDEPENDENCY_GLM_INCLUDE=$GA_ROOT_DIR/third_party_libs/glm -DDEPENDENCY_MATHUTIL_LIBRARY=$GA_ROOT_DIR/build/external_libs/mathutil/${{ matrix.config.build_type }}/mathutil"$GA_SHARED_LINK_LIBRARY_EXT" -DDEPENDENCY_SHAREDUTILS_LIBRARY=$GA_ROOT_DIR/build/external_libs/sharedutils/${{ matrix.config.build_type }}/sharedutils"$GA_SHARED_LINK_LIBRARY_EXT"
         cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
-
+        cmake_var_lib: 'DEPENDENCY_VFILESYSTEM_LIBRARY'
