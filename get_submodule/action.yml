@@ -38,13 +38,15 @@ inputs:
     required: true
     default: ''
 outputs:
-  cmake_definitions: # id of the output
-    description: 'The sum of the inputs'
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
 runs:
   using: "composite"
   steps: 
     - name: Clone
       shell: bash
+      id: random-number-generator
       run: |
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
@@ -54,7 +56,8 @@ runs:
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           echo "Adding CMake definition: -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
           echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
-          echo "::set-output name=cmake_definitions::Test123"
+          echo "::set-output name=random-id::$(echo $RANDOM)"
+          # echo "::set-output name=cmake_definitions::Test123"
           # ${{ env.cmake_definitions }}"
         fi
     #- name: Build
