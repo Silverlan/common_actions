@@ -19,6 +19,9 @@ runs:
         file_name: 'glm-0.9.9.8.zip'
     - shell: bash
       run: |
+        newCmakeDefs="${{ env.g_cmake_defs }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
+        echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
+      
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm" >> $GITHUB_ENV
+          echo "cmake_definitions=${{ inputs.cmake_definitions }} " >> $GITHUB_ENV
         fi
