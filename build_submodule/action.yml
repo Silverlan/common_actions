@@ -69,7 +69,7 @@ runs:
         echo "GITHUB_ENV:"
         echo $cmake_definitions
         echo "OUTPUT:"
-        echo "${{ steps.test_step.outputs.random-number }}"
+        echo "${{ steps.test_step.outputs.cmake_definitions }}"
         if [[ "${{ inputs.build_type }}" != "" ]]; then
           echo "GA_BUILD_TYPE=${{ inputs.build_type }}" >> $GITHUB_ENV
         else
