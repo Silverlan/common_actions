@@ -50,7 +50,7 @@ runs:
   using: "composite"
   steps: 
     - name: Clone
-      id: test_step
+      id: clone
       uses: Silverlan/common_actions/get_submodule@actions
       with:
         dir: '${{ inputs.root_dir }}'
@@ -64,12 +64,6 @@ runs:
     - name: Env
       shell: bash
       run: |
-        echo "NEW CMAKE DEFS:"
-        echo ${{ env.cmake_definitions }}
-        echo "GITHUB_ENV:"
-        echo $cmake_definitions
-        echo "OUTPUT:"
-        echo "${{ steps.test_step.outputs.cmake_definitions }}"
         if [[ "${{ inputs.build_type }}" != "" ]]; then
           echo "GA_BUILD_TYPE=${{ inputs.build_type }}" >> $GITHUB_ENV
         else
@@ -83,7 +77,7 @@ runs:
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
   
