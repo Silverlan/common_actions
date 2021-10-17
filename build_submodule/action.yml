@@ -42,6 +42,10 @@ inputs:
     description: 'The location of the CMake script'
     required: true
     default: '.'
+  include_dir:
+    description: 'Name of the include directory'
+    required: true
+    default: 'include'
 runs:
   using: "composite"
   steps: 
@@ -54,6 +58,7 @@ runs:
         repo_branch: ${{ inputs.repo_branch }}
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
+        include_dir: ${{ inputs.include_dir }}
 
     - name: Env
       shell: bash
