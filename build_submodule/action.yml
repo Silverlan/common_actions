@@ -18,6 +18,10 @@ inputs:
     description: 'The directory to write the build files to'
     required: true
     default: 'build'
+  build_type:
+    description: 'Build Type'
+    required: true
+    default: ''
   root_dir:
     description: 'The directory in which the submodule should reside in'
     required: true
@@ -51,10 +55,21 @@ runs:
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
 
+  using: "composite"
+  steps: 
+    - name: Env
+      shell: bash
+      run: |
+        if [[ "${{ inputs.build_type }}" != "" ]]; then
+          echo "GA_BUILD_TYPE=${{ inputs.build_type }}" >> $GITHUB_ENV
+        else
+          echo "GA_BUILD_TYPE=${{ matrix.config.build_type }}" >> $GITHUB_ENV
+        fi
+
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
       with:
-        build_type: ${{ matrix.config.build_type }}
+        build_type: ${{ env.GA_BUILD_TYPE }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
