@@ -76,7 +76,7 @@ runs:
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
-        cmake_definitions: ${{ inputs.cmake_definitions }}
+        cmake_definitions: ${{ env.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
   
