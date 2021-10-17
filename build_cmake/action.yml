@@ -49,10 +49,10 @@ runs:
         
         newCmakeDefs=${{ env.g_cmake_defs }}
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDefs+=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT"
+          newCmakeDefs+=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         fi
         echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
         
         #if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-        #  echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT" >> $GITHUB_ENV
+        #  echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}${{ env.GA_SHARED_LINK_LIBRARY_EXT }}" >> $GITHUB_ENV
         #fi
