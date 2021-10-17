@@ -55,8 +55,6 @@ runs:
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
 
-  using: "composite"
-  steps: 
     - name: Env
       shell: bash
       run: |
