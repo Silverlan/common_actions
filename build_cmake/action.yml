@@ -42,6 +42,7 @@ runs:
         GA_ROOT_DIR=$PWD
         mkdir -p ${{ inputs.build_dir }}
         cd ${{ inputs.build_dir }}
+        echo "BUILD CMAKE DEFS: ${{ inputs.cmake_definitions }}"
         cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
