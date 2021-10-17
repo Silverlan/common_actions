@@ -24,6 +24,7 @@ runs:
         root_dir: 'third_party_libs'
         cmake_script_location: 'GTE'
         build_type: 'Release'
+        include_dir: 'GTE'
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@actions
