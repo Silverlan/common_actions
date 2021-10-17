@@ -60,6 +60,9 @@ runs:
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
         include_dir: ${{ inputs.include_dir }}
+      outputs:
+        cmake_definitions: # id of the output
+          description: 'The sum of the inputs'
 
     - name: Env
       shell: bash
