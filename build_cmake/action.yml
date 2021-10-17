@@ -45,6 +45,13 @@ runs:
         echo "BUILD CMAKE DEFS: ${{ inputs.cmake_definitions }}"
         cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+        
+        newCmakeDefs=${{ env.g_cmake_defs }}
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT" >> $GITHUB_ENV
+          $newCmakeDefs+=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT"
         fi
+        echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
+        
+        #if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+        #  echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT" >> $GITHUB_ENV
+        #fi
