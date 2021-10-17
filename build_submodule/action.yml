@@ -63,6 +63,8 @@ runs:
     - name: Env
       shell: bash
       run: |
+        echo "NEW CMAKE DEFS:"
+        echo ${{ env.cmake_definitions }}
         if [[ "${{ inputs.build_type }}" != "" ]]; then
           echo "GA_BUILD_TYPE=${{ inputs.build_type }}" >> $GITHUB_ENV
         else
