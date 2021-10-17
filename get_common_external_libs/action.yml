@@ -21,7 +21,7 @@ runs:
         build_target: 'GTMathematics.v14'
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
-        root_dir: 'third_party_libs/GeometricTools'
+        root_dir: 'third_party_libs'
         cmake_script_location: 'GTE'
 
     - name: Download mathutil
