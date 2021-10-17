@@ -37,6 +37,9 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+outputs:
+  cmake_definitions: # id of the output
+    description: 'The sum of the inputs'
 runs:
   using: "composite"
   steps: 
