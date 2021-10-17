@@ -50,7 +50,7 @@ runs:
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           newCmakeDefs="${{ env.g_cmake_defs }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         else
-          newCmakeDefs=${{ env.g_cmake_defs }}
+          newCmakeDefs="${{ env.g_cmake_defs }}"
         fi
         echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
         
