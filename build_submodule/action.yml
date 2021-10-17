@@ -69,7 +69,7 @@ runs:
         else
           echo "GA_BUILD_TYPE=${{ matrix.config.build_type }}" >> $GITHUB_ENV
         fi
-        echo "CLONE OUTPUT: ${{ steps.clone.outputs.cmake_definitions }}"
+        # echo "CLONE OUTPUT: ${{ steps.clone.outputs.cmake_definitions }}"
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
