@@ -51,6 +51,7 @@ runs:
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           echo "Adding CMake definition: -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
           echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
+          echo "::set-output name=cmake_definitions::${{ env.cmake_definitions }}"
         fi
     #- name: Build
     #  shell: bash
