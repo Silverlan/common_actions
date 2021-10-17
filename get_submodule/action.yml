@@ -54,9 +54,10 @@ runs:
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
         
-        newCmakeDefs=${{ env.g_cmake_defs }}
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDefs+=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          newCmakeDefs="${{ env.g_cmake_defs }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+        else
+          newCmakeDefs="${{ env.g_cmake_defs }}"
         fi
         echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
         
