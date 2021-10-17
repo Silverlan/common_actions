@@ -27,7 +27,7 @@ inputs:
     required: true
     default: ''
   cmake_var:
-    description: 'Name of the CMake variable to set to the include path'
+    description: 'Name of the CMake variable to set to the library path'
     required: true
     default: ''
 runs:
