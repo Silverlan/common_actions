@@ -1,5 +1,14 @@
 name: 'Get GLM'
 description: 'Downloads the GLM library'
+inputs:
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: 'external_libs'
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -8,4 +17,8 @@ runs:
       with:
         download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
         file_name: 'glm-0.9.9.8.zip'
-  
+    - shell: bash
+      run: |
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm" >> $GITHUB_ENV
+        fi

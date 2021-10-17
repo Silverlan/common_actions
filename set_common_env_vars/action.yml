@@ -3,17 +3,17 @@ description: 'Initialize common env variables'
 runs:
   using: "composite"
   steps: 
-    - name: Build
+    - name: Init Env
       shell: bash
       run: |
-        export GA_ROOT_DIR=$PWD
+        echo "GA_ROOT_DIR=$PWD" >> $GITHUB_ENV
         if [ "$RUNNER_OS" == "Linux" ]; then
-          export GA_STATIC_LINK_LIBRARY_EXT=".a"
-          export GA_SHARED_LINK_LIBRARY_EXT=".so"
-          export GA_SHARED_BINARY_LIBRARY_EXT=".so"
+          echo "GA_STATIC_LINK_LIBRARY_EXT=.a" >> $GITHUB_ENV
+          echo "GA_SHARED_LINK_LIBRARY_EXT=.so" >> $GITHUB_ENV
+          echo "GA_SHARED_BINARY_LIBRARY_EXT=.so" >> $GITHUB_ENV
         else
-          export GA_STATIC_LINK_LIBRARY_EXT=".lib"
-          export GA_SHARED_LINK_LIBRARY_EXT=".lib"
-          export GA_SHARED_BINARY_LIBRARY_EXT=".dll"
+          echo "GA_STATIC_LINK_LIBRARY_EXT=.lib" >> $GITHUB_ENV
+          echo "GA_SHARED_LINK_LIBRARY_EXT=.lib" >> $GITHUB_ENV
+          echo "GA_SHARED_BINARY_LIBRARY_EXT=.dll" >> $GITHUB_ENV
         fi
         

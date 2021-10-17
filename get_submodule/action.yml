@@ -15,10 +15,6 @@ inputs:
     description: 'Clone directory'
     required: true
     default: 'external_libs'
-  cmake_definitions:
-    description: 'CMake definitions'
-    required: true
-    default: 'external_libs'
   should_build:
     description: 'Should build?'
     required: true
@@ -29,14 +25,18 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
-  cmake_include_var_name:
-    description: 'Name of the CMake variable to set to the include path'
-    required: true
-    default: ''
   include_dir:
     description: 'Name of the include directory'
     required: true
     default: 'include'
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: ''
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -48,9 +48,8 @@ runs:
         git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
-        
-        if [ "${{ inputs.cmake_include_var_name }}" != "" ]; then
-          ${{ inputs.cmake_include_var_name }}=${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
         fi
     #- name: Build
     #  shell: bash
