@@ -54,7 +54,7 @@ runs:
         build_target: 'sharedutils'
         build_dir: 'build/external_libs/sharedutils-static'
         cmake_script_location: 'external_libs/sharedutils'
-        cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY'
+        cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY_STATIC'
         cmake_definitions: ${{ env.cmake_definitions }}
         
     - name: Build mathutil
