@@ -62,6 +62,7 @@ runs:
         echo "cmakeDef=$(echo $cmakeDef)" >> $GITHUB_ENV
         
     - name: Print
+      shell: bash
       run: |
         echo "New cmakeDef: ${{ env.cmakeDef }}"
 
