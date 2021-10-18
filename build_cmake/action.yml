@@ -10,6 +10,10 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  lib_name:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
@@ -55,15 +59,20 @@ runs:
         GA_ROOT_DIR=$PWD
         mkdir -p ${{ inputs.build_dir }}
         cd ${{ inputs.build_dir }}
-        # echo "BUILD CMAKE DEFS: ${{ inputs.cmake_definitions }}"
-        # cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        
+        if [[ "${{ inputs.lib_name }}" != "" ]]; then
+          libName="${{ inputs.lib_name }}"
+        else
+          lib_name="${{ inputs.build_target }}"
+        fi
+        
         cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
           fi
         else
           newCmakeDef=""
