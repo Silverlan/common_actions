@@ -37,6 +37,10 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
@@ -60,6 +64,9 @@ runs:
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          fi
         else
           newCmakeDef=""
         fi
