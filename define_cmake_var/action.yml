@@ -11,3 +11,5 @@ runs:
       shell: bash
       run: |
         printf '%s' "${{ inputs.cmake_var }}" >> cmake_vars.txt
+        value="$(cat cmake_vars.txt)"
+        echo "DEFINED SO FAR: $value"
