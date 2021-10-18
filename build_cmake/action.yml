@@ -63,7 +63,7 @@ runs:
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
-          lib_name="${{ inputs.build_target }}"
+          libName="${{ inputs.build_target }}"
         fi
         
         cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
