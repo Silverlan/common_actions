@@ -34,6 +34,10 @@ inputs:
     description: 'CMake definitions'
     required: true
     default: ''
+  cmake_definitions_tmp:
+    description: 'Temporary CMake definitions'
+    required: true
+    default: ''
   cmake_var:
     description: 'Name of the CMake variable to set to the include path'
     required: true
@@ -93,6 +97,7 @@ runs:
         lib_name: ${{ inputs.lib_name }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
+        cmake_definitions_tmp: ${{ inputs.cmake_definitions_tmp }}
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
