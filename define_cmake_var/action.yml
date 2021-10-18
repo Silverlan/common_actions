@@ -7,6 +7,6 @@ inputs:
 runs:
   using: "composite"
   steps: 
-    - name: Build
+    - name: Define CMake Var
       shell: bash
       printf "${{ inputs.cmake_var }}"  >> cmake_vars.txt
