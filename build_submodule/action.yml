@@ -14,6 +14,10 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  lib_name:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
@@ -86,6 +90,7 @@ runs:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
+        lib_name: ${{ inputs.lib_name }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var_lib }}
