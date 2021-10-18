@@ -21,7 +21,7 @@ runs:
       run: |
         newCmakeDefs="${{ env.g_cmake_defs }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
         echo "New get_glm DEFS: $newCmakeDefs"
-        echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
+        echo "g_cmake_defs=$(echo $newCmakeDefs)" >> $GITHUB_ENV
       
         #if [[ "${{ inputs.cmake_var }}" != "" ]]; then
         #  echo "cmake_definitions=${{ inputs.cmake_definitions }} " >> $GITHUB_ENV
