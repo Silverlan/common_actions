@@ -40,6 +40,10 @@ inputs:
     description: 'Alias CMake variable name'
     required: true
     default: ''
+  configure:
+    description: 'Enable configuration'
+    required: true
+    default: '1'
 runs:
   using: "composite"
   steps: 
@@ -68,7 +72,9 @@ runs:
           libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
-        cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        if [[ "${{ inputs.configure }}" == "1" ]]; then
+          cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        fi
         cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
