@@ -9,4 +9,5 @@ runs:
   steps: 
     - name: Define CMake Var
       shell: bash
-      printf "${{ inputs.cmake_var }}"  >> cmake_vars.txt
+      run: |
+        printf "${{ inputs.cmake_var }}"  >> cmake_vars.txt
