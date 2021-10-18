@@ -72,18 +72,18 @@ runs:
 
     - name: Env
       shell: bash
+      id: determine-build-type
       run: |
         if [[ "${{ inputs.build_type }}" != "" ]]; then
-          echo "GA_BUILD_TYPE=${{ inputs.build_type }}" >> $GITHUB_ENV
+          echo "::set-output name=build_type::$(echo ${{ inputs.build_type }})"
         else
-          echo "GA_BUILD_TYPE=${{ matrix.config.build_type }}" >> $GITHUB_ENV
+          echo "::set-output name=build_type::$(echo ${{ matrix.config.build_type }})"
         fi
-        # echo "CLONE OUTPUT: ${{ env.g_cmake_defs }}"
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
       with:
-        build_type: ${{ env.GA_BUILD_TYPE }}
+        build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
