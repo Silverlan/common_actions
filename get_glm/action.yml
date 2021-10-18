@@ -12,6 +12,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
     - name: Download submodule - GLM 0.9.9.8
       uses: Silverlan/common_actions/curl_download@main
       with:
