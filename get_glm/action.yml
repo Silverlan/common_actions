@@ -17,12 +17,14 @@ runs:
       with:
         download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
         file_name: 'glm-0.9.9.8.zip'
+        
     - shell: bash
       run: |
-        newCmakeDefs="${{ env.g_cmake_defs }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
-        echo "New get_glm DEFS: $newCmakeDefs"
-        echo "g_cmake_defs=$(echo $newCmakeDefs)" >> $GITHUB_ENV
-      
-        #if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-        #  echo "cmake_definitions=${{ inputs.cmake_definitions }} " >> $GITHUB_ENV
-        #fi
+        cmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
+        echo "cmakeDef=$(echo $cmakeDef)" >> $GITHUB_ENV
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@actions
+      with:
+        cmake_var: '$cmakeDef'
+        
