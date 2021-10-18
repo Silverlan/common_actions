@@ -1,0 +1,12 @@
+name: 'Get CMake Vars'
+description: 'Gets all global CMake vars'
+outputs:
+  cmake_vars:
+    description: 'Will contain the defined variables'
+runs:
+  using: "composite"
+  steps: 
+    - name: Get Vars
+      shell: bash
+      value="$(cat cmake_vars.txt)"
+      echo "::set-output name=cmake_vars::$(echo $value)"
