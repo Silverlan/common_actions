@@ -10,5 +10,5 @@ runs:
       shell: bash
       run: |
         value="$(cat cmake_vars.txt)"
-        echo "::set-output name=cmake_vars::1234"
+        echo "::set-output name=cmake_vars::$(echo 1234)"
         #$(echo $value)"
