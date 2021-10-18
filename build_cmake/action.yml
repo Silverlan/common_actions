@@ -4,6 +4,7 @@ inputs:
   build_type:
     description: 'Build Type'
     required: true
+    default: '${{ matrix.config.build_type }}'
   build_generator:
     description: 'Build Generator'
     required: true
