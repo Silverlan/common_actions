@@ -63,16 +63,16 @@ runs:
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
-          libName="${{ inputs.build_target }}"
+          libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
         cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
         cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
           fi
         else
           newCmakeDef=""
