@@ -34,8 +34,16 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
   cmake_var_lib:
     description: 'Name of the CMake variable to set to the library path'
+    required: true
+    default: ''
+  cmake_var_lib_alias:
+    description: 'Alias CMake library variable name'
     required: true
     default: ''
   cmake_script_location:
@@ -59,6 +67,7 @@ runs:
         repo_branch: ${{ inputs.repo_branch }}
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
+        cmake_var_alias: ${{ inputs.cmake_var_alias }}
         include_dir: ${{ inputs.include_dir }}
 
     - name: Env
@@ -80,5 +89,6 @@ runs:
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var_lib }}
+        cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
   
