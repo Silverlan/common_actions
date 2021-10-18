@@ -10,6 +10,7 @@ runs:
     - name: Define CMake Var
       shell: bash
       run: |
-        printf '%s' "${{ inputs.cmake_var }}" >> cmake_vars.txt
+        # printf '%s' "${{ inputs.cmake_var }}" >> cmake_vars.txt
+        printf '%s' "-TEST_DEFINITION" >> cmake_vars.txt
         value="$(cat cmake_vars.txt)"
         echo "DEFINED SO FAR: $value"
