@@ -12,4 +12,4 @@ runs:
       run: |
         printf '%s' " ${{ inputs.cmake_var }}" >> cmake_vars.txt
         value="$(cat cmake_vars.txt)"
-        # echo "cmake_vars.txt: $value"
+        echo "Defined cmake_vars: $value"
