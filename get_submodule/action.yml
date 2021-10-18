@@ -44,6 +44,10 @@ outputs:
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
     - name: Clone
       shell: bash
       id: clone
