@@ -59,6 +59,7 @@ runs:
         else
           cmakeDef=""
         fi
+        echo "Local var cmakeDef: $cmakeDef"
         echo "cmakeDef=$(echo $cmakeDef)" >> $GITHUB_ENV
         
     - name: Print
