@@ -59,6 +59,7 @@ runs:
         else
           newCmakeDefs="${{ env.g_cmake_defs }}"
         fi
+        echo "New get_submodule DEFS: $newCmakeDefs"
         echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
         
         
