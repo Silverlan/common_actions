@@ -19,7 +19,7 @@ inputs:
   build_dir:
     description: 'The directory to write the build files to'
     required: true
-    default: 'build'
+    default: '${{ matrix.config.build_dir }}'
   cmake_script_location:
     description: 'The location of the CMake script'
     required: true
