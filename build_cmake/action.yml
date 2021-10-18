@@ -7,6 +7,7 @@ inputs:
   build_generator:
     description: 'Build Generator'
     required: true
+    default: '${{ matrix.config.generators }}'
   build_target:
     description: 'Main target to build'
     required: true
