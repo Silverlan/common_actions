@@ -33,6 +33,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
     - name: Get CMake Vars
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@actions
