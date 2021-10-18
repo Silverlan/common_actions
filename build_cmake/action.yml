@@ -30,6 +30,10 @@ inputs:
     description: 'Name of the CMake variable to set to the library path'
     required: true
     default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -58,6 +62,9 @@ runs:
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          fi
         else
           newCmakeDef=""
         fi
