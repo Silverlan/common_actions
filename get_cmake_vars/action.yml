@@ -8,5 +8,6 @@ runs:
   steps: 
     - name: Get Vars
       shell: bash
-      value="$(cat cmake_vars.txt)"
-      echo "::set-output name=cmake_vars::$(echo $value)"
+      run: |
+        value="$(cat cmake_vars.txt)"
+        echo "::set-output name=cmake_vars::$(echo $value)"
