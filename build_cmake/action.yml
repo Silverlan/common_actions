@@ -52,6 +52,7 @@ runs:
         else
           newCmakeDefs="${{ env.g_cmake_defs }}"
         fi
+        echo "New build_cmake DEFS: $newCmakeDefs"
         echo "g_cmake_defs=$newCmakeDefs" >> $GITHUB_ENV
         
         #if [[ "${{ inputs.cmake_var }}" != "" ]]; then
