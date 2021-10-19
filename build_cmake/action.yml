@@ -70,8 +70,8 @@ runs:
           libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
-        libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
-        if [ ! -f "$libPath" ]; then
+        libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/"$libName"${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        if [ ! -f $libPath ]; then
           mkdir -p ${{ inputs.build_dir }}
           cd ${{ inputs.build_dir }}
 
