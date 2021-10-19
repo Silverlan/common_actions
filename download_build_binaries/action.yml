@@ -1,0 +1,24 @@
+name: 'Download binaries'
+description: 'Download build binaries.'
+runs:
+  using: "composite"
+  steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
+    - name: Download binaries
+      uses: dawidd6/action-download-artifact@v2.0.10
+      with:
+        workflow: pragma-generic-ci.yml
+        workflow_conclusion: success
+        pr: ${{github.event.pull_request.number}}
+        commit: ${{github.event.pull_request.head.sha}}
+        branch: actions
+        event: push
+        name: build-binaries
+        path: "./${{ matrix.config.build_dir }}"
+        repo: ${{github.repository}}
+        check_artifacts:  false
+      
+ 
