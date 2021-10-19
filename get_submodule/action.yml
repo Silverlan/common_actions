@@ -67,7 +67,7 @@ runs:
         fi
         cd $root_dir
         
-        if [[ ! -d "${{ inputs.dir }}" ]]; then
+        if [[ ! -d "${{ inputs.dir }}/${{ inputs.repo_name }}" ]]; then
           mkdir -p ${{ inputs.dir }}
           cd ${{ inputs.dir }}
           git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
