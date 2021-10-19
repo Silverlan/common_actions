@@ -63,8 +63,6 @@ runs:
         CXX:  g++-11
       run: |
         GA_ROOT_DIR=$PWD
-        mkdir -p ${{ inputs.build_dir }}
-        cd ${{ inputs.build_dir }}
         
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
@@ -72,15 +70,21 @@ runs:
           libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
-        if [[ "${{ inputs.configure }}" == "1" ]]; then
-          cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+        libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        if [ ! -f "$libPath" ]; then
+          mkdir -p ${{ inputs.build_dir }}
+          cd ${{ inputs.build_dir }}
+
+          if [[ "${{ inputs.configure }}" == "1" ]]; then
+            cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+          fi
+          cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         fi
-        cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$libPath"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libPath"
           fi
         else
           newCmakeDef=""
