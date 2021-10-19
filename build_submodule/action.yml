@@ -61,7 +61,7 @@ inputs:
   cmake_script_location:
     description: 'The location of the CMake script'
     required: true
-    default: '.'
+    default: ''
   include_dir:
     description: 'Name of the include directory'
     required: true
