@@ -8,7 +8,7 @@ runs:
       uses: Silverlan/common_actions/set_common_env_vars@actions
       
     - name: Download binaries
-      uses: dawidd6/action-download-artifact@v2.0.10
+      uses: dawidd6/action-download-artifact@v2
       with:
         workflow: pragma-generic-ci.yml
         workflow_conclusion: success
