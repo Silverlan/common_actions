@@ -29,7 +29,7 @@ runs:
         fi
         
     - name: Download submodule - GLM 0.9.9.8
-      uses: Silverlan/common_actions/curl_download@main
+      uses: Silverlan/common_actions/curl_download@actions
       with:
         download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
         file_name: 'glm-0.9.9.8.zip'
