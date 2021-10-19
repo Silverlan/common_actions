@@ -1,11 +1,47 @@
 name: 'Get GLI'
 description: 'Downloads the GLI library'
+inputs:
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: 'external_libs'
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
+    - shell: bash
+      id: check-exists
+      run: |
+        fileName="./third_party_libs/gli-0.8.2.0.zip"
+        if [ -f "$fileName" ]; then
+          # It would be better to just skip the following steps,
+          # but composite actions don't support if-conditions,
+          # so we'll just remove the existing archive and re-execute
+          # the steps as a workaround.
+          rm "$fileName"
+        fi
+        
     - name: Download submodule - GLI 0.8.2.0
-      uses: Silverlan/common_actions/curl_download@main
+      uses: Silverlan/common_actions/curl_download@actions
       with:
         download_url: 'https://github.com/g-truc/gli/releases/download/0.8.2.0/gli-0.8.2.0.zip'
         file_name: 'gli-0.8.2.0.zip'
-  
+        
+    - shell: bash
+      id: set-cmake-var
+      run: |
+        newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/gli"
+        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@actions
+      with:
+        cmake_var: '${{ steps.set-cmake-var.outputs.cmakeDefLocal }}'
+        
