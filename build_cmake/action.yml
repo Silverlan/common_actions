@@ -64,6 +64,10 @@ runs:
         ls -R
         echo "DONE"
         cd $GA_ROOT_DIR
+        
+        if [[ -f "./build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
+          echo "FOUND NVTT.LIB!"
+        fi
   
     - name: Build
       id: build
