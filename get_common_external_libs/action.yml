@@ -23,7 +23,7 @@ runs:
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
         top_level_dir: 'third_party_libs'
-        cmake_script_location: 'third_party_libs/GeometricTools/GTE'
+        cmake_script_location: 'GeometricTools/GTE'
         build_type: 'Release'
         include_dir: 'GTE'
 
