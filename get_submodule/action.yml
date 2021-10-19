@@ -41,6 +41,10 @@ inputs:
     description: 'Alias CMake variable name'
     required: true
     default: ''
+  root_dir:
+    description: 'Root directory'
+    required: true
+    default: ''
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
@@ -56,6 +60,12 @@ runs:
       shell: bash
       id: clone
       run: |
+        if [[ "${{ inputs.root_dir }}" != "" ]]; then
+          GA_ROOT_DIR=${{ inputs.root_dir }}
+        else
+          GA_ROOT_DIR=$PWD
+        fi
+        cd $GA_ROOT_DIR
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
         git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
