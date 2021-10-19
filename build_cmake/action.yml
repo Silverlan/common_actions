@@ -65,7 +65,10 @@ runs:
         echo "DONE"
         cd $GA_ROOT_DIR
         
-        if [[ -f "${{ env.GA_ROOT_DIR }}/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
+        if [[ -e "${{ env.GA_ROOT_DIR }}/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
+          echo "FOUND NVTT.LIB!"
+        fi
+        if [[ -e "./build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
           echo "FOUND NVTT.LIB!"
         fi
   
