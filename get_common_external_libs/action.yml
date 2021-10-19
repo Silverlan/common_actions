@@ -21,7 +21,7 @@ runs:
         build_target: '$GA_ROOT_DIR/third_party_libs/GeometricTools/GTE/GTMathematics.v14'
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
-        root_dir: 'third_party_libs'
+        top_level_dir: 'third_party_libs'
         cmake_script_location: 'GTE'
         build_type: 'Release'
         include_dir: 'GTE'
@@ -96,7 +96,7 @@ runs:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
-        root_dir: 'external_libs'
+        top_level_dir: 'external_libs'
         cmake_definitions: ${{ env.cmake_definitions }}
         cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
         cmake_var_lib: 'DEPENDENCY_VFILESYSTEM_LIBRARY'
