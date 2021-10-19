@@ -64,6 +64,21 @@ runs:
       run: |
         GA_ROOT_DIR=$PWD
         
+        
+        
+        if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/src/bc6h/RelWithDebInfo/bc6h.lib" ]; then
+          echo "bc6h.lib exists!"
+        else
+          echo "bc6h.lib does not exist!"
+        fi
+        if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]; then
+          echo "nvtt.lib exists!"
+        else
+          echo "nvtt.lib does not exist!"
+        fi
+        
+        
+        
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
