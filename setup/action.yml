@@ -3,6 +3,10 @@ description: 'Basic setup'
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
     - name: Install GCC-11
       if: runner.os == 'Linux'
       run: |
