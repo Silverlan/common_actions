@@ -55,8 +55,7 @@ runs:
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@actions
       
-    - name: Build
-      id: build
+    - name: Print artifact files
       shell: bash
       run: |
         GA_ROOT_DIR=$PWD
