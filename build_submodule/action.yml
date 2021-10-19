@@ -27,6 +27,10 @@ inputs:
     required: true
     default: ''
   root_dir:
+    description: 'Root directory'
+    required: true
+    default: ''
+  top_level_dir:
     description: 'The directory in which the submodule should reside in'
     required: true
     default: 'third_party_libs'
@@ -69,7 +73,7 @@ runs:
       id: clone
       uses: Silverlan/common_actions/get_submodule@actions
       with:
-        dir: '${{ inputs.root_dir }}'
+        dir: '${{ inputs.top_level_dir }}'
         repo: ${{ inputs.repo }}
         repo_name: ${{ inputs.repo_name }}
         repo_branch: ${{ inputs.repo_branch }}
@@ -77,6 +81,7 @@ runs:
         cmake_var: ${{ inputs.cmake_var }}
         cmake_var_alias: ${{ inputs.cmake_var_alias }}
         include_dir: ${{ inputs.include_dir }}
+        root_dir: ${{ inputs.root_dir }}
 
     - name: Env
       shell: bash
@@ -101,4 +106,5 @@ runs:
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
         cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
+        root_dir: ${{ inputs.root_dir }}
   
