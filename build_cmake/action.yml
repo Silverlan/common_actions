@@ -89,8 +89,8 @@ runs:
           echo "Library $libPath already exists! Skipping build..."
         else
           echo "Library $libPath not found! Rebuilding..."
-          mkdir -p ${{ inputs.build_dir }}
-          cd ${{ inputs.build_dir }}
+          mkdir -p $root_dir/${{ inputs.build_dir }}
+          cd $root_dir/${{ inputs.build_dir }}
 
           if [[ "${{ inputs.configure }}" == "1" ]]; then
           
