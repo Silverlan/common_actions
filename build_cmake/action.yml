@@ -72,7 +72,7 @@ runs:
         
         libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         echo "LIB PATH: $libPath"
-        if [ -f "${{ env.GA_ROOT_DIR }}" ]; then
+        if [ -d "${{ env.GA_ROOT_DIR }}" ]; then
           echo "TEST EXISTS!"
         fi
         if [ ! -f "$libPath" ]; then
