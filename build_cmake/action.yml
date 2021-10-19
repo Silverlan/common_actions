@@ -47,6 +47,16 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - name: Test1
+      id: test1
+      shell: bash
+      run: |
+        if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]; then
+          echo "nvtt.lib exists!"
+        else
+          echo "nvtt.lib does not exist!"
+        fi
+  
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@actions
