@@ -82,6 +82,7 @@ runs:
         if [ -f "$libPath" ]; then
           echo "Library $libPath already exists! Skipping build..."
         else
+          echo "Library $libPath not found! Rebuilding..."
           mkdir -p ${{ inputs.build_dir }}
           cd ${{ inputs.build_dir }}
 
