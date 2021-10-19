@@ -18,7 +18,8 @@ runs:
       with:
         repo: 'https://github.com/davideberly/GeometricTools.git'
         repo_name: 'GeometricTools'
-        build_target: '$GA_ROOT_DIR/third_party_libs/GeometricTools/GTE/GTMathematics.v14'
+        build_target: 'third_party_libs/GeometricTools/${{ matrix.config.build_type }}/GTE/GTMathematics.v14'
+        lib_name: '${{ env.GA_ROOT_DIR }}/third_party_libs/GeometricTools/GTE/GTMathematics.v14'
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
         top_level_dir: 'third_party_libs'
