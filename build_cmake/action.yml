@@ -54,6 +54,17 @@ runs:
     - name: Get CMake Vars
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@actions
+      
+    - name: Build
+      id: build
+      shell: bash
+      run: |
+      - name: Display structure of downloaded files
+        run: |
+          GA_ROOT_DIR=$PWD
+          cd "${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}"
+          ls -R
+          cd $GA_ROOT_DIR
   
     - name: Build
       id: build
