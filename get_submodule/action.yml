@@ -58,7 +58,7 @@ runs:
       run: |
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
-        git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
+        git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }} .
         cd ${{ inputs.repo_name }}
         git checkout ${{ inputs.repo_branch }}
         git submodule update --init --recursive
