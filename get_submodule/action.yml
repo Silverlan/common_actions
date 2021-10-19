@@ -61,11 +61,11 @@ runs:
       id: clone
       run: |
         if [[ "${{ inputs.root_dir }}" != "" ]]; then
-          GA_ROOT_DIR=${{ inputs.root_dir }}
+          root_dir=${{ inputs.root_dir }}
         else
-          GA_ROOT_DIR=$PWD
+          root_dir=${{ env.GA_ROOT_DIR }}
         fi
-        cd $GA_ROOT_DIR
+        cd $root_dir
         mkdir -p ${{ inputs.dir }}
         cd ${{ inputs.dir }}
         git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
