@@ -2,7 +2,7 @@ name: 'Upload binaries'
 description: 'Upload build binaries.'
 inputs:
   build_dir:
-    description: 'The directory to write the build files to'
+    description: 'Build directory'
     required: true
     default: 'build'
 runs:
