@@ -9,6 +9,7 @@ runs:
       
     - name: Download binaries
       uses: dawidd6/action-download-artifact@v2
+      continue-on-error: true
       with:
         workflow: pragma-generic-ci.yml
         workflow_conclusion: success
