@@ -105,7 +105,7 @@ runs:
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
         lib_name: ${{ inputs.lib_name }}
-        build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
+        build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.top_level_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
         cmake_definitions_tmp: ${{ inputs.cmake_definitions_tmp }}
         cmake_var: ${{ inputs.cmake_var_lib }}
