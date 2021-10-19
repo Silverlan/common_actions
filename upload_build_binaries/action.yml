@@ -14,7 +14,7 @@ runs:
       
     - uses: actions/upload-artifact@v2.2.4
       with:
-        name: upload-binary
+        name: build-binaries
         path: |
           retention-days: 5
           ${{ matrix.config.build_dir }}/**/*${{ env.GA_SHARED_LINK_LIBRARY_EXT }}
