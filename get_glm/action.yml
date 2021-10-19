@@ -21,29 +21,27 @@ runs:
       run: |
         fileName="./glm-0.9.9.8.zip"
         if [ -f "$fileName" ]; then
-          exists=1
-        else
-          exists=0
+          # It would be better to just skip the following steps,
+          # but composite actions don't support if-conditions,
+          # so we'll just remove the existing archive and re-execute
+          # the steps as a workaround.
+          rm "$fileName"
         fi
-        echo ::set-output name=glm_exists::"$exists"
         
     - name: Download submodule - GLM 0.9.9.8
       uses: Silverlan/common_actions/curl_download@main
-      if: ${{ steps.check-exists.outputs.glm_exists }}==0
       with:
         download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
         file_name: 'glm-0.9.9.8.zip'
         
     - shell: bash
       id: set-cmake-var
-      if: ${{ steps.check-exists.outputs.glm_exists }}==0
       run: |
         newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
 
     - name: Define CMake Variable
       uses: Silverlan/common_actions/define_cmake_var@actions
-      if: ${{ steps.check-exists.outputs.glm_exists }}==0
       with:
         cmake_var: '${{ steps.set-cmake-var.outputs.cmakeDefLocal }}'
         
