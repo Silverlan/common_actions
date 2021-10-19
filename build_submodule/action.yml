@@ -92,6 +92,11 @@ runs:
         else
           echo "::set-output name=build_type::$(echo ${{ matrix.config.build_type }})"
         fi
+        if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
+          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.cmake_script_location }})"
+        else
+          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.repo_name }})"
+        fi
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
@@ -105,6 +110,6 @@ runs:
         cmake_definitions_tmp: ${{ inputs.cmake_definitions_tmp }}
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
-        cmake_script_location: '${{ inputs.cmake_script_location }}'
+        cmake_script_location: ${{ steps.determine-build-type.outputs.cmake_script_location }}
         root_dir: ${{ inputs.root_dir }}
   
