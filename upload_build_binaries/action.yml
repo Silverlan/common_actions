@@ -1,10 +1,5 @@
 name: 'Upload binaries'
 description: 'Upload build binaries.'
-inputs:
-  build_dir:
-    description: 'Build directory'
-    required: true
-    default: 'build'
 runs:
   using: "composite"
   steps: 
