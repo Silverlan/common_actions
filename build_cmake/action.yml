@@ -23,7 +23,7 @@ inputs:
   cmake_script_location:
     description: 'The location of the CMake script'
     required: true
-    default: '.'
+    default: ''
   cmake_definitions:
     description: 'CMake definitions'
     required: true
@@ -78,6 +78,12 @@ runs:
           libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
+        if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
+          cmakeScriptLocation="${{ inputs.cmake_script_location }}"
+        else
+          cmakeScriptLocation="."
+        fi
+        
         libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         if [ -f "$libPath" ]; then
           echo "Library $libPath already exists! Skipping build..."
@@ -90,13 +96,14 @@ runs:
           
             echo "root_dir: $root_dir"
             echo "cmake_script_location: ${{ inputs.cmake_script_location }}"
+            echo "cmakeScriptLocation: $cmakeScriptLocation"
             echo "libName: $libName"
             echo "build_dir: ${{ inputs.build_dir }}"
             echo "build_type: ${{ inputs.build_type }}"
             echo "build_target: ${{ inputs.build_target }}"
             echo "input lib_name: ${{ inputs.lib_name }}"
           
-            cmake $root_dir/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+            cmake $root_dir/$cmakeScriptLocation ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         fi
