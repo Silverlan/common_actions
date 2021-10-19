@@ -90,7 +90,7 @@ runs:
 
         #cd "/"
         echo $PWD
-        find ./ -name '*'
+        find ./build/ -name '*'
         
         
         
