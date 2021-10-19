@@ -54,27 +54,6 @@ runs:
     - name: Get CMake Vars
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@actions
-      
-    - name: Print artifact files
-      shell: bash
-      run: |
-        GA_ROOT_DIR=$PWD
-        echo "ALL FILES:"
-        cd "${{ env.GA_ROOT_DIR }}"
-        ls -R
-        echo "DONE"
-        cd $GA_ROOT_DIR
-        
-        if [[ -e "${{ env.GA_ROOT_DIR }}/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
-          echo "NVTT.LIB found!"
-        else
-          echo "NVTT.LIB not found!"
-        fi
-        if [[ -e "./build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]]; then
-          echo "NVTT.LIB found (2)!"
-        else
-          echo "NVTT.LIB not found (2)!"
-        fi
   
     - name: Build
       id: build
@@ -92,17 +71,17 @@ runs:
         fi
         
         libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
-        echo "LIB PATH: $libPath"
-        if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/extern/RUN_TESTS.vcxproj.filters" ]; then
-          echo "RUN_TESTS.vcxproj.filters found!"
-        else
-          echo "RUN_TESTS.vcxproj.filters not found!"
-        fi
+        #if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/extern/RUN_TESTS.vcxproj.filters" ]; then
+        #  echo "RUN_TESTS.vcxproj.filters found!"
+        #else
+        #  echo "RUN_TESTS.vcxproj.filters not found!"
+        #fi
+        #if [ -f "$libPath" ]; then
+        #  echo "TEST EXISTS 2!"
+        #fi
         if [ -f "$libPath" ]; then
-          echo "TEST EXISTS 2!"
-        fi
-        if [ ! -f "$libPath" ]; then
-          echo "DOES NOT EXIST!"
+          echo "Library $libPath already exists! Skipping build..."
+        else
           mkdir -p ${{ inputs.build_dir }}
           cd ${{ inputs.build_dir }}
 
