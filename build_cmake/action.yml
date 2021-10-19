@@ -92,6 +92,9 @@ runs:
         if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/extern/RUN_TESTS.vcxproj.filters" ]; then
           echo "TEST EXISTS!"
         fi
+        if [ -f "$libPath" ]; then
+          echo "TEST EXISTS 2!"
+        fi
         if [ ! -f "$libPath" ]; then
           echo "DOES NOT EXIST!"
           mkdir -p ${{ inputs.build_dir }}
