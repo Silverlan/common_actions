@@ -67,9 +67,9 @@ runs:
         CXX:  g++-11
       run: |
         if [[ "${{ inputs.root_dir }}" != "" ]]; then
-          GA_ROOT_DIR=${{ inputs.root_dir }}
+          root_dir=${{ inputs.root_dir }}
         else
-          GA_ROOT_DIR=$PWD
+          root_dir=${{ env.GA_ROOT_DIR }}
         fi
         
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
@@ -78,7 +78,7 @@ runs:
           libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
         fi
         
-        libPath="${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         if [ -f "$libPath" ]; then
           echo "Library $libPath already exists! Skipping build..."
         else
@@ -87,7 +87,7 @@ runs:
           cd ${{ inputs.build_dir }}
 
           if [[ "${{ inputs.configure }}" == "1" ]]; then
-            cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+            cmake $root_dir/${{ inputs.cmake_script_location }} ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         fi
