@@ -59,12 +59,12 @@ runs:
       id: build
       shell: bash
       run: |
-      - name: Display structure of downloaded files
-        run: |
-          GA_ROOT_DIR=$PWD
-          cd "${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}"
-          ls -R
-          cd $GA_ROOT_DIR
+        GA_ROOT_DIR=$PWD
+        echo "ALL FILES:"
+        cd "${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}"
+        ls -R
+        echo "DONE"
+        cd $GA_ROOT_DIR
   
     - name: Build
       id: build
