@@ -44,6 +44,10 @@ inputs:
     description: 'Enable configuration'
     required: true
     default: '1'
+  root_dir:
+    description: 'Root directory'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -62,12 +66,10 @@ runs:
         CC:   gcc-11
         CXX:  g++-11
       run: |
-        GA_ROOT_DIR=$PWD
-        
-        if [ -f "/d/a/util_image/util_image/build/third_party_libs/nvtt/src/nvtt/RelWithDebInfo/nvtt.lib" ]; then
-          echo "nvtt.lib exists!"
+        if [[ "${{ inputs.root_dir }}" != "" ]]; then
+          GA_ROOT_DIR=${{ inputs.root_dir }}
         else
-          echo "nvtt.lib does not exist!"
+          GA_ROOT_DIR=$PWD
         fi
         
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
