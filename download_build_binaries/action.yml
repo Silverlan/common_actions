@@ -1,6 +1,5 @@
 name: 'Download binaries'
 description: 'Download build binaries.'
-continue-on-error: true
 runs:
   using: "composite"
   steps: 
