@@ -60,7 +60,7 @@ runs:
       run: |
         GA_ROOT_DIR=$PWD
         echo "ALL FILES:"
-        cd "${{ env.GA_ROOT_DIR }}/${{ inputs.build_dir }}"
+        cd "${{ env.GA_ROOT_DIR }}"
         ls -R
         echo "DONE"
         cd $GA_ROOT_DIR
