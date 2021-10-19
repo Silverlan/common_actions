@@ -76,6 +76,10 @@ runs:
         else
           echo "nvtt.lib does not exist!"
         fi
+
+        cd "/d/a/util_image/util_image/build"
+        echo $PWD
+        find ./ -name '*'
         
         
         
