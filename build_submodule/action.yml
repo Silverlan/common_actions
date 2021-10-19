@@ -95,7 +95,7 @@ runs:
         if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
           echo "::set-output name=cmake_script_location::$(echo ${{ inputs.cmake_script_location }})"
         else
-          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.repo_name }})"
+          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.top_level_dir }/${{ inputs.repo_name }})"
         fi
 
     - name: Build
