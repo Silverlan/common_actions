@@ -74,6 +74,9 @@ runs:
           cd ${{ inputs.repo_name }}
           git checkout ${{ inputs.repo_branch }}
           git submodule update --init --recursive
+          
+          commitId=$(git rev-parse --short=10 HEAD);
+          # TODO: Save commit id with binary cache?
         fi
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
