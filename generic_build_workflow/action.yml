@@ -1,0 +1,30 @@
+name: 'Generic CMake build'
+description: 'Builds the specified project'
+inputs:
+  build_action:
+    description: 'Build action'
+    required: true
+runs:
+  using: "composite"
+  steps: 
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Setup
+      id: setup
+      uses: Silverlan/common_actions/setup@actions
+
+    - name: Download binaries
+      uses: Silverlan/common_actions/download_build_binaries@actions
+      continue-on-error: true
+
+    - name: Build
+      id: build
+      uses: ${{ inputs.build_action }}
+      with:
+        root_dir: "${{ env.GA_ROOT_DIR }}"
+
+    - name: Upload binaries
+      uses: Silverlan/common_actions/upload_build_binaries@actions
+       
