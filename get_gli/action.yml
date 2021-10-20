@@ -16,23 +16,13 @@ runs:
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@actions
       
-    - shell: bash
-      id: check-exists
-      run: |
-        fileName="./third_party_libs/gli-0.8.2.0.zip"
-        if [ -f "$fileName" ]; then
-          # It would be better to just skip the following steps,
-          # but composite actions don't support if-conditions,
-          # so we'll just remove the existing archive and re-execute
-          # the steps as a workaround.
-          rm "$fileName"
-        fi
-        
-    - name: Download submodule - GLI 0.8.2.0
-      uses: Silverlan/common_actions/curl_download@actions
+    - name: Get submodule - GLI
+      uses: Silverlan/common_actions/get_submodule@actions
       with:
-        download_url: 'https://github.com/g-truc/gli/releases/download/0.8.2.0/gli-0.8.2.0.zip'
-        file_name: 'gli-0.8.2.0.zip'
+        repo: 'https://github.com/g-truc/gli.git'
+        repo_name: 'gli'
+        cmake_var: 'DEPENDENCY_GLI_INCLUDE'
+        dir: 'third_party_libs'
         
     - shell: bash
       id: set-cmake-var
