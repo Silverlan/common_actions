@@ -5,7 +5,7 @@ runs:
   steps: 
     - name: Initialize Env
       id: init-env
-      uses: Silverlan/common_actions/set_common_env_vars@actions
+      uses: Silverlan/common_actions/set_common_env_vars@main
       
     - uses: actions/upload-artifact@v2.2.4
       with:
