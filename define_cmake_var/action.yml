@@ -1,0 +1,16 @@
+name: 'Define CMake Var'
+description: 'Defines a global CMake variable'
+inputs:
+  cmake_var:
+    description: 'Name of the CMake variable to set'
+    required: true
+runs:
+  using: "composite"
+  steps: 
+    - name: Define CMake Var
+      shell: bash
+      run: |
+        echo "Defining var: ${{ inputs.cmake_var }}"
+        printf '%s' " ${{ inputs.cmake_var }}" >> cmake_vars.txt
+        value="$(cat cmake_vars.txt)"
+        echo "Defined cmake_vars: $value"

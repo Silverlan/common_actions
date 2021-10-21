@@ -17,3 +17,7 @@ runs:
           echo "GA_SHARED_BINARY_LIBRARY_EXT=.dll" >> $GITHUB_ENV
         fi
         
+        if [ ! -d "./build" ]; then
+          mkdir build
+        fi
+        

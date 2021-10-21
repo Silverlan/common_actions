@@ -4,20 +4,26 @@ inputs:
   build_type:
     description: 'Build Type'
     required: true
+    default: '${{ matrix.config.build_type }}'
   build_generator:
     description: 'Build Generator'
     required: true
+    default: '${{ matrix.config.generators }}'
   build_target:
     description: 'Main target to build'
     required: true
+  lib_name:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
-    default: 'build'
+    default: '${{ matrix.config.build_dir }}'
   cmake_script_location:
     description: 'The location of the CMake script'
     required: true
-    default: '.'
+    default: ''
   cmake_definitions:
     description: 'CMake definitions'
     required: true
@@ -27,23 +33,93 @@ inputs:
     required: true
     default: ''
   cmake_var:
-    description: 'Name of the CMake variable to set to the include path'
+    description: 'Name of the CMake variable to set to the library path'
+    required: true
+    default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
+  configure:
+    description: 'Enable configuration'
+    required: true
+    default: '1'
+  root_dir:
+    description: 'Root directory'
     required: true
     default: ''
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
+    - name: Get CMake Vars
+      id: cmake_vars
+      uses: Silverlan/common_actions/get_cmake_vars@actions
+  
     - name: Build
+      id: build
       shell: bash
       env:
         CC:   gcc-11
         CXX:  g++-11
       run: |
-        GA_ROOT_DIR=$PWD
-        mkdir -p ${{ inputs.build_dir }}
-        cd ${{ inputs.build_dir }}
-        cmake ${{ env.GA_ROOT_DIR }}/${{ inputs.cmake_script_location }} ${{ inputs.cmake_definitions }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
-        cmake --build ./ --config ${{ matrix.config.build_type }} --target ${{ inputs.build_target }}
-        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=./${{ inputs.build_dir }}/${{ inputs.build_type }}/${{ inputs.build_target }}$GA_SHARED_LINK_LIBRARY_EXT" >> $GITHUB_ENV
+        if [[ "${{ inputs.root_dir }}" != "" ]]; then
+          root_dir=${{ inputs.root_dir }}
+        else
+          root_dir=${{ env.GA_ROOT_DIR }}
         fi
+        
+        if [[ "${{ inputs.lib_name }}" != "" ]]; then
+          libName="${{ inputs.lib_name }}"
+        else
+          libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
+        fi
+        
+        if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
+          cmakeScriptLocation="${{ inputs.cmake_script_location }}"
+        else
+          cmakeScriptLocation="."
+        fi
+        
+        libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        if [ -f "$libPath" ]; then
+          echo "Library $libPath already exists! Skipping build..."
+        else
+          echo "Library $libPath not found! Rebuilding..."
+          mkdir -p $root_dir/${{ inputs.build_dir }}
+          cd $root_dir/${{ inputs.build_dir }}
+
+          if [[ "${{ inputs.configure }}" == "1" ]]; then
+          
+            echo "root_dir: $root_dir"
+            echo "cmake_script_location: ${{ inputs.cmake_script_location }}"
+            echo "cmakeScriptLocation: $cmakeScriptLocation"
+            echo "libName: $libName"
+            echo "build_dir: ${{ inputs.build_dir }}"
+            echo "build_type: ${{ inputs.build_type }}"
+            echo "build_target: ${{ inputs.build_target }}"
+            echo "input lib_name: ${{ inputs.lib_name }}"
+          
+            cmake $root_dir/$cmakeScriptLocation ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+          fi
+          cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+        fi
+        
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$libPath"
+          if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libPath"
+          fi
+        else
+          newCmakeDef=""
+        fi
+        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@actions
+      with:
+        cmake_var: '${{ steps.build.outputs.cmakeDefLocal }}'
+        

@@ -14,11 +14,23 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  lib_name:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
     default: 'build'
+  build_type:
+    description: 'Build Type'
+    required: true
+    default: ''
   root_dir:
+    description: 'Root directory'
+    required: true
+    default: ''
+  top_level_dir:
     description: 'The directory in which the submodule should reside in'
     required: true
     default: 'third_party_libs'
@@ -26,40 +38,78 @@ inputs:
     description: 'CMake definitions'
     required: true
     default: ''
+  cmake_definitions_tmp:
+    description: 'Temporary CMake definitions'
+    required: true
+    default: ''
   cmake_var:
     description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
     required: true
     default: ''
   cmake_var_lib:
     description: 'Name of the CMake variable to set to the library path'
     required: true
     default: ''
+  cmake_var_lib_alias:
+    description: 'Alias CMake library variable name'
+    required: true
+    default: ''
   cmake_script_location:
     description: 'The location of the CMake script'
     required: true
-    default: '.'
+    default: ''
+  include_dir:
+    description: 'Name of the include directory'
+    required: true
+    default: 'include'
 runs:
   using: "composite"
   steps: 
     - name: Clone
+      id: clone
       uses: Silverlan/common_actions/get_submodule@actions
       with:
-        dir: '${{ inputs.root_dir }}'
+        dir: '${{ inputs.top_level_dir }}'
         repo: ${{ inputs.repo }}
         repo_name: ${{ inputs.repo_name }}
         repo_branch: ${{ inputs.repo_branch }}
         cmake_definitions: ${{ inputs.cmake_definitions }}
         cmake_var: ${{ inputs.cmake_var }}
+        cmake_var_alias: ${{ inputs.cmake_var_alias }}
+        include_dir: ${{ inputs.include_dir }}
+        root_dir: ${{ inputs.root_dir }}
+
+    - name: Env
+      shell: bash
+      id: determine-build-type
+      run: |
+        if [[ "${{ inputs.build_type }}" != "" ]]; then
+          echo "::set-output name=build_type::$(echo ${{ inputs.build_type }})"
+        else
+          echo "::set-output name=build_type::$(echo ${{ matrix.config.build_type }})"
+        fi
+        if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
+          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.cmake_script_location }})"
+        else
+          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.top_level_dir }}/${{ inputs.repo_name }})"
+        fi
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@actions
       with:
-        build_type: ${{ matrix.config.build_type }}
+        build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
-        build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.repo_name }}'
-        cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}'
-        cmake_definitions: ${{ inputs.cmake_definitions }}
+        lib_name: ${{ inputs.lib_name }}
+        build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.top_level_dir }}/${{ inputs.repo_name }}'
+        cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
+        cmake_definitions_tmp: ${{ inputs.cmake_definitions_tmp }}
         cmake_var: ${{ inputs.cmake_var_lib }}
-        cmake_script_location: '${{ inputs.root_dir }}/${{ inputs.repo_name }}/${{ inputs.cmake_script_location }}'
+        cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
+        cmake_script_location: ${{ steps.determine-build-type.outputs.cmake_script_location }}
+        root_dir: ${{ inputs.root_dir }}
   

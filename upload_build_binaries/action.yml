@@ -1,0 +1,19 @@
+name: 'Upload binaries'
+description: 'Upload build binaries.'
+runs:
+  using: "composite"
+  steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
+    - uses: actions/upload-artifact@v2.2.4
+      with:
+        name: build-binaries
+        retention-days: 5
+        path: |
+          ${{ matrix.config.build_dir }}/**/*${{ env.GA_SHARED_LINK_LIBRARY_EXT }}
+          ${{ matrix.config.build_dir }}/**/*${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}
+          ${{ matrix.config.build_dir }}/**/*.h
+          ${{ matrix.config.build_dir }}/**/*.hpp
+ 

@@ -37,25 +37,64 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
+  root_dir:
+    description: 'Root directory'
+    required: true
+    default: ''
+outputs:
+  cmake_definitions:
+    description: "CMake definitions output"
+    value: ${{ steps.clone.outputs.cmake_definitions }}
 runs:
   using: "composite"
   steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@actions
+      
     - name: Clone
       shell: bash
+      id: clone
       run: |
-        mkdir -p ${{ inputs.dir }}
-        cd ${{ inputs.dir }}
-        git clone ${{ inputs.repo }} --single-branch --branch ${{ inputs.repo_branch }}
-        cd ${{ inputs.repo_name }}
-        git checkout ${{ inputs.repo_branch }}
-        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          echo "cmake_definitions=${{ inputs.cmake_definitions }} -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}" >> $GITHUB_ENV
+        if [[ "${{ inputs.root_dir }}" != "" ]]; then
+          root_dir=${{ inputs.root_dir }}
+        else
+          root_dir=${{ env.GA_ROOT_DIR }}
         fi
-    #- name: Build
-    #  shell: bash
-    #  run: |
-    #    if [[ "${{inputs.should_build}}" == "true" ]]; then
-    #      cmake -S . -B . ${{ inputs.cmake_definitions }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
-    #      cmake --build ./ --config ${{ matrix.config.build_type }}
-    #      cd ../
-    #    fi
+        cd $root_dir
+        
+        if [[ ! -d "${{ inputs.dir }}/${{ inputs.repo_name }}" ]]; then
+          mkdir -p ${{ inputs.dir }}
+          cd ${{ inputs.dir }}
+          
+          repo=${{ inputs.repo }}
+          # Add "https://github.com/" prefix if repo doesn't start with "http"
+          case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
+          
+          git clone $repo --single-branch --branch ${{ inputs.repo_branch }}
+          cd ${{ inputs.repo_name }}
+          git checkout ${{ inputs.repo_branch }}
+          git submodule update --init --recursive
+          
+          commitId=$(git rev-parse --short=10 HEAD);
+          # TODO: Save commit id with binary cache?
+        fi
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+          fi
+        else
+          newCmakeDef=""
+        fi
+        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@actions
+      with:
+        cmake_var: '${{ steps.clone.outputs.cmakeDefLocal }}'
+        
