@@ -91,18 +91,18 @@ runs:
           echo "Library $libPath not found! Rebuilding..."
           mkdir -p $root_dir/${{ inputs.build_dir }}
           cd $root_dir/${{ inputs.build_dir }}
-
+          
+          echo "Current directory: $PWD"
+          echo "Set variables:"
+          echo "  root_dir: $root_dir"
+          echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
+          echo "  cmakeScriptLocation: $cmakeScriptLocation"
+          echo "  libName: $libName"
+          echo "  build_dir: ${{ inputs.build_dir }}"
+          echo "  build_type: ${{ inputs.build_type }}"
+          echo "  build_target: ${{ inputs.build_target }}"
+          echo "  input lib_name: ${{ inputs.lib_name }}"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
-          
-            echo "root_dir: $root_dir"
-            echo "cmake_script_location: ${{ inputs.cmake_script_location }}"
-            echo "cmakeScriptLocation: $cmakeScriptLocation"
-            echo "libName: $libName"
-            echo "build_dir: ${{ inputs.build_dir }}"
-            echo "build_type: ${{ inputs.build_type }}"
-            echo "build_target: ${{ inputs.build_target }}"
-            echo "input lib_name: ${{ inputs.lib_name }}"
-          
             cmake $root_dir/$cmakeScriptLocation ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
