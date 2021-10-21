@@ -53,11 +53,11 @@ runs:
   steps: 
     - name: Initialize Env
       id: init-env
-      uses: Silverlan/common_actions/set_common_env_vars@actions
+      uses: Silverlan/common_actions/set_common_env_vars@main
       
     - name: Get CMake Vars
       id: cmake_vars
-      uses: Silverlan/common_actions/get_cmake_vars@actions
+      uses: Silverlan/common_actions/get_cmake_vars@main
   
     - name: Build
       id: build
@@ -119,7 +119,7 @@ runs:
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
 
     - name: Define CMake Variable
-      uses: Silverlan/common_actions/define_cmake_var@actions
+      uses: Silverlan/common_actions/define_cmake_var@main
       with:
         cmake_var: '${{ steps.build.outputs.cmakeDefLocal }}'
         
