@@ -119,7 +119,7 @@ runs:
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
 
     - name: Define CMake Variable
-      uses: Silverlan/common_actions/define_cmake_var@actions
+      uses: Silverlan/common_actions/define_cmake_var@main
       with:
         cmake_var: '${{ steps.build.outputs.cmakeDefLocal }}'
         
