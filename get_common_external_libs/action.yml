@@ -5,16 +5,16 @@ runs:
   steps: 
     - name: Initialize Env
       id: init-env
-      uses: Silverlan/common_actions/set_common_env_vars@actions
+      uses: Silverlan/common_actions/set_common_env_vars@main
       
     - name: Download GLM
-      uses: Silverlan/common_actions/get_glm@actions
+      uses: Silverlan/common_actions/get_glm@main
       with:
         cmake_var: 'DEPENDENCY_GLM_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
         
     - name: Download GeometricTools
-      uses: Silverlan/common_actions/build_submodule@actions
+      uses: Silverlan/common_actions/build_submodule@main
       with:
         repo: 'https://github.com/davideberly/GeometricTools.git'
         repo_name: 'GeometricTools'
@@ -28,7 +28,7 @@ runs:
         include_dir: 'GTE'
 
     - name: Download mathutil
-      uses: Silverlan/common_actions/get_submodule@actions
+      uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/mathutil.git'
         repo_name: 'mathutil'
@@ -37,7 +37,7 @@ runs:
         cmake_definitions: ${{ env.cmake_definitions }}
 
     - name: Download sharedutils
-      uses: Silverlan/common_actions/get_submodule@actions
+      uses: Silverlan/common_actions/get_submodule@main
       with:
         repo: 'https://github.com/Silverlan/sharedutils.git'
         repo_name: 'sharedutils'
@@ -47,7 +47,7 @@ runs:
         
     # Build
     - name: Build sharedutils-static
-      uses: Silverlan/common_actions/build_cmake@actions
+      uses: Silverlan/common_actions/build_cmake@main
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
@@ -59,7 +59,7 @@ runs:
         cmake_definitions: ${{ env.cmake_definitions }}
         
     - name: Build mathutil
-      uses: Silverlan/common_actions/build_cmake@actions
+      uses: Silverlan/common_actions/build_cmake@main
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
@@ -70,7 +70,7 @@ runs:
         cmake_definitions: ${{ env.cmake_definitions }}
         
     - name: Build sharedutils
-      uses: Silverlan/common_actions/build_cmake@actions
+      uses: Silverlan/common_actions/build_cmake@main
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
@@ -81,7 +81,7 @@ runs:
         cmake_definitions: ${{ env.cmake_definitions }}
 
     - name: Download bzip2
-      uses: Silverlan/common_actions/get_submodule@actions
+      uses: Silverlan/common_actions/get_submodule@main
       with:
         dir: 'third_party_libs'
         repo: 'https://github.com/sergiud/bzip2.git'
@@ -92,7 +92,7 @@ runs:
         include_dir: '.'
 
     - name: Build vfilesystem
-      uses: Silverlan/common_actions/build_submodule@actions
+      uses: Silverlan/common_actions/build_submodule@main
       with:
         repo: 'https://github.com/Silverlan/vfilesystem.git'
         repo_name: 'vfilesystem'
