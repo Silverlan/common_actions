@@ -62,6 +62,10 @@ inputs:
     description: 'The location of the CMake script'
     required: true
     default: ''
+  is_cmake_script_location_absolute:
+    description: 'Is cmake_script_location an absolute path?'
+    required: true
+    default: '0'
   include_dir:
     description: 'Name of the include directory'
     required: true
@@ -111,5 +115,6 @@ runs:
         cmake_var: ${{ inputs.cmake_var_lib }}
         cmake_var_alias: ${{ inputs.cmake_var_lib_alias }}
         cmake_script_location: ${{ steps.determine-build-type.outputs.cmake_script_location }}
+        is_cmake_script_location_absolute: ${{ inputs.is_cmake_script_location_absolute }}
         root_dir: ${{ inputs.root_dir }}
   

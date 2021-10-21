@@ -24,6 +24,10 @@ inputs:
     description: 'The location of the CMake script'
     required: true
     default: ''
+  is_cmake_script_location_absolute:
+    description: 'Is cmake_script_location an absolute path?'
+    required: true
+    default: '0'
   cmake_definitions:
     description: 'CMake definitions'
     required: true
@@ -103,7 +107,12 @@ runs:
           echo "  build_target: ${{ inputs.build_target }}"
           echo "  input lib_name: ${{ inputs.lib_name }}"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
-            cmake $root_dir/$cmakeScriptLocation ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+            if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
+              cms=$cmakeScriptLocation
+            else
+              cms=$root_dir/$cmakeScriptLocation
+            fi
+            cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           # ls -r
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
