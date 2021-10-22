@@ -72,7 +72,7 @@ runs:
         cd $root_dir
         
         # Only get submodule if directly doesn't exist or is empty
-        if [[ ! -d "${{ inputs.dir }}/${{ inputs.repo_name }}" || $(ls -A "${{ inputs.dir }}/${{ inputs.repo_name }}" | wc -l) -ne 0 ]]; then
+        if [[ ! -d "${{ inputs.dir }}/${{ inputs.repo_name }}" || -z "$(ls -A ${{ inputs.dir }}/${{ inputs.repo_name }})" ]]; then
           mkdir -p ${{ inputs.dir }}
           cd ${{ inputs.dir }}
           
