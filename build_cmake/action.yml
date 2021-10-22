@@ -52,6 +52,10 @@ inputs:
     description: 'Root directory'
     required: true
     default: ''
+  pre_build_cmd:
+    description: 'Command(s) to run before building'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -115,6 +119,7 @@ runs:
             cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           # ls -r
+          ${{ inputs.pre_build_cmd }}
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
         fi
         
