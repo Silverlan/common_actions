@@ -95,6 +95,7 @@ runs:
         libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         if [ -f "$libPath" ]; then
           echo "Library $libPath already exists! Skipping build..."
+          ${{ inputs.pre_build_cmd }}
         else
           echo "Library $libPath not found! Rebuilding..."
           mkdir -p $root_dir/${{ inputs.build_dir }}
@@ -121,8 +122,6 @@ runs:
           # ls -r
           ${{ inputs.pre_build_cmd }}
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
-        else
-          ${{ inputs.pre_build_cmd }}
         fi
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
