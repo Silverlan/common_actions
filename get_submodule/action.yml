@@ -45,6 +45,10 @@ inputs:
     description: 'Root directory'
     required: true
     default: ''
+  checkout_submodules:
+    description: 'Checkout submodules?'
+    required: true
+    default: '1'
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
@@ -78,7 +82,10 @@ runs:
           git clone $repo --single-branch --branch ${{ inputs.repo_branch }}
           cd ${{ inputs.repo_name }}
           git checkout ${{ inputs.repo_branch }}
-          git submodule update --init --recursive
+          
+          if [[ "${{ inputs.checkout_submodules }}" == "1" ]]; then
+            git submodule update --init --recursive
+          fi
           
           commitId=$(git rev-parse --short=10 HEAD);
           # TODO: Save commit id with binary cache?
