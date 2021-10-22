@@ -80,7 +80,7 @@ runs:
           # Add "https://github.com/" prefix if repo doesn't start with "http"
           case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
           
-          git clone $repo --single-branch --branch ${{ inputs.repo_branch }}
+          git clone $repo --single-branch --branch ${{ inputs.repo_branch }} ${{ inputs.repo_name }}
           cd ${{ inputs.repo_name }}
           git checkout ${{ inputs.repo_branch }}
           
