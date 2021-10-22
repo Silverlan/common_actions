@@ -11,5 +11,9 @@ runs:
       id: get-vars
       shell: bash
       run: |
-        value="$(cat cmake_vars.txt)"
+        if [[ -f "cmake_vars.txt" ]]; then
+          value="$(cat cmake_vars.txt)"
+        else
+          value=""
+        fi
         echo "::set-output name=cmake_vars::$(echo $value)"
