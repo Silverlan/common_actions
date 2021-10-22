@@ -121,6 +121,8 @@ runs:
           # ls -r
           ${{ inputs.pre_build_cmd }}
           cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+        else
+          ${{ inputs.pre_build_cmd }}
         fi
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
