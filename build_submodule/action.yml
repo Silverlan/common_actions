@@ -70,6 +70,10 @@ inputs:
     description: 'Name of the include directory'
     required: true
     default: 'include'
+  pre_build_cmd:
+    description: 'Command(s) to run before building'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps: 
@@ -117,4 +121,5 @@ runs:
         cmake_script_location: ${{ steps.determine-build-type.outputs.cmake_script_location }}
         is_cmake_script_location_absolute: ${{ inputs.is_cmake_script_location_absolute }}
         root_dir: ${{ inputs.root_dir }}
+        pre_build_cmd: ${{ inputs.pre_build_cmd }}
   
