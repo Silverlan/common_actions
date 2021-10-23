@@ -87,7 +87,11 @@ runs:
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
-          libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
+          if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+            libName="${{ inputs.build_type }}/lib${{ inputs.build_target }}"
+          else
+            libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
+          fi
         fi
         
         if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
@@ -97,12 +101,8 @@ runs:
         fi
         
         libPath="$root_dir/${{ inputs.build_dir }}"
-        if [[ "${{ inputs.static_library }}" == "1" ]]; then
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            libPath="$libPath/lib$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
-          else
-            libPath="$libPath/$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
-          fi
+        if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+          libPath="$libPath/$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
         else
           libPath="$libPath/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         fi
