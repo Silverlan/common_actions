@@ -24,6 +24,14 @@ inputs:
     description: 'Name of the library'
     required: true
     default: ''
+  lib_name_windows:
+    description: 'Name of the library'
+    required: true
+    default: ''
+  lib_name_linux:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
@@ -100,8 +108,16 @@ runs:
           build_target=${{ inputs.build_target_windows }}
         fi
         
-        if [[ "${{ inputs.lib_name }}" != "" ]]; then
-          libName="${{ inputs.lib_name }}"
+        baseLibName=${{ inputs.lib_name }}
+        if [[ "${{ inputs.lib_name_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
+          baseLibName=${{ inputs.lib_name_linux }}
+        fi
+        if [[ "${{ inputs.lib_name_windows }}" != "" && "$RUNNER_OS" == "Windows" ]]; then
+          baseLibName=${{ inputs.lib_name_windows }}
+        fi
+        
+        if [[ "$baseLibName" != "" ]]; then
+          libName="$baseLibName"
         else
           if [[ "$RUNNER_OS" == "Linux" ]]; then
             libName="${{ inputs.build_type }}/lib$build_target"
@@ -145,7 +161,7 @@ runs:
           echo "  build_dir: ${{ inputs.build_dir }}"
           echo "  build_type: ${{ inputs.build_type }}"
           echo "  build_target: $build_target"
-          echo "  input lib_name: ${{ inputs.lib_name }}"
+          echo "  input lib_name: $baseLibName"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
             if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
               cms=$cmakeScriptLocation
