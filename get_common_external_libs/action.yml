@@ -13,19 +13,8 @@ runs:
         cmake_var: 'DEPENDENCY_GLM_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
         
-    - name: Download GeometricTools
-      uses: Silverlan/common_actions/build_submodule@main
-      with:
-        repo: 'https://github.com/davideberly/GeometricTools.git'
-        repo_name: 'GeometricTools'
-        build_target: '${{ env.GA_ROOT_DIR }}/third_party_libs/GeometricTools/GTE/GTMathematics.v14'
-        lib_name: 'third_party_libs/GeometricTools/GTE/GTMathematics.v14'
-        cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
-        cmake_definitions: ${{ env.cmake_definitions }}
-        top_level_dir: 'third_party_libs'
-        cmake_script_location: 'third_party_libs/GeometricTools/GTE'
-        build_type: 'Release'
-        include_dir: 'GTE'
+    - name: Build GeometricTools
+      uses: Silverlan/common_actions/build_geometric_tools@main
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@main
