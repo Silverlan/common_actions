@@ -82,6 +82,10 @@ inputs:
     description: 'Command(s) to run before building'
     required: true
     default: ''
+  static_library:
+    description: 'Is this a static library?'
+    required: true
+    default: '0'
 runs:
   using: "composite"
   steps: 
@@ -132,4 +136,5 @@ runs:
         is_cmake_script_location_absolute: ${{ inputs.is_cmake_script_location_absolute }}
         root_dir: ${{ inputs.root_dir }}
         pre_build_cmd: ${{ inputs.pre_build_cmd }}
+        static_library: ${{ inputs.static_library }}
   
