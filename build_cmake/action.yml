@@ -103,7 +103,7 @@ runs:
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
-          if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
             libName="${{ inputs.build_type }}/lib$build_target"
           else
             libName="${{ inputs.build_type }}/$build_target"
