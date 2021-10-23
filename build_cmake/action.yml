@@ -123,6 +123,9 @@ runs:
           echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
           echo "  cmakeScriptLocation: $cmakeScriptLocation"
           echo "  libName: $libName"
+          echo "  libNameWithExt: $libNameWithExt"
+          echo "  libPath: $libPath"
+          echo "  libFilePath: $libFilePath"
           echo "  build_dir: ${{ inputs.build_dir }}"
           echo "  build_type: ${{ inputs.build_type }}"
           echo "  build_target: ${{ inputs.build_target }}"
@@ -139,6 +142,7 @@ runs:
           cmake --build ./ --verbose --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
           
           # We may have to copy the binary file on Linux systems
+          echo "Copying ./$libNameWithExt to $libFilePath..."
           mkdir -p "$libPath"
           cp "./$libNameWithExt" "$libFilePath" 2>>/dev/null
           
