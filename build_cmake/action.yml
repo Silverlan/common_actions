@@ -159,7 +159,7 @@ runs:
           
           # We may have to copy the binary file on Linux systems
           baseName=$(basename $libFilePath)
-          dirName=$(basename $libFilePath)
+          dirName=$(dirname $libFilePath)
           echo "Creating dir $dirName..."
           echo "Copying ./$baseName to $libFilePath..."
           mkdir -p "$dirName"
