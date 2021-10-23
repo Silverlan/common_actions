@@ -144,7 +144,7 @@ runs:
           # We may have to copy the binary file on Linux systems
           echo "Copying ./$libNameWithExt to $libFilePath..."
           mkdir -p "$libPath"
-          cp "./$libNameWithExt" "$libFilePath" 2>>/dev/null
+          cp "./$libNameWithExt" "$libFilePath" || true
           
           echo "Files in $PWD:"
           ls -R
