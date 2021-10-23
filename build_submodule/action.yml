@@ -115,7 +115,7 @@ runs:
         fi
 
     - name: Build
-      uses: Silverlan/common_actions/build_cmake@actions
+      uses: Silverlan/common_actions/build_cmake@main
       with:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
