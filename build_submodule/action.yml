@@ -86,6 +86,13 @@ inputs:
     description: 'Is this a static library?'
     required: true
     default: '0'
+outputs:
+  include_directory:
+    description: 'The include directory for this library'
+    value: ${{ steps.write-outputs.outputs.include-directory }}
+  library_file_path:
+    description: 'The path (including filename and extension) of the generated library'
+    value: ${{ steps.write-outputs.outputs.library-file-path }}
 runs:
   using: "composite"
   steps: 
@@ -120,6 +127,7 @@ runs:
 
     - name: Build
       uses: Silverlan/common_actions/build_cmake@main
+      id: build
       with:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
@@ -137,4 +145,11 @@ runs:
         root_dir: ${{ inputs.root_dir }}
         pre_build_cmd: ${{ inputs.pre_build_cmd }}
         static_library: ${{ inputs.static_library }}
-  
+        
+    - name: Write outputs
+      shell: bash
+      id: write-outputs
+      run: |
+        echo "::set-output name=include-directory::$(echo ${{ steps.clone.outputs.include_directory }})"
+        echo "::set-output name=library-file-path::$(echo ${{ steps.build.outputs.library_file_path }})"
+        
