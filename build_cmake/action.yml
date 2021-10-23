@@ -76,6 +76,10 @@ inputs:
     description: 'Is this a static library?'
     required: true
     default: '0'
+outputs:
+  library_file_path:
+    description: 'The path (including filename and extension) of the generated library'
+    value: ${{ steps.build.outputs.library-file-path }}
 runs:
   using: "composite"
   steps: 
@@ -141,6 +145,7 @@ runs:
         fi
         libFilePath="$libPath/$libNameWithExt"
         
+        echo "::set-output name=library-file-path::$(echo $libFilePath)"
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
           ${{ inputs.pre_build_cmd }}
