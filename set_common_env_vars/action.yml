@@ -11,10 +11,12 @@ runs:
           echo "GA_STATIC_LINK_LIBRARY_EXT=.a" >> $GITHUB_ENV
           echo "GA_SHARED_LINK_LIBRARY_EXT=.so" >> $GITHUB_ENV
           echo "GA_SHARED_BINARY_LIBRARY_EXT=.so" >> $GITHUB_ENV
+          echo "GA_STATIC_LIBRARY_PREFIX=lib" >> $GITHUB_ENV
         else
           echo "GA_STATIC_LINK_LIBRARY_EXT=.lib" >> $GITHUB_ENV
           echo "GA_SHARED_LINK_LIBRARY_EXT=.lib" >> $GITHUB_ENV
           echo "GA_SHARED_BINARY_LIBRARY_EXT=.dll" >> $GITHUB_ENV
+          echo "GA_STATIC_LIBRARY_PREFIX=" >> $GITHUB_ENV
         fi
         
         if [ ! -d "./build" ]; then
