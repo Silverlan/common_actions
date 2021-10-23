@@ -12,6 +12,14 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  build_target_windows:
+    description: 'Main target to build'
+    required: true
+    default: ''
+  build_target_linux:
+    description: 'Main target to build'
+    required: true
+    default: ''
   lib_name:
     description: 'Name of the library'
     required: true
@@ -56,6 +64,10 @@ inputs:
     description: 'Command(s) to run before building'
     required: true
     default: ''
+  static_library:
+    description: 'Is this a static library?'
+    required: true
+    default: '0'
 runs:
   using: "composite"
   steps: 
@@ -80,10 +92,22 @@ runs:
           root_dir=${{ env.GA_ROOT_DIR }}
         fi
         
+        build_target=${{ inputs.build_target }}
+        if [[ "${{ inputs.build_target_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
+          build_target=${{ inputs.build_target_linux }}
+        fi
+        if [[ "${{ inputs.build_target_windows }}" != "" && "$RUNNER_OS" == "Windows" ]]; then
+          build_target=${{ inputs.build_target_windows }}
+        fi
+        
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
           libName="${{ inputs.lib_name }}"
         else
-          libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
+          if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+            libName="${{ inputs.build_type }}/lib$build_target"
+          else
+            libName="${{ inputs.build_type }}/$build_target"
+          fi
         fi
         
         if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
@@ -92,12 +116,20 @@ runs:
           cmakeScriptLocation="."
         fi
         
-        libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
-        if [ -f "$libPath" ]; then
-          echo "Library $libPath already exists! Skipping build..."
+        libPath="$root_dir/${{ inputs.build_dir }}"
+        libNameWithExt="$libName"
+        if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+          libNameWithExt="$libNameWithExt${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+        else
+          libNameWithExt="$libNameWithExt${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        fi
+        libFilePath="$libPath/$libNameWithExt"
+        
+        if [ -f "$libFilePath" ]; then
+          echo "Library $libFilePath already exists! Skipping build..."
           ${{ inputs.pre_build_cmd }}
         else
-          echo "Library $libPath not found! Rebuilding..."
+          echo "Library $libFilePath not found! Rebuilding..."
           mkdir -p $root_dir/${{ inputs.build_dir }}
           cd $root_dir/${{ inputs.build_dir }}
           
@@ -107,9 +139,12 @@ runs:
           echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
           echo "  cmakeScriptLocation: $cmakeScriptLocation"
           echo "  libName: $libName"
+          echo "  libNameWithExt: $libNameWithExt"
+          echo "  libPath: $libPath"
+          echo "  libFilePath: $libFilePath"
           echo "  build_dir: ${{ inputs.build_dir }}"
           echo "  build_type: ${{ inputs.build_type }}"
-          echo "  build_target: ${{ inputs.build_target }}"
+          echo "  build_target: $build_target"
           echo "  input lib_name: ${{ inputs.lib_name }}"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
             if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
@@ -119,15 +154,23 @@ runs:
             fi
             cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
-          # ls -r
           ${{ inputs.pre_build_cmd }}
-          cmake --build ./ --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+          cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
+          
+          # We may have to copy the binary file on Linux systems
+          baseName=$(basename $libNameWithExt)
+          echo "Copying ./$baseName to $libFilePath..."
+          mkdir -p "$libPath"
+          cp "./$baseName" "$libFilePath" || true
+          
+          echo "Files in $PWD:"
+          ls -R
         fi
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=$libPath"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$libFilePath"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libPath"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libFilePath"
           fi
         else
           newCmakeDef=""

@@ -14,6 +14,14 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  build_target_windows:
+    description: 'Main target to build'
+    required: true
+    default: ''
+  build_target_linux:
+    description: 'Main target to build'
+    required: true
+    default: ''
   lib_name:
     description: 'Name of the library'
     required: true
@@ -112,6 +120,8 @@ runs:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
+        build_target_windows: ${{ inputs.build_target_windows }}
+        build_target_linux: ${{ inputs.build_target_linux }}
         lib_name: ${{ inputs.lib_name }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.top_level_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}

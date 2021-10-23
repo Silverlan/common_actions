@@ -11,7 +11,9 @@ runs:
       shell: bash
       id: determine-build-type
       run: |
+        echo "Runner OS: $RUNNER_OS"
         if [ "$RUNNER_OS" == "Linux" ]; then
+          echo "Installing g++-11..."
           sudo apt update
           sudo apt install gcc-11 g++-11
         fi
