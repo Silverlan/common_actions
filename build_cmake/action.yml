@@ -142,9 +142,10 @@ runs:
           cmake --build ./ --verbose --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
           
           # We may have to copy the binary file on Linux systems
-          echo "Copying ./$libNameWithExt to $libFilePath..."
+          baseName=$(basename $libNameWithExt)
+          echo "Copying ./$baseName to $libFilePath..."
           mkdir -p "$libPath"
-          cp "./$libNameWithExt" "$libFilePath" || true
+          cp "./$baseName" "$libFilePath" || true
           
           echo "Files in $PWD:"
           ls -R
