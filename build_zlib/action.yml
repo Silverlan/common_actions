@@ -23,7 +23,7 @@ runs:
         repo_name: 'zlib'
         repo_branch: 'master'
         build_target: zlib
-        # lib_name: libz
+        lib_name: ${{ matrix.config.build_type }}/libz
         cmake_var: 'ZLIB_INCLUDE_DIR'
         cmake_var_alias: 'DEPENDENCY_ZLIB_INCLUDE'
         cmake_var_lib: 'ZLIB_LIBRARY'
