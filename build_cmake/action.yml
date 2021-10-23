@@ -12,6 +12,14 @@ inputs:
   build_target:
     description: 'Main target to build'
     required: true
+  build_target_windows:
+    description: 'Main target to build'
+    required: true
+    default: ''
+  build_target_linux:
+    description: 'Main target to build'
+    required: true
+    default: ''
   lib_name:
     description: 'Name of the library'
     required: true
@@ -82,6 +90,14 @@ runs:
           root_dir=${{ inputs.root_dir }}
         else
           root_dir=${{ env.GA_ROOT_DIR }}
+        fi
+        
+        build_target=${{ inputs.build_target }}
+        if [[ "${{ inputs.build_target_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
+          build_target=${{ inputs.build_target_linux }}
+        fi
+        if [[ "${{ inputs.build_target_windows }}" != "" && "$RUNNER_OS" == "Windows" ]]; then
+          build_target=${{ inputs.build_target_windows }}
         fi
         
         if [[ "${{ inputs.lib_name }}" != "" ]]; then
