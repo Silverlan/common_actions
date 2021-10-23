@@ -158,9 +158,11 @@ runs:
           cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
           
           # We may have to copy the binary file on Linux systems
-          baseName=$(basename $libNameWithExt)
+          baseName=$(basename $libFilePath)
+          dirName=$(basename $libFilePath)
+          echo "Creating dir $dirName..."
           echo "Copying ./$baseName to $libFilePath..."
-          mkdir -p "$libPath"
+          mkdir -p "$dirName"
           cp "./$baseName" "$libFilePath" || true
           
           echo "Files in $PWD:"
