@@ -104,9 +104,9 @@ runs:
           libName="${{ inputs.lib_name }}"
         else
           if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
-            libName="${{ inputs.build_type }}/lib${{ inputs.build_target }}"
+            libName="${{ inputs.build_type }}/lib$build_target"
           else
-            libName="${{ inputs.build_type }}/${{ inputs.build_target }}"
+            libName="${{ inputs.build_type }}/$build_target"
           fi
         fi
         
@@ -144,7 +144,7 @@ runs:
           echo "  libFilePath: $libFilePath"
           echo "  build_dir: ${{ inputs.build_dir }}"
           echo "  build_type: ${{ inputs.build_type }}"
-          echo "  build_target: ${{ inputs.build_target }}"
+          echo "  build_target: $build_target"
           echo "  input lib_name: ${{ inputs.lib_name }}"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
             if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
@@ -155,7 +155,7 @@ runs:
             cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
           fi
           ${{ inputs.pre_build_cmd }}
-          cmake --build ./ --verbose --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+          cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
           
           # We may have to copy the binary file on Linux systems
           baseName=$(basename $libNameWithExt)
