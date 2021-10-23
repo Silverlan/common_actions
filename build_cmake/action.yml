@@ -56,6 +56,10 @@ inputs:
     description: 'Command(s) to run before building'
     required: true
     default: ''
+  static_library:
+    description: 'Is this a static library?'
+    required: true
+    default: '0'
 runs:
   using: "composite"
   steps: 
@@ -92,7 +96,17 @@ runs:
           cmakeScriptLocation="."
         fi
         
-        libPath="$root_dir/${{ inputs.build_dir }}/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        libPath="$root_dir/${{ inputs.build_dir }}"
+        if [[ "${{ inputs.static_library }}" == "1" ]]; then
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            libPath="$libPath/lib$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          else
+            libPath="$libPath/$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          fi
+        else
+          libPath="$libPath/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+        fi
+        
         if [ -f "$libPath" ]; then
           echo "Library $libPath already exists! Skipping build..."
           ${{ inputs.pre_build_cmd }}
