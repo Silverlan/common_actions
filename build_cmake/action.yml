@@ -101,17 +101,19 @@ runs:
         fi
         
         libPath="$root_dir/${{ inputs.build_dir }}"
+        libNameWithExt="$libName"
         if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
-          libPath="$libPath/$libName${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          libNameWithExt="$libNameWithExt${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
         else
-          libPath="$libPath/$libName${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          libNameWithExt="$libNameWithExt${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         fi
+        libFilePath="$libPath/$libNameWithExt"
         
-        if [ -f "$libPath" ]; then
-          echo "Library $libPath already exists! Skipping build..."
+        if [ -f "$libFilePath" ]; then
+          echo "Library $libFilePath already exists! Skipping build..."
           ${{ inputs.pre_build_cmd }}
         else
-          echo "Library $libPath not found! Rebuilding..."
+          echo "Library $libFilePath not found! Rebuilding..."
           mkdir -p $root_dir/${{ inputs.build_dir }}
           cd $root_dir/${{ inputs.build_dir }}
           
@@ -135,13 +137,19 @@ runs:
           fi
           ${{ inputs.pre_build_cmd }}
           cmake --build ./ --verbose --config ${{ inputs.build_type }} --target ${{ inputs.build_target }}
+          
+          # We may have to copy the binary file on Linux systems
+          mkdir -p "$libPath"
+          cp "./$libNameWithExt" "$libFilePath" 2>>/dev/null
+          
+          echo "Files in $PWD:"
           ls -R
         fi
         
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=$libPath"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$libFilePath"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libPath"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libFilePath"
           fi
         else
           newCmakeDef=""
