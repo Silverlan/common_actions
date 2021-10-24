@@ -144,8 +144,10 @@ runs:
           libNameWithExt="$libNameWithExt${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
         fi
         libFilePath="$libPath/$libNameWithExt"
+
+        nlibFilePath= "${libFilePath//.\//}"
+        echo "::set-output name=library-file-path::$nlibFilePath"
         
-        echo "::set-output name=library-file-path::$libFilePath"
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
           ${{ inputs.pre_build_cmd }}
