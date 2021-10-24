@@ -64,6 +64,10 @@ inputs:
     description: 'Enable configuration'
     required: true
     default: '1'
+  build:
+    description: 'Enable build'
+    required: true
+    default: '1'
   root_dir:
     description: 'Root directory'
     required: true
@@ -193,9 +197,11 @@ runs:
           echo "Build files in $PWD:"
           ls -R
           
-          echo "CMake build..."
-          cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
-          echo "Done!"
+          if [[ "${{ inputs.build }}" == "1" ]]; then
+            echo "CMake build..."
+            cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
+            echo "Done!"
+          fi
           
           # We may have to copy the binary file on Linux systems
           baseName=$(basename $libFilePath)
