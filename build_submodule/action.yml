@@ -26,6 +26,14 @@ inputs:
     description: 'Name of the library'
     required: true
     default: ''
+  lib_name_windows:
+    description: 'Name of the library'
+    required: true
+    default: ''
+  lib_name_linux:
+    description: 'Name of the library'
+    required: true
+    default: ''
   build_dir:
     description: 'The directory to write the build files to'
     required: true
@@ -142,6 +150,8 @@ runs:
         build_target_windows: ${{ inputs.build_target_windows }}
         build_target_linux: ${{ inputs.build_target_linux }}
         lib_name: ${{ inputs.lib_name }}
+        lib_name_windows: ${{ inputs.lib_name_windows }}
+        lib_name_linux: ${{ inputs.lib_name_linux }}
         build_dir: '${{ inputs.build_dir }}/${{ inputs.root_dir }}/${{ inputs.top_level_dir }}/${{ inputs.repo_name }}'
         cmake_definitions: ${{ steps.clone.outputs.cmake_definitions }}
         cmake_definitions_tmp: ${{ inputs.cmake_definitions_tmp }}
