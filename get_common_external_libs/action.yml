@@ -1,5 +1,10 @@
 name: 'Get common external Pragma libraries'
 description: 'Downloads and builds the common external Pragma libraries.'
+inputs:
+  build_shared:
+    description: 'Build as shared library?'
+    required: true
+    default: '1'
 runs:
   using: "composite"
   steps: 
@@ -15,6 +20,16 @@ runs:
         
     - name: Build GeometricTools
       uses: Silverlan/common_actions/build_geometric_tools@main
+      
+    - name: Initialize CMake definitions
+      id: init-cmake-defs
+      shell: bash
+      run: |
+        tmpCmakeVars=''
+        if [[ "${{ inputs.build_shared }}" == "0" ]]; then
+          tmpCmakeVars=' -DMATHUTIL_STATIC=ON -DSHAREDUTILS_STATIC=ON -DVFILESYSTEM_STATIC=ON -DLINK_COMMON_LIBS_STATIC=ON'
+        fi
+        echo "::set-output name=tmp-cmake-vars::$(echo $tmpCmakeVars)"
 
     - name: Download mathutil
       uses: Silverlan/common_actions/get_submodule@main
@@ -23,7 +38,7 @@ runs:
         repo_name: 'mathutil'
         dir: 'external_libs'
         cmake_var: 'DEPENDENCY_MATHUTIL_INCLUDE'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
 
     - name: Download sharedutils
       uses: Silverlan/common_actions/get_submodule@main
@@ -32,7 +47,7 @@ runs:
         repo_name: 'sharedutils'
         dir: 'external_libs'
         cmake_var: 'DEPENDENCY_SHAREDUTILS_INCLUDE'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
         
     # Build
     - name: Build sharedutils-static
@@ -40,7 +55,7 @@ runs:
       with:
         build_type: ${{ matrix.config.build_type }}
         build_generator: ${{ matrix.config.generators }}
-        cmake_definitions_tmp: ${{ env.cmake_definitions }} -DSHAREDUTILS_STATIC=ON -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }} ${{ env.cmake_definitions }} -DSHAREDUTILS_STATIC=ON -DDEPENDENCY_MATHUTIL_INCLUDE=$GA_ROOT_DIR/external_libs/mathutil/include"
         build_target: 'sharedutils'
         build_dir: 'build/external_libs/sharedutils-static'
         cmake_script_location: 'external_libs/sharedutils'
@@ -57,7 +72,7 @@ runs:
         build_dir: 'build/external_libs/mathutil'
         cmake_script_location: 'external_libs/mathutil'
         cmake_var: 'DEPENDENCY_MATHUTIL_LIBRARY'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
         
     - name: Build sharedutils
       uses: Silverlan/common_actions/build_cmake@main
@@ -68,7 +83,7 @@ runs:
         build_dir: 'build/external_libs/sharedutils'
         cmake_script_location: 'external_libs/sharedutils'
         cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
 
     - name: Download bzip2
       uses: Silverlan/common_actions/get_submodule@main
@@ -88,6 +103,6 @@ runs:
         repo_name: 'vfilesystem'
         build_target: 'vfilesystem'
         top_level_dir: 'external_libs'
-        cmake_definitions: ${{ env.cmake_definitions }}
+        cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
         cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
         cmake_var_lib: 'DEPENDENCY_VFILESYSTEM_LIBRARY'
