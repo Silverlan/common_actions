@@ -190,6 +190,9 @@ runs:
           ${{ inputs.pre_build_cmd }}
           echo "Done!"
           
+          echo "Build files in $PWD:"
+          ls -R
+          
           echo "CMake build..."
           cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
           echo "Done!"
