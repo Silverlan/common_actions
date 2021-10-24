@@ -145,7 +145,7 @@ runs:
         fi
         libFilePath="$libPath/$libNameWithExt"
 
-        nlibFilePath= "${libFilePath//.\//}"
+        nlibFilePath="${libFilePath//.\//}"
         echo "::set-output name=library-file-path::$nlibFilePath"
         
         if [ -f "$libFilePath" ]; then
