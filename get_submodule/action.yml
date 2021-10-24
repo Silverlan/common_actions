@@ -52,10 +52,13 @@ inputs:
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
-    value: ${{ steps.clone.outputs.cmake_definitions }}
+    value: ${{ steps.clone.outputs.cmakeDefLocal }}
   include_directory:
     description: 'The include directory for this library'
     value: ${{ steps.clone.outputs.include-directory }}
+  commit_id:
+    description: 'Commit id of the cloned repository'
+    value: ${{ steps.clone.outputs.commit-id }}
 runs:
   using: "composite"
   steps: 
@@ -97,10 +100,10 @@ runs:
             git submodule update --init --recursive
             echo "Done!"
           fi
-          
-          commitId=$(git rev-parse --short=10 HEAD);
-          # TODO: Save commit id with binary cache?
         fi
+
+        commitId=$(git rev-parse --short=10 HEAD);
+        echo "::set-output name=commit-id::$commitId"
         
         echo "Updating outputs and definitions..."
         fullIncludePath="${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
