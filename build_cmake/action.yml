@@ -80,6 +80,9 @@ outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'
     value: ${{ steps.build.outputs.library-file-path }}
+  binary_file_path:
+    description: 'The path (including filename and extension) of the generated binary'
+    value: ${{ steps.build.outputs.binary-file-path }}
 runs:
   using: "composite"
   steps: 
@@ -138,15 +141,19 @@ runs:
         
         libPath="$root_dir/${{ inputs.build_dir }}"
         libNameWithExt="$libName"
+        binNameWithExt="$libName"
         if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
           libNameWithExt="$libNameWithExt${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          binNameWithExt="$binNameWithExt${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
         else
           libNameWithExt="$libNameWithExt${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          binNameWithExt="$binNameWithExt${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
         fi
         libFilePath="$libPath/$libNameWithExt"
+        binFilePath="$libPath/$binNameWithExt"
 
-        nlibFilePath="${libFilePath//.\//}"
-        echo "::set-output name=library-file-path::$nlibFilePath"
+        echo "::set-output name=library-file-path::${libFilePath//.\//}"
+        echo "::set-output name=binary-file-path::${binFilePath//.\//}"
         
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
