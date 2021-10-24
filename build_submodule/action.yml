@@ -93,6 +93,9 @@ outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'
     value: ${{ steps.build.outputs.library_file_path }}
+  binary_file_path:
+    description: 'The path (including filename and extension) of the generated binary'
+    value: ${{ steps.build.outputs.binary-file-path }}
 runs:
   using: "composite"
   steps: 
