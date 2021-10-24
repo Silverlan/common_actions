@@ -86,6 +86,10 @@ inputs:
     description: 'Is this a static library?'
     required: true
     default: '0'
+  build:
+    description: 'Enable build'
+    required: true
+    default: '1'
 outputs:
   include_directory:
     description: 'The include directory for this library'
@@ -148,4 +152,5 @@ runs:
         root_dir: ${{ inputs.root_dir }}
         pre_build_cmd: ${{ inputs.pre_build_cmd }}
         static_library: ${{ inputs.static_library }}
+        build: ${{ inputs.build }}
         
