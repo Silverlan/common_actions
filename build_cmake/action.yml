@@ -186,7 +186,7 @@ runs:
             else
               cms=$root_dir/$cmakeScriptLocation
             fi
-            echo "CMake configure..."
+            echo "CMake configure $cms..."
             cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
             echo "Done!"
           fi
