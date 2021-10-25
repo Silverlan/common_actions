@@ -107,12 +107,18 @@ runs:
         
         echo "Updating outputs and definitions..."
         fullIncludePath="${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
-        nfullIncludePath="${fullIncludePath//.\//}"
+        
+        nfullIncludePath="$fullIncludePath"
+        # Replace "./" with ""
+        nfullIncludePath="${nfullIncludePath//.\//}"
+        # Replace "//" with "/"
+        nfullIncludePath="${nfullIncludePath//\/\//\/}"
+        
         echo "::set-output name=include-directory::$nfullIncludePath"
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
-          newCmakeDef=" -D${{ inputs.cmake_var }}=$fullIncludePath"
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$nfullIncludePath"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
-            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$fullIncludePath"
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$nfullIncludePath"
           fi
         else
           newCmakeDef=""
