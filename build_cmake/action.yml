@@ -156,8 +156,17 @@ runs:
         libFilePath="$libPath/$libNameWithExt"
         binFilePath="$libPath/$binNameWithExt"
 
-        echo "::set-output name=library-file-path::${libFilePath//.\//}"
-        echo "::set-output name=binary-file-path::${binFilePath//.\//}"
+        # Replace "./" with ""
+        libFilePath="${libFilePath//.\//}"
+        # Replace "//" with "/"
+        libFilePath="${libFilePath//\/\//\/}"
+
+        # Same for $binFilePath
+        binFilePath="${binFilePath//.\//}"
+        binFilePath="${binFilePath//\/\//\/}"
+        
+        echo "::set-output name=library-file-path::$libFilePath"
+        echo "::set-output name=binary-file-path::$binFilePath"
         
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
