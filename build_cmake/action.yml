@@ -202,10 +202,10 @@ runs:
         CC:   gcc-11
         CXX:  g++-11
       run: |
-        $root_dir="${{ steps.init-vars.outputs.root-dir }}"
-        $libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
-        $cmakeScriptLocation="${{ steps.init-vars.outputs.cmake-script-location }}"
-        $build_target="${{ steps.init-vars.outputs.build-target }}"
+        root_dir="${{ steps.init-vars.outputs.root-dir }}"
+        libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
+        cmakeScriptLocation="${{ steps.init-vars.outputs.cmake-script-location }}"
+        build_target="${{ steps.init-vars.outputs.build-target }}"
         
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
