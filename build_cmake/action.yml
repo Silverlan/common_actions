@@ -80,6 +80,10 @@ inputs:
     description: 'Is this a static library?'
     required: true
     default: '0'
+  cache_id:
+    description: 'Cache id to identify this module'
+    required: true
+    default: ''
 outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'
@@ -163,7 +167,7 @@ runs:
         binFilePath="${binFilePath//\/\//\/}"
         
         globalCacheVersion=2
-        cacheId="$build_target-${{ inputs.build_type }}-${{ inputs.static_library }}-v$globalCacheVersion"
+        cacheId="$build_target-${{ inputs.cache_id }}-${{ inputs.build_type }}-${{ inputs.static_library }}-v$globalCacheVersion"
         
         echo "Set variables:"
         echo "  root_dir: $root_dir"
