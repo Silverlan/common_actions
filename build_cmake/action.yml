@@ -198,6 +198,20 @@ runs:
           "${{ steps.init-vars.outputs.library-file-path }}"
           "${{ steps.init-vars.outputs.binary-file-path }}"
         key: ${{ steps.init-vars.outputs.cache-id }}
+        
+    - shell: bash
+      run: |
+        echo "after get-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
   
     - name: Build
       id: build
@@ -266,6 +280,20 @@ runs:
         fi
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
         echo "Done!"
+        
+    - shell: bash
+      run: |
+        echo "before write-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
         
     - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
       name: Update cache
