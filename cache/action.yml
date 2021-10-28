@@ -29,7 +29,19 @@ runs:
         key: ${{ inputs.key }}-v${{ inputs.cache_version }}
         
     - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
-      name: Check for cache hit
+      name: Run cache-miss step
       with:
         if: "${{steps.get-cache.outputs.cache-hit!='true'}}"
         step: ${{ inputs.step }}
+        
+    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+      name: Write cache
+      with:
+        if: "${{steps.get-cache.outputs.cache-hit!='true'}}"
+        step: |
+          name: Write cache
+          uses: actions/cache@v2
+          id: write-cache
+          with:
+            path: ${{ inputs.path }}
+            key: ${{ inputs.key }}-v${{ inputs.cache_version }}
