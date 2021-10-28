@@ -163,4 +163,5 @@ runs:
         pre_build_cmd: ${{ inputs.pre_build_cmd }}
         static_library: ${{ inputs.static_library }}
         build: ${{ inputs.build }}
+        cache_id: ${{ steps.clone.outputs.commit_id }}
         
