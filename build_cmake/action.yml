@@ -162,7 +162,7 @@ runs:
         binFilePath="${binFilePath//.\//}"
         binFilePath="${binFilePath//\/\//\/}"
         
-        globalCacheVersion=1
+        globalCacheVersion=2
         cacheId="$build_target-${{ inputs.build_type }}-${{ inputs.static_library }}-v$globalCacheVersion"
         
         echo "Set variables:"
