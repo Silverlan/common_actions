@@ -141,7 +141,7 @@ runs:
         fi
 
     - name: Build
-      uses: Silverlan/common_actions/build_cmake@main
+      uses: Silverlan/common_actions/build_cmake@actions
       id: build
       with:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
