@@ -7,10 +7,15 @@ inputs:
   cache_id:
     description: 'The id of the cache'
     required: true
+outputs:
+  cache-hit:
+    description: ''
+    value: ${{steps.restore-cache.outputs.cache-hit}}
 runs:
   using: "composite"
   steps:
     - name: Restore
+      id: restore-cache
       uses: actions/cache@v2.1.6
       with:
         path: |
