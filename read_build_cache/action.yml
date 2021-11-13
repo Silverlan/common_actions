@@ -27,5 +27,5 @@ runs:
           ${{ inputs.cache_dir }}/**/*.hpp
         key: ${{ inputs.cache_id }}-cv1-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
         restore-keys: |
-          ${{ inputs.cache_id }}-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
-          ${{ inputs.cache_id }}-
+          ${{ inputs.cache_id }}-cv1-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
+          ${{ inputs.cache_id }}-cv1-
