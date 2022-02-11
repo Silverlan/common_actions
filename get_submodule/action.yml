@@ -49,6 +49,10 @@ inputs:
     description: 'Checkout submodules?'
     required: true
     default: '1'
+  commit_id:
+    description: 'Commit to check out'
+    required: false
+    default: ''
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
@@ -94,6 +98,10 @@ runs:
           echo "Git checkout..."
           git checkout ${{ inputs.repo_branch }}
           echo "Done!"
+          
+          if [[ "${{ inputs.commit_id }}" != "" ]]; then
+            git reset --hard "${{ inputs.commit_id }}"
+          fi
           
           if [[ "${{ inputs.checkout_submodules }}" == "1" ]]; then
             echo "Git submodule..."
