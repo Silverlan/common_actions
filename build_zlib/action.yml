@@ -16,6 +16,17 @@ runs:
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
       
+    - name: Set zlib library name
+      id: zlib-lib
+      shell: bash
+      run: |
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          zlibLibName=libz
+        else
+          zlibLibName=zlib
+        fi
+        echo "::set-output name=lib-name::$zlibLibName"
+      
     - name: Build submodule - zlib
       uses: Silverlan/common_actions/build_submodule@main
       with:
@@ -23,7 +34,7 @@ runs:
         repo_name: 'zlib'
         repo_branch: 'master'
         build_target: zlib
-        lib_name: ${{ matrix.config.build_type }}/zlib
+        lib_name: ${{ matrix.config.build_type }}/${{ steps.zlib-lib.outputs.lib-name }}
         cmake_var: 'ZLIB_INCLUDE_DIR'
         cmake_var_alias: 'DEPENDENCY_ZLIB_INCLUDE'
         cmake_var_lib: 'ZLIB_LIBRARY'
