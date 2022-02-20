@@ -24,11 +24,11 @@ runs:
         repo_name: 'GeometricTools'
         build_target_windows: '${{ env.GA_ROOT_DIR }}/third_party_libs/GeometricTools/${{ steps.setup-gt.outputs.gt_build_target }}'
         build_target_linux: 'Mathematics'
-        lib_name: 'third_party_libs/GeometricTools/GTE/GTMathematics.v14'
+        lib_name: 'third_party_libs/GeometricTools/GTE/GTMathematics.v17'
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
         top_level_dir: 'third_party_libs'
         cmake_script_location: 'third_party_libs/GeometricTools/GTE'
         build_type: 'Release'
         include_dir: 'GTE'
-        commit_id: '0cbd458d45d3b2766c17746dd018185e7321696e'
+        # commit_id: '0cbd458d45d3b2766c17746dd018185e7321696e'
       
