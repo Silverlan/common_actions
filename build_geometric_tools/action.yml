@@ -14,7 +14,7 @@ runs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           echo "::set-output name=gt_build_target::Mathematics"
         else
-          echo "::set-output name=gt_build_target::GTE/GTMathematics.v14"
+          echo "::set-output name=gt_build_target::GTE/GTMathematics.v17"
         fi
         
     - name: Build GeometricTools
