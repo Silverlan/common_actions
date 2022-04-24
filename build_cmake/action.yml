@@ -191,12 +191,11 @@ runs:
         echo "::set-output name=build-target::$build_target"
         
     - name: Get cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3.0.2
       id: get-cache
       with:
-        path: | 
-          "${{ steps.init-vars.outputs.library-file-path }}"
-          "${{ steps.init-vars.outputs.binary-file-path }}"
+        path: |
+          ${{ inputs.build_dir }}/**
         key: ${{ steps.init-vars.outputs.cache-id }}
         
     - shell: bash
@@ -304,9 +303,8 @@ runs:
           uses: actions/cache@v2
           id: write-cache
           with:
-            path: | 
-              "${{ steps.init-vars.outputs.library-file-path }}"
-              "${{ steps.init-vars.outputs.binary-file-path }}"
+            path: |
+              ${{ inputs.build_dir }}/**
             key: ${{ steps.init-vars.outputs.cache-id }}
 
     - name: Define CMake Variable
