@@ -80,13 +80,17 @@ inputs:
     description: 'Is this a static library?'
     required: true
     default: '0'
+  cache_id:
+    description: 'Cache id to identify this module'
+    required: true
+    default: ''
 outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'
-    value: ${{ steps.build.outputs.library-file-path }}
+    value: ${{ steps.init-vars.outputs.library-file-path }}
   binary_file_path:
     description: 'The path (including filename and extension) of the generated binary'
-    value: ${{ steps.build.outputs.binary-file-path }}
+    value: ${{ steps.init-vars.outputs.binary-file-path }}
 runs:
   using: "composite"
   steps: 
@@ -97,13 +101,10 @@ runs:
     - name: Get CMake Vars
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@main
-  
-    - name: Build
-      id: build
+      
+    - name: Initialize variables
+      id: init-vars
       shell: bash
-      env:
-        CC:   gcc-11
-        CXX:  g++-11
       run: |
         if [[ "${{ inputs.root_dir }}" != "" ]]; then
           root_dir=${{ inputs.root_dir }}
@@ -165,8 +166,66 @@ runs:
         binFilePath="${binFilePath//.\//}"
         binFilePath="${binFilePath//\/\//\/}"
         
+        globalCacheVersion=3
+        cacheId="${{ inputs.cache_id }}-${{ inputs.build_type }}-${{ inputs.static_library }}-v$globalCacheVersion"
+        
+        echo "Set variables:"
+        echo "  root_dir: $root_dir"
+        echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
+        echo "  cmakeScriptLocation: $cmakeScriptLocation"
+        echo "  libName: $libName"
+        echo "  libNameWithExt: $libNameWithExt"
+        echo "  libPath: $libPath"
+        echo "  libFilePath: $libFilePath"
+        echo "  build_dir: ${{ inputs.build_dir }}"
+        echo "  build_type: ${{ inputs.build_type }}"
+        echo "  build_target: $build_target"
+        echo "  input lib_name: $baseLibName"
+        echo "  cacheId: $cacheId"
+        
+        echo "::set-output name=root-dir::$root_dir"
         echo "::set-output name=library-file-path::$libFilePath"
         echo "::set-output name=binary-file-path::$binFilePath"
+        echo "::set-output name=cmake-script-location::$cmakeScriptLocation"
+        echo "::set-output name=cache-id::$cacheId"
+        echo "::set-output name=build-target::$build_target"
+        
+    - name: Get cache
+      uses: actions/cache@v3.0.2
+      id: get-cache
+      with:
+        path: |
+          ${{ inputs.build_dir }}/**
+        key: ${{ steps.init-vars.outputs.cache-id }}
+        
+    - shell: bash
+      run: |
+        echo "after get-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
+        echo "ALL FILES:"
+        ls -R
+        echo "-- ALL FILES --"
+  
+    - name: Build
+      id: build
+      shell: bash
+      env:
+        CC:   gcc-11
+        CXX:  g++-11
+      run: |
+        root_dir="${{ steps.init-vars.outputs.root-dir }}"
+        libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
+        cmakeScriptLocation="${{ steps.init-vars.outputs.cmake-script-location }}"
+        build_target="${{ steps.init-vars.outputs.build-target }}"
         
         if [ -f "$libFilePath" ]; then
           echo "Library $libFilePath already exists! Skipping build..."
@@ -177,18 +236,6 @@ runs:
           cd $root_dir/${{ inputs.build_dir }}
           
           echo "Current directory: $PWD"
-          echo "Set variables:"
-          echo "  root_dir: $root_dir"
-          echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
-          echo "  cmakeScriptLocation: $cmakeScriptLocation"
-          echo "  libName: $libName"
-          echo "  libNameWithExt: $libNameWithExt"
-          echo "  libPath: $libPath"
-          echo "  libFilePath: $libFilePath"
-          echo "  build_dir: ${{ inputs.build_dir }}"
-          echo "  build_type: ${{ inputs.build_type }}"
-          echo "  build_target: $build_target"
-          echo "  input lib_name: $baseLibName"
           if [[ "${{ inputs.configure }}" == "1" ]]; then
             if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
               cms=$cmakeScriptLocation
@@ -210,6 +257,8 @@ runs:
             echo "CMake build..."
             cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
             echo "Done!"
+            
+            echo "::set-output name=has-built::1"
           fi
           
           # We may have to copy the binary file on Linux systems
@@ -233,6 +282,33 @@ runs:
         fi
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
         echo "Done!"
+        
+    - shell: bash
+      run: |
+        echo "before write-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
+        
+    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+      name: Update cache
+      with:
+        if: "${{steps.build.outputs.has-built=='1'}}"
+        step: |
+          name: Write cache
+          uses: actions/cache@v2
+          id: write-cache
+          with:
+            path: |
+              ${{ inputs.build_dir }}/**
+            key: ${{ steps.init-vars.outputs.cache-id }}
 
     - name: Define CMake Variable
       uses: Silverlan/common_actions/define_cmake_var@main

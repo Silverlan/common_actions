@@ -1,0 +1,28 @@
+name: Build boost
+description: 'Attempts to load boost from cache, otherwise rebuilds it.'
+runs:
+  using: "composite"
+  steps:
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@main
+      
+    - name: Build zlib
+      uses: Silverlan/common_actions/build_zlib@main
+      
+    - name: Initialize Env
+      id: cache
+      uses: Silverlan/common_actions/cache@main
+      with:
+        path: | 
+          "./third_party_libs/boost/boost/*"
+          "./third_party_libs/boost/boost/**/*"
+          "./third_party_libs/boost/stage/*${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          "./third_party_libs/boost/stage/*${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
+          "./third_party_libs/boost/stage/**/*${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          "./third_party_libs/boost/stage/**/*${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
+        key: boost-cache-1-76
+        cache_version: '3'
+        step: |
+          name: Rebuild boost
+          uses: Silverlan/pragma/github_actions/build_boost@actions

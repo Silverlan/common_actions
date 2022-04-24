@@ -1,0 +1,29 @@
+name: Write build cache
+description: 'Write build cache'
+inputs:
+  cache_dir:
+    description: 'Root path which contains the files that should be cached'
+    required: true
+  cache_id:
+    description: 'The id of the cache'
+    required: true
+outputs:
+  cache-hit:
+    description: ''
+    value: ${{steps.store-in-cache.outputs.cache-hit}}
+runs:
+  using: "composite"
+  steps:
+    - name: Store in cache
+      id: store-in-cache
+      uses: actions/cache@v2.1.6
+      with:
+        path: |
+          ${{ inputs.cache_dir }}/**/*.dll
+          ${{ inputs.cache_dir }}/**/*.lib
+          ${{ inputs.cache_dir }}/**/*.so
+          ${{ inputs.cache_dir }}/**/*.a
+          ${{ inputs.cache_dir }}/**/*.h
+          ${{ inputs.cache_dir }}/**/*.hpp
+        key: ${{ inputs.cache_id }}-cv1-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
+        
