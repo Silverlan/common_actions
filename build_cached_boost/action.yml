@@ -12,7 +12,7 @@ runs:
       
     - name: Initialize Env
       id: cache
-      uses: Silverlan/common_actions/cache@actions
+      uses: Silverlan/common_actions/cache@main
       with:
         path: | 
           "./third_party_libs/boost/boost/*"
