@@ -211,9 +211,6 @@ runs:
         else
           echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
         fi
-        echo "ALL FILES:"
-        ls -R
-        echo "-- ALL FILES --"
   
     - name: Build
       id: build
