@@ -10,19 +10,31 @@ runs:
     - name: Build zlib
       uses: Silverlan/common_actions/build_zlib@main
       
-    - name: Initialize Env
-      id: cache
-      uses: Silverlan/common_actions/cache@main
+    - name: Get boost cache
+      uses: actions/cache@v3.0.2
+      id: get-boost-cache
       with:
-        path: | 
-          "./third_party_libs/boost/boost/*"
-          "./third_party_libs/boost/boost/**/*"
-          "./third_party_libs/boost/stage/*${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
-          "./third_party_libs/boost/stage/*${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
-          "./third_party_libs/boost/stage/**/*${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
-          "./third_party_libs/boost/stage/**/*${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
-        key: boost-cache-1-76
-        cache_version: '3'
+        path: |
+          ./third_party_libs/boost/boost/**
+        key: boost-cache-1-79
+        
+    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+      name: Build boost
+      with:
+        if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
         step: |
-          name: Rebuild boost
-          uses: Silverlan/pragma/github_actions/build_boost@actions
+          uses: Silverlan/common_actions/build_boost@main
+          
+    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+      name: Cache boost
+      with:
+        if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
+        step: |
+          name: Write cache
+          uses: actions/cache@v3.0.2
+          id: write-cache
+          with:
+            path: |
+              ./third_party_libs/boost/boost/**
+            key: boost-cache-1-79
+      
