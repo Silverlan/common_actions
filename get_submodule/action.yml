@@ -15,6 +15,10 @@ inputs:
     description: 'Clone directory'
     required: true
     default: 'external_libs'
+  clone_dir:
+    description: 'Clone sub-directory'
+    required: true
+    default: ''
   should_build:
     description: 'Should build?'
     required: true
@@ -81,8 +85,14 @@ runs:
         fi
         cd $root_dir
         
+        if [[ "${{ inputs.clone_dir }}" != "" ]]; then
+          clone_dir=${{ inputs.clone_dir }}
+        else
+          clone_dir=${{ inputs.repo_name }}
+        fi
+        
         # Only get submodule if directly doesn't exist or is empty
-        if [[ ! -d "${{ inputs.dir }}/${{ inputs.repo_name }}" || -z "$(ls -A ${{ inputs.dir }}/${{ inputs.repo_name }})" ]]; then
+        if [[ ! -d "${{ inputs.dir }}/$clone_dir" || -z "$(ls -A ${{ inputs.dir }}/$clone_dir)" ]]; then
           mkdir -p ${{ inputs.dir }}
           cd ${{ inputs.dir }}
           
@@ -91,10 +101,10 @@ runs:
           case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
           
           echo "Git clone..."
-          git clone $repo --single-branch --branch ${{ inputs.repo_branch }} ${{ inputs.repo_name }}
+          git clone $repo --single-branch --branch ${{ inputs.repo_branch }} $clone_dir
           echo "Done!"
           
-          cd ${{ inputs.repo_name }}
+          cd $clone_dir
           echo "Git checkout..."
           git checkout ${{ inputs.repo_branch }}
           echo "Done!"
@@ -114,7 +124,7 @@ runs:
         echo "::set-output name=commit-id::$commitId"
         
         echo "Updating outputs and definitions..."
-        fullIncludePath="${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/${{ inputs.repo_name }}/${{ inputs.include_dir }}"
+        fullIncludePath="${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/$clone_dir/${{ inputs.include_dir }}"
         
         nfullIncludePath="$fullIncludePath"
         # Replace "./" with ""
