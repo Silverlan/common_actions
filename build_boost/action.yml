@@ -1,5 +1,5 @@
 name: Rebuild boost
-description: 'Download and build boost 1.76.0'
+description: 'Download and build boost 1.79.0'
 runs:
   using: "composite"
   steps:
@@ -13,14 +13,14 @@ runs:
     - name: Download boost
       uses: Silverlan/common_actions/curl_download@main
       with:
-        download_url: 'https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.zip'
-        file_name: 'boost_1_76_0.zip'
+        download_url: 'https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.zip'
+        file_name: 'boost_1_79_0.zip'
 
     - name: Build boost
       id: build-boost
       shell: pwsh
       run: |
-        mv "./third_party_libs/boost_1_76_0" "./third_party_libs/boost" 
+        mv "./third_party_libs/boost_1_79_0" "./third_party_libs/boost" 
         cd "./third_party_libs/boost"
         echo "Running boost bootstrap..."
         .\bootstrap.bat
