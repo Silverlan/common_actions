@@ -10,33 +10,34 @@ runs:
     - name: Build zlib
       uses: Silverlan/common_actions/build_zlib@main
       
-    - name: Get boost cache
-      uses: actions/cache@v3.0.2
-      id: get-boost-cache
-      with:
-        path: |
-          ./third_party_libs/boost/boost/**
-        key: boost-cache-1-79
+    - name: Build boost
+      uses: Silverlan/common_actions/build_boost@main
+      
+    #- name: Get boost cache
+    #  uses: actions/cache@v3.0.2
+    #  id: get-boost-cache
+    #  with:
+    #    path: |
+    #      ./third_party_libs/boost/boost/**
+    #    key: boost-cache-1-79
         
-    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
-      name: Build boost
-      with:
-        # if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}} # Does not appear to work properly?
-        if: true
-        step: |
-          uses: Silverlan/common_actions/build_boost@main
+    #- uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+    #  name: Build boost
+    #  with:
+    #    if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
+    #    step: |
+    #      uses: Silverlan/common_actions/build_boost@main
           
-    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
-      name: Cache boost
-      with:
-        # if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}} # Does not appear to work properly?
-        if: true
-        step: |
-          name: Write cache
-          uses: actions/cache@v3.0.2
-          id: write-cache
-          with:
-            path: |
-              ./third_party_libs/boost/boost/**
-            key: boost-cache-1-79
+    #- uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+    #  name: Cache boost
+    #  with:
+    #    if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
+    #    step: |
+    #      name: Write cache
+    #      uses: actions/cache@v3.0.2
+    #      id: write-cache
+    #      with:
+    #        path: |
+    #          ./third_party_libs/boost/boost/**
+    #        key: boost-cache-1-79
       
