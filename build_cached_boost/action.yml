@@ -21,7 +21,8 @@ runs:
     - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
       name: Build boost
       with:
-        if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
+        # if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}} # Does not appear to work properly?
+        if: true
         step: |
           uses: Silverlan/common_actions/build_boost@main
           
