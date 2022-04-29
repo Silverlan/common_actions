@@ -28,7 +28,8 @@ runs:
     - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
       name: Cache boost
       with:
-        if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}}
+        # if: ${{steps.get-boost-cache.outputs.cache-hit == '0'}} # Does not appear to work properly?
+        if: true
         step: |
           name: Write cache
           uses: actions/cache@v3.0.2
