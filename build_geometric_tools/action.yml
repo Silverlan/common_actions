@@ -30,5 +30,6 @@ runs:
         cmake_script_location: 'third_party_libs/GeometricTools/GTE'
         build_type: 'Release'
         include_dir: 'GTE'
+        commit_id: 'aa09f9ca5200703557b37d01f7d8018f80035bd9'
         # commit_id: '0cbd458d45d3b2766c17746dd018185e7321696e'
       
