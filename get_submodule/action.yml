@@ -95,14 +95,14 @@ runs:
           clone_dir=${{ inputs.repo_name }}
         fi
         
+        repo=${{ inputs.repo }}
+        # Add "https://github.com/" prefix if repo doesn't start with "http"
+        case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
+        
         # Only get submodule if directly doesn't exist or is empty
         if [[ ! -d "${{ inputs.dir }}/$clone_dir" || -z "$(ls -A ${{ inputs.dir }}/$clone_dir)" ]]; then
           mkdir -p ${{ inputs.dir }}
           cd ${{ inputs.dir }}
-          
-          repo=${{ inputs.repo }}
-          # Add "https://github.com/" prefix if repo doesn't start with "http"
-          case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
           
           echo "Git clone..."
           git clone $repo --single-branch --branch ${{ inputs.repo_branch }} $clone_dir
