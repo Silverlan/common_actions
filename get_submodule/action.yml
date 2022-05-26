@@ -57,6 +57,10 @@ inputs:
     description: 'Commit to check out'
     required: false
     default: ''
+  force:
+    description: 'Force checkout even if directory exists and is non-empty'
+    required: false
+    default: '0'
 outputs:
   cmake_definitions:
     description: "CMake definitions output"
@@ -118,6 +122,16 @@ runs:
             git submodule update --init --recursive
             echo "Done!"
           fi
+        elif [[ "${{ inputs.force }}" == "1" ]]; then
+          cd ${{ inputs.dir }}
+          # See https://stackoverflow.com/a/18999726/2482983
+          git init
+          git remote add origin $repo
+          git fetch
+          git reset origin/${{ inputs.repo_branch }}
+          git branch --set-upstream-to=origin/${{ inputs.repo_branch }}
+          git ls-files -z --deleted | xargs -0 git checkout --
+          # TODO: Commit id, recursive, etc.
         fi
 
         commitId=$(git rev-parse --short=10 HEAD);
