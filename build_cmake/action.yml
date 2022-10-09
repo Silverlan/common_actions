@@ -215,9 +215,6 @@ runs:
     - name: Build
       id: build
       shell: bash
-      env:
-        CC:   gcc-11
-        CXX:  g++-11
       run: |
         root_dir="${{ steps.init-vars.outputs.root-dir }}"
         libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
