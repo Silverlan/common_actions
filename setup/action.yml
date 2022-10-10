@@ -7,13 +7,13 @@ runs:
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
       
-    - name: Install GCC-11
+    - name: Install GCC-12
       shell: bash
       id: determine-build-type
       run: |
         echo "Runner OS: $RUNNER_OS"
         if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "Installing g++-11..."
+          echo "Installing g++-12..."
           sudo apt update
-          sudo apt install gcc-11 g++-11
+          sudo apt install gcc-12 g++-12
         fi
