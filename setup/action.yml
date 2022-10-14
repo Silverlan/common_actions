@@ -1,5 +1,10 @@
 name: 'Setup'
 description: 'Basic setup'
+inputs:
+  gcc_version:
+    description: 'GCC Version'
+    required: true
+    default: '12'
 runs:
   using: "composite"
   steps: 
@@ -7,13 +12,13 @@ runs:
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
       
-    - name: Install GCC-12
+    - name: Install GCC
       shell: bash
       id: determine-build-type
       run: |
         echo "Runner OS: $RUNNER_OS"
         if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "Installing g++-12..."
+          echo "Installing g++-${{ inputs.gcc_version }}..."
           sudo apt update
-          sudo apt install gcc-12 g++-12
+          sudo apt install gcc-${{ inputs.gcc_version }} g++-${{ inputs.gcc_version }}
         fi
