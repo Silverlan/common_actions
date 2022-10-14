@@ -1,10 +1,14 @@
 name: 'Setup'
 description: 'Basic setup'
 inputs:
-  gcc_version:
-    description: 'GCC Version'
+  cc_version:
+    description: 'CC Version'
     required: true
-    default: '12'
+    default: 'gcc-12'
+  cxx_version:
+    description: 'CXX Version'
+    required: true
+    default: 'g++-12'
 runs:
   using: "composite"
   steps: 
@@ -18,7 +22,7 @@ runs:
       run: |
         echo "Runner OS: $RUNNER_OS"
         if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "Installing g++-${{ inputs.gcc_version }}..."
+          echo "Installing ${{ inputs.cxx_version }}..."
           sudo apt update
-          sudo apt install gcc-${{ inputs.gcc_version }} g++-${{ inputs.gcc_version }}
+          sudo apt install ${{ inputs.cc_version }} ${{ inputs.cxx_version }}
         fi
