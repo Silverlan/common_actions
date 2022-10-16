@@ -11,6 +11,7 @@ runs:
       shell: bash
       id: generate-archive
       run: |
+        cd release
         if [ "$RUNNER_OS" == "Linux" ]; then
           archiveName=binaries_linux64.tar.gz
           tar -czvf $archiveName *
