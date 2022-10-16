@@ -4,6 +4,11 @@ inputs:
   token:
     description: 'GitHub Token'
     required: true
+commit:
+  token:
+    description: 'Commit Hash'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -26,6 +31,8 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "${{ steps.generate-archive.outputs.archive-name }}"
+        body: "Automatically generated binaries."
+        commit: ${{ inputs.commit }}
         token: ${{ inputs.token }}
         tag: nightly
         replacesArtifacts: true
