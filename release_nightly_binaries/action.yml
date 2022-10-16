@@ -1,0 +1,31 @@
+name: Release Nightly Binaries
+description: 'Release nightly binaries'
+inputs:
+  token:
+    description: 'GitHub Token'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Generate Release Archive
+      shell: bash
+      id: generate-archive
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          archiveName=binaries_linux64.tar.gz
+          tar -czvf $archiveName *
+        else
+          archiveName=binaries_windows64.zip
+          tar -cvf $archiveName *
+        fi
+        mv $archiveName ../$archiveName
+        echo "::set-output name=archive-name::$archiveName"
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ steps.generate-archive.outputs.archive-name }}"
+        token: ${{ inputs.token }}
+        tag: nightly
+        replacesArtifacts: true
+        allowUpdates: true
