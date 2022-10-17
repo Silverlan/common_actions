@@ -41,6 +41,6 @@ runs:
         body: "Automatically generated binaries."
         commit: ${{ inputs.commit }}
         token: ${{ inputs.token }}
-        tag: nightly
+        tag: latest
         replacesArtifacts: true
         allowUpdates: true
