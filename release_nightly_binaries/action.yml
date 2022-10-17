@@ -31,7 +31,7 @@ runs:
       uses: rickstaa/action-create-tag@v1
       if: runner.os == 'Linux'
       with:
-        tag: "nightly"
+        tag: "latest"
         force_push_tag: true
 
     - name: Release
