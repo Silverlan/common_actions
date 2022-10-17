@@ -4,8 +4,7 @@ inputs:
   token:
     description: 'GitHub Token'
     required: true
-commit:
-  token:
+  commit:
     description: 'Commit Hash'
     required: true
     default: ''
