@@ -1,0 +1,39 @@
+name: 'Setup Pragma Module'
+description: 'Setup Pragma Module'
+inputs:
+  pragma_location:
+    description: 'Pragma Root Location'
+    required: true
+    default: './'
+  cc_version:
+    description: 'CC Version'
+    required: true
+    default: 'gcc-12'
+  cxx_version:
+    description: 'CXX Version'
+    required: true
+    default: 'g++-12'
+outputs:
+  cmake_defs:
+    description: "CMake Definitions"
+    value: ${{ steps.defs.outputs.cmake_definitions }}
+runs:
+  using: "composite"
+  steps: 
+    - name: Get Pragma CMake Definitions
+      id: pragma-cmake-defs
+      uses: Silverlan/common_actions/get_pragma_cmake_defs@main
+      with:
+        pragma_location: ${{ inputs.pragma_location }}
+        
+    - name: Setup
+      id: setup
+      uses: Silverlan/common_actions/setup@main
+      with:
+        cc_version: ${{ inputs.cc_version }}
+        cxx_version: ${{ inputs.cc_version }}
+        
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@main
+      
