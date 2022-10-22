@@ -1,10 +1,6 @@
 name: 'Setup Pragma Module'
 description: 'Setup Pragma Module'
 inputs:
-  pragma_location:
-    description: 'Pragma Root Location'
-    required: true
-    default: './'
   cc_version:
     description: 'CC Version'
     required: true
@@ -20,11 +16,16 @@ outputs:
 runs:
   using: "composite"
   steps: 
+    - name: Download dependencies
+      shell: bash
+      run: |
+        git clone --recursive https://github.com/Silverlan/pragma.git pragma
+  
     - name: Get Pragma CMake Definitions
       id: pragma-cmake-defs
       uses: Silverlan/common_actions/get_pragma_cmake_defs@main
       with:
-        pragma_location: ${{ inputs.pragma_location }}
+        pragma_location: './pragma'
         
     - name: Setup
       id: setup
