@@ -26,3 +26,6 @@ runs:
           sudo apt update
           sudo apt install ${{ inputs.cc_version }} ${{ inputs.cxx_version }}
         fi
+        
+    - name: Install Clang
+      uses: Silverlan/common_actions/setup_clang@main
