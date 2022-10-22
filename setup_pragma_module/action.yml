@@ -39,5 +39,6 @@ runs:
       
     - name: Output Definitions
       id: defs
+      shell: bash
       run: echo "cmake_definitions=${{ steps.pragma-cmake-defs.outputs.cmake_defs }}" >> $GITHUB_OUTPUT
       
