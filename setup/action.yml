@@ -28,4 +28,5 @@ runs:
         fi
         
     - name: Install Clang
+      if: runner.os == 'Linux'
       uses: Silverlan/common_actions/setup_clang@main
