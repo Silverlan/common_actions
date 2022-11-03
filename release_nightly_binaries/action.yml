@@ -27,7 +27,7 @@ runs:
         echo "::set-output name=archive-name::$archiveName"
         
     - name: Update Nightly Tag
-      uses: rickstaa/action-create-tag@v1
+      uses: rickstaa/action-create-tag@v1.3.9
       if: runner.os == 'Linux'
       with:
         tag: "latest"
