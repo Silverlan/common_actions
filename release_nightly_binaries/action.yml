@@ -8,6 +8,10 @@ inputs:
     description: 'Commit Hash'
     required: true
     default: ''
+  update_tag:
+    description: 'Update Tag?'
+    required: true
+    default: '1'
 runs:
   using: "composite"
   steps:
@@ -28,7 +32,7 @@ runs:
         
     - name: Update Nightly Tag
       uses: rickstaa/action-create-tag@v1.3.9
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && ${{ inputs.update_tag }} == '1'
       with:
         tag: "latest"
         force_push_tag: true
