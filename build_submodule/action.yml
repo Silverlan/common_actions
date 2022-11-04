@@ -138,8 +138,7 @@ runs:
     - name: Env
       shell: bash
       id: determine-build-type
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run: |
         if [[ "${{ inputs.build_type }}" != "" ]]; then
           echo "::set-output name=build_type::$(echo ${{ inputs.build_type }})"

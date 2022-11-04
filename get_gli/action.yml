@@ -33,8 +33,7 @@ runs:
         
     - shell: bash
       id: set-cmake-var
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run: |
         newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/gli"
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)

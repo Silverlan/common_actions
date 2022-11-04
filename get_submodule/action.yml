@@ -87,8 +87,7 @@ runs:
     - name: Clone
       shell: bash
       id: clone
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run: |
         if [[ "${{ inputs.root_dir }}" != "" ]]; then
           root_dir=${{ inputs.root_dir }}

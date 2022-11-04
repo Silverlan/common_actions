@@ -17,8 +17,7 @@ runs:
     - name: Setup GeometricTools
       id: setup-gt
       shell: bash
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run:   |
         if [ "$RUNNER_OS" == "Linux" ]; then
           echo "::set-output name=gt_build_target::Mathematics"

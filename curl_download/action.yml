@@ -20,8 +20,7 @@ runs:
   steps: 
     - name: Curl Download
       shell: bash
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run: |
         mkdir -p ${{ inputs.download_dir }}
         cd ${{ inputs.download_dir }}

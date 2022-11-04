@@ -10,8 +10,7 @@ runs:
   steps: 
     - name: Install Prerequisites
       shell: bash
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run:   |
         sudo add-apt-repository ppa:savoury1/llvm-defaults-14
         sudo apt update
@@ -21,8 +20,7 @@ runs:
         
     - name: Set Environment Variables
       shell: bash
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run:   |
         echo "CC=/usr/bin/clang-14" >> $GITHUB_ENV
         echo "CXX=/usr/bin/clang++-14" >> $GITHUB_ENV

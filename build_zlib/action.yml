@@ -25,8 +25,7 @@ runs:
     - name: Set zlib library name
       id: zlib-lib
       shell: bash
-      with:
-        working-directory: ${{inputs.working-directory}}
+      working-directory: ${{inputs.working-directory}}
       run: |
         if [[ "$RUNNER_OS" == "Linux" ]]; then
           zlibLibName=libz
