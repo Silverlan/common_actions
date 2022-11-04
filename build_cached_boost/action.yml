@@ -1,17 +1,28 @@
 name: Build boost
 description: 'Attempts to load boost from cache, otherwise rebuilds it.'
+inputs:
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps:
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Build zlib
       uses: Silverlan/common_actions/build_zlib@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Build boost
       uses: Silverlan/common_actions/build_boost@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     #- name: Get boost cache
     #  uses: actions/cache@v3.0.2

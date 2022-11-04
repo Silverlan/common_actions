@@ -5,25 +5,36 @@ inputs:
     description: 'Build as shared library?'
     required: true
     default: '1'
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps: 
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Download GLM
       uses: Silverlan/common_actions/get_glm@main
       with:
         cmake_var: 'DEPENDENCY_GLM_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
+        working-directory: ${{inputs.working-directory}}
         
     - name: Build GeometricTools
       uses: Silverlan/common_actions/build_geometric_tools@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Initialize CMake definitions
       id: init-cmake-defs
       shell: bash
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         tmpCmakeVars=''
         buildAsStatic='0'
@@ -41,10 +52,13 @@ runs:
         repo_name: 'mathutil'
         dir: 'external_libs'
         cmake_var: 'DEPENDENCY_MATHUTIL_INCLUDE'
+        working-directory: ${{inputs.working-directory}}
 
     - name: Install libltdl 
       shell: bash
       if: runner.os == 'Linux'
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         sudo apt-get install help2man
 
@@ -55,6 +69,7 @@ runs:
         repo_name: 'sharedutils'
         dir: 'external_libs'
         cmake_var: 'DEPENDENCY_SHAREDUTILS_INCLUDE'
+        working-directory: ${{inputs.working-directory}}
         
     # Build
     - name: Build sharedutils-static
@@ -69,6 +84,7 @@ runs:
         cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY_STATIC'
         cmake_definitions: ${{ env.cmake_definitions }}
         static_library: '1'
+        working-directory: ${{inputs.working-directory}}
         
     - name: Build mathutil
       uses: Silverlan/common_actions/build_cmake@main
@@ -81,6 +97,7 @@ runs:
         cmake_var: 'DEPENDENCY_MATHUTIL_LIBRARY'
         cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
         static_library: '${{ steps.init-cmake-defs.outputs.build-as-static }}'
+        working-directory: ${{inputs.working-directory}}
         
     - name: Build sharedutils
       uses: Silverlan/common_actions/build_cmake@main
@@ -93,6 +110,7 @@ runs:
         cmake_var: 'DEPENDENCY_SHAREDUTILS_LIBRARY'
         cmake_definitions_tmp: "${{ steps.init-cmake-defs.outputs.tmp-cmake-vars }}"
         static_library: '${{ steps.init-cmake-defs.outputs.build-as-static }}'
+        working-directory: ${{inputs.working-directory}}
 
     - name: Download bzip2
       uses: Silverlan/common_actions/get_submodule@main
@@ -104,6 +122,7 @@ runs:
         cmake_var: 'DEPENDENCY_BZIP2_INCLUDE'
         cmake_definitions: ${{ env.cmake_definitions }}
         include_dir: '.'
+        working-directory: ${{inputs.working-directory}}
 
     - name: Build vfilesystem
       uses: Silverlan/common_actions/build_submodule@main
@@ -116,3 +135,4 @@ runs:
         static_library: '${{ steps.init-cmake-defs.outputs.build-as-static }}'
         cmake_var: 'DEPENDENCY_VFILESYSTEM_INCLUDE'
         cmake_var_lib: 'DEPENDENCY_VFILESYSTEM_LIBRARY'
+        working-directory: ${{inputs.working-directory}}

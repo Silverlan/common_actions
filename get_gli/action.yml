@@ -9,12 +9,18 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps: 
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Get submodule - GLI
       uses: Silverlan/common_actions/get_submodule@main
@@ -23,9 +29,12 @@ runs:
         repo_name: 'gli'
         cmake_var: 'DEPENDENCY_GLI_INCLUDE'
         dir: 'third_party_libs'
+        working-directory: ${{inputs.working-directory}}
         
     - shell: bash
       id: set-cmake-var
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/gli"
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)

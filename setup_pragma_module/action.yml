@@ -9,6 +9,10 @@ inputs:
     description: 'CXX Version'
     required: true
     default: 'g++-12'
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 outputs:
   cmake_defs:
     description: "CMake Definitions"
@@ -18,6 +22,8 @@ runs:
   steps: 
     - name: Download dependencies
       shell: bash
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         git clone --recursive https://github.com/Silverlan/pragma.git pragma
   

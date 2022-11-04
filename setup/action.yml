@@ -9,16 +9,24 @@ inputs:
     description: 'CXX Version'
     required: true
     default: 'g++-12'
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps: 
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Install GCC
       shell: bash
       id: determine-build-type
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         echo "Runner OS: $RUNNER_OS"
         if [ "$RUNNER_OS" == "Linux" ]; then
@@ -30,3 +38,5 @@ runs:
     - name: Install Clang
       if: runner.os == 'Linux'
       uses: Silverlan/common_actions/setup_clang@main
+      with:
+        working-directory: ${{inputs.working-directory}}

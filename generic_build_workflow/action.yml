@@ -4,6 +4,10 @@ inputs:
   build_action:
     description: 'Build action'
     required: true
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps: 
@@ -14,17 +18,24 @@ runs:
     - name: Setup
       id: setup
       uses: Silverlan/common_actions/setup@main
+      with:
+        working-directory: ${{inputs.working-directory}}
 
     - name: Download binaries
       uses: Silverlan/common_actions/download_build_binaries@main
       continue-on-error: true
+      with:
+        working-directory: ${{inputs.working-directory}}
 
     - name: Build
       id: build
       uses: ${{ inputs.build_action }}
       with:
         root_dir: "${{ env.GA_ROOT_DIR }}"
+        working-directory: ${{inputs.working-directory}}
 
     - name: Upload binaries
       uses: Silverlan/common_actions/upload_build_binaries@main
+      with:
+        working-directory: ${{inputs.working-directory}}
        

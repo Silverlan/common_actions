@@ -9,15 +9,23 @@ inputs:
     description: 'Name of the CMake variable to set to the include path'
     required: true
     default: ''
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 runs:
   using: "composite"
   steps: 
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - shell: bash
       id: check-exists
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         fileName="./third_party_libs/glm-0.9.9.8.zip"
         if [ -f "$fileName" ]; then
@@ -33,9 +41,12 @@ runs:
       with:
         download_url: 'https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip'
         file_name: 'glm-0.9.9.8.zip'
+        working-directory: ${{inputs.working-directory}}
         
     - shell: bash
       id: set-cmake-var
+      with:
+        working-directory: ${{inputs.working-directory}}
       run: |
         newCmakeDef=" -D${{ inputs.cmake_var }}=${{ env.GA_ROOT_DIR }}/third_party_libs/glm"
         echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)

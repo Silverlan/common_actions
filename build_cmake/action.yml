@@ -84,6 +84,10 @@ inputs:
     description: 'Cache id to identify this module'
     required: true
     default: ''
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
 outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'
@@ -97,14 +101,19 @@ runs:
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Get CMake Vars
       id: cmake_vars
       uses: Silverlan/common_actions/get_cmake_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
       
     - name: Initialize variables
       id: init-vars
       shell: bash
+      working-directory: ${{inputs.working-directory}}
       run: |
         if [[ "${{ inputs.root_dir }}" != "" ]]; then
           root_dir=${{ inputs.root_dir }}
@@ -199,6 +208,7 @@ runs:
         key: ${{ steps.init-vars.outputs.cache-id }}
         
     - shell: bash
+      working-directory: ${{inputs.working-directory}}
       run: |
         echo "after get-cache"
         if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
@@ -215,6 +225,7 @@ runs:
     - name: Build
       id: build
       shell: bash
+      working-directory: ${{inputs.working-directory}}
       run: |
         root_dir="${{ steps.init-vars.outputs.root-dir }}"
         libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
@@ -278,6 +289,7 @@ runs:
         echo "Done!"
         
     - shell: bash
+      working-directory: ${{inputs.working-directory}}
       run: |
         echo "before write-cache"
         if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
