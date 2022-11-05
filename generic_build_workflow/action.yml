@@ -31,7 +31,6 @@ runs:
       id: build
       uses: ${{ inputs.build_action }}
       with:
-        root_dir: "${{ env.GA_ROOT_DIR }}"
         working-directory: ${{inputs.working-directory}}
 
     - name: Upload binaries

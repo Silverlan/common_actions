@@ -45,10 +45,6 @@ inputs:
     description: 'Alias CMake variable name'
     required: true
     default: ''
-  root_dir:
-    description: 'Root directory'
-    required: true
-    default: ''
   checkout_submodules:
     description: 'Checkout submodules?'
     required: true
@@ -89,13 +85,7 @@ runs:
       id: clone
       working-directory: ${{inputs.working-directory}}
       run: |
-        if [[ "${{ inputs.root_dir }}" != "" ]]; then
-          root_dir=${{ inputs.root_dir }}
-        else
-          root_dir=${{ env.GA_ROOT_DIR }}
-        fi
-        cd $root_dir
-        
+        rootDir=$PWD
         if [[ "${{ inputs.clone_dir }}" != "" ]]; then
           clone_dir=${{ inputs.clone_dir }}
         else
@@ -145,7 +135,7 @@ runs:
         echo "::set-output name=commit-id::$commitId"
         
         echo "Updating outputs and definitions..."
-        fullIncludePath="${{ env.GA_ROOT_DIR }}/${{ inputs.dir }}/$clone_dir/${{ inputs.include_dir }}"
+        fullIncludePath="$rootDir/${{ inputs.dir }}/$clone_dir/${{ inputs.include_dir }}"
         
         nfullIncludePath="$fullIncludePath"
         # Replace "./" with ""

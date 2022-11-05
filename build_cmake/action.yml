@@ -115,12 +115,7 @@ runs:
       shell: bash
       working-directory: ${{inputs.working-directory}}
       run: |
-        if [[ "${{ inputs.root_dir }}" != "" ]]; then
-          root_dir=${{ inputs.root_dir }}
-        else
-          root_dir=${{ env.GA_ROOT_DIR }}
-        fi
-        
+        root_dir=$PWD
         build_target=${{ inputs.build_target }}
         if [[ "${{ inputs.build_target_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
           build_target=${{ inputs.build_target_linux }}
