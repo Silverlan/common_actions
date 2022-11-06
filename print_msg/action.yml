@@ -1,0 +1,14 @@
+name: 'Print Message'
+description: 'Print Message'
+inputs:
+  message:
+    description: 'Message'
+    required: true
+runs:
+  using: "composite"
+  steps: 
+    - name: Print
+      shell: bash
+      run: |
+        printf "\033[0;31m${{ inputs.message }}\033[0m\n"
+        
