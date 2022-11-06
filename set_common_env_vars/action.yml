@@ -23,6 +23,7 @@ runs:
         {
           printf "\033[0;31m$1\033[0m\n"
         }
+        export -f ga_print
         
         if [ ! -d "./build" ]; then
           mkdir build
