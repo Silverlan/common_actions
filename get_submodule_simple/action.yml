@@ -71,6 +71,7 @@ runs:
       run: |
         rootDir=$PWD
         clone_dir=${{ inputs.working-directory }}
+        mkdir -p $clone_dir
         
         repo=${{ inputs.repo }}
         # Add "https://github.com/" prefix if repo doesn't start with "http"
