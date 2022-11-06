@@ -18,6 +18,11 @@ runs:
           echo "GA_SHARED_BINARY_LIBRARY_EXT=.dll" >> $GITHUB_ENV
           echo "GA_STATIC_LIBRARY_PREFIX=" >> $GITHUB_ENV
         fi
+
+        ga_print()
+        {
+          printf "\033[0;31m$1\033[0m\n"
+        }
         
         if [ ! -d "./build" ]; then
           mkdir build
