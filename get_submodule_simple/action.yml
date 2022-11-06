@@ -1,0 +1,120 @@
+name: 'Get Simple Submodule'
+description: 'Downloads and builds a git submodule'
+inputs:
+  repo:
+    description: 'Repository Url'
+    required: true
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: './'
+  repo_branch:
+    description: 'Branch to clone'
+    required: true
+    default: 'master'
+  should_build:
+    description: 'Should build?'
+    required: true
+    default: true
+  include_dir:
+    description: 'Name of the include directory'
+    required: true
+    default: 'include'
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: ''
+  cmake_var:
+    description: 'Name of the CMake variable to set to the include path'
+    required: true
+    default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
+  checkout_submodules:
+    description: 'Checkout submodules?'
+    required: true
+    default: '1'
+  commit_id:
+    description: 'Commit to check out'
+    required: false
+    default: ''
+outputs:
+  cmake_definitions:
+    description: "CMake definitions output"
+    value: ${{ steps.clone.outputs.cmakeDefLocal }}
+  include_directory:
+    description: 'The include directory for this library'
+    value: ${{ steps.clone.outputs.include-directory }}
+  commit_id:
+    description: 'Commit id of the cloned repository'
+    value: ${{ steps.clone.outputs.commit-id }}
+runs:
+  using: "composite"
+  steps: 
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
+      
+    - name: Clone
+      shell: bash
+      id: clone
+      working-directory: ${{inputs.working-directory}}
+      run: |
+        rootDir=$PWD
+        clone_dir=${{ inputs.working-directory }}
+        
+        repo=${{ inputs.repo }}
+        # Add "https://github.com/" prefix if repo doesn't start with "http"
+        case $repo in http*) :; ;; (*) repo='https://github.com/'$repo; ;; esac
+        
+        echo "Git clone..."
+        git clone $repo --single-branch --branch ${{ inputs.repo_branch }} ./
+        echo "Done!"
+
+        echo "Git checkout..."
+        git checkout ${{ inputs.repo_branch }}
+        echo "Done!"
+
+        if [[ "${{ inputs.commit_id }}" != "" ]]; then
+          git reset --hard "${{ inputs.commit_id }}"
+        fi
+
+        if [[ "${{ inputs.checkout_submodules }}" == "1" ]]; then
+          echo "Git submodule..."
+          git submodule update --init --recursive
+          echo "Done!"
+        fi
+
+        commitId=$(git rev-parse --short=10 HEAD);
+        echo "::set-output name=commit-id::$commitId"
+        
+        echo "Updating outputs and definitions..."
+        fullIncludePath="$rootDir/${{ inputs.include_dir }}"
+        
+        nfullIncludePath="$fullIncludePath"
+        # Replace "./" with ""
+        nfullIncludePath="${nfullIncludePath//.\//}"
+        # Replace "//" with "/"
+        nfullIncludePath="${nfullIncludePath//\/\//\/}"
+        
+        echo "::set-output name=include-directory::$nfullIncludePath"
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$nfullIncludePath"
+          if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$nfullIncludePath"
+          fi
+        else
+          newCmakeDef=""
+        fi
+        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+        echo "Done!"
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@main
+      with:
+        cmake_var: '${{ steps.clone.outputs.cmakeDefLocal }}'
+        
