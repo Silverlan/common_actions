@@ -11,6 +11,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: generic_build_workflow ===\nbuild_action: ${{inputs.build_action}}\nworking-directory: ${{inputs.working-directory}}\n"
+
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -38,3 +42,6 @@ runs:
       with:
         working-directory: ${{inputs.working-directory}}
        
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: generic_build_workflow ==="

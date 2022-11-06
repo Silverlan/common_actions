@@ -3,6 +3,10 @@ description: 'Initialize common env variables'
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: set_common_env_vars ===\n"
+
     - name: Init Env
       shell: bash
       run: |
@@ -29,3 +33,6 @@ runs:
           mkdir build
         fi
         
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: set_common_env_vars ==="

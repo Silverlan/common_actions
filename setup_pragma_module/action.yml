@@ -20,6 +20,10 @@ outputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: setup_pragma_module ===\ncc_version: ${{inputs.cc_version}}\ncxx_version: ${{inputs.cxx_version}}\nworking-directory: ${{inputs.working-directory}}\n"
+
     - name: Download dependencies
       shell: bash
       working-directory: ${{inputs.working-directory}}
@@ -48,3 +52,6 @@ runs:
       shell: bash
       run: echo "cmake_definitions=${{ steps.pragma-cmake-defs.outputs.cmake_defs }}" >> $GITHUB_OUTPUT
       
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: setup_pragma_module ==="

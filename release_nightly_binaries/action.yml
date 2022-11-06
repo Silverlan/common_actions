@@ -15,6 +15,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: release_nightly_binaries ===\ntoken: ${{inputs.token}}\ncommit: ${{inputs.commit}}\nupdate_tag: ${{inputs.update_tag}}\n"
+
     - name: Generate Release Archive
       shell: bash
       id: generate-archive
@@ -47,3 +51,7 @@ runs:
         tag: latest
         replacesArtifacts: true
         allowUpdates: true
+
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: release_nightly_binaries ==="

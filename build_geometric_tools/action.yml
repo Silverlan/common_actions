@@ -8,6 +8,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: build_geometric_tools ===\nworking-directory: ${{inputs.working-directory}}\n"
+
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
@@ -42,3 +46,6 @@ runs:
         working-directory: ${{inputs.working-directory}}
         # commit_id: '0cbd458d45d3b2766c17746dd018185e7321696e'
       
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: build_geometric_tools ==="

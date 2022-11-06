@@ -18,6 +18,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: curl_download ===\ndownload_url: ${{inputs.download_url}}\nfile_name: ${{inputs.file_name}}\ndownload_dir: ${{inputs.download_dir}}\nworking-directory: ${{inputs.working-directory}}\n"
+
     - name: Curl Download
       shell: bash
       working-directory: ${{inputs.working-directory}}
@@ -28,3 +32,7 @@ runs:
         curl -LJO ${{ inputs.download_url }}
         7z x ${{ inputs.file_name }} -aos -y
         cd ../
+
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: curl_download ==="

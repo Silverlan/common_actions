@@ -7,6 +7,10 @@ outputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: get_cmake_vars ===\ncmake_vars: ${{inputs.cmake_vars}}\n"
+
     - name: Get Vars
       id: get-vars
       shell: bash
@@ -17,3 +21,7 @@ runs:
           value=""
         fi
         echo "::set-output name=cmake_vars::$(echo $value)"
+
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: get_cmake_vars ==="

@@ -8,6 +8,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: setup_clang ===\nworking-directory: ${{inputs.working-directory}}\n"
+
     - name: Install Prerequisites
       shell: bash
       working-directory: ${{inputs.working-directory}}
@@ -25,3 +29,6 @@ runs:
         echo "CC=/usr/bin/clang-14" >> $GITHUB_ENV
         echo "CXX=/usr/bin/clang++-14" >> $GITHUB_ENV
   
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: setup_clang ==="

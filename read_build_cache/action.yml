@@ -14,6 +14,10 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action Start: read_build_cache ===\ncache_dir: ${{inputs.cache_id}}\ncache_dir: ${{inputs.cache_id}}\n"
+
     - name: Restore
       id: restore-cache
       uses: actions/cache@v2.1.6
@@ -29,3 +33,7 @@ runs:
         restore-keys: |
           ${{ inputs.cache_id }}-cv2-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
           ${{ inputs.cache_id }}-cv2-
+
+    - uses: Silverlan/common_actions/print_msg@main
+      with:
+        message: "=== Action End: read_build_cache ==="
