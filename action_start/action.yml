@@ -1,0 +1,48 @@
+name: 'Action Start'
+description: 'Action Start'
+inputs:
+  name:
+    description: 'Message'
+    required: true
+  input_values:
+    description: 'Input Values'
+    required: true
+    default: ''
+runs:
+  using: "composite"
+  steps: 
+    - name: Print
+      shell: bash
+      run: |
+        IFS=':' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
+        str=""
+        first='2'
+        for i in "${ADDR[@]}"; do
+          if [ $first -eq '2' ] 
+          then
+            first='1'
+          else
+            if [ $first -eq '1' ] 
+            then
+              first='0'
+            else
+              str="$str > "
+            fi
+            str="$str$i"
+          fi
+        done
+        
+        printf "\033[0;32m=== Action Start: ${{inputs.name}} ===\n"
+        printf "\033[1;32mParent Actions: $str\n"
+        printf "\033[0;33mInput Values:\n"
+        
+        string="${{ inputs.input_values }}"
+        src='\\n'
+        dst='\\n\\033[0;31m'
+        
+        newMsg=$(echo "$string" | sed "s/$src/$dst/g")
+        printf "\033[0;31m$newMsg"
+        
+        # Add step to env variables
+        echo "GA_SUB_STEP=$(echo ${{ env.GA_SUB_STEP }}:${{ inputs.name }})" >> $GITHUB_ENV
+        

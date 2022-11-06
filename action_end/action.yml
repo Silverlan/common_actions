@@ -1,0 +1,40 @@
+name: 'Action End'
+description: 'Action End'
+runs:
+  using: "composite"
+  steps: 
+    - name: Print
+      shell: bash
+      run: |
+        actionName="${{ env.GA_SUB_STEP }}"
+        actionName=$(echo "${actionName##*:}")
+        
+        IFS=':' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
+        str=""
+        tmpStr=""
+        first='2'
+        for i in "${ADDR[@]}"; do
+          str=$tmpStr
+          if [ $first -eq '2' ] 
+          then
+            first='1'
+          else
+            if [ $first -eq '1' ] 
+            then
+              first='0'
+            else
+              tmpStr="$tmpStr > "
+            fi
+            tmpStr="$tmpStr$i"
+          fi
+        done
+      
+        printf "\033[0;35m=== Action End: $actionName ===\n"
+        printf "\033[0;35mParent Actions: $str\n"
+        
+        # Remove from env variables
+        envVars=$(echo ${{ env.GA_SUB_STEP }} | sed 's![^:]*$!!')
+        envVars=${envVars%?}
+        
+        echo "GA_SUB_STEP=$(echo $envVars)" >> $GITHUB_ENV
+        

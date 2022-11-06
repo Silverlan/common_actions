@@ -7,9 +7,10 @@ inputs:
 runs:
   using: "composite"
   steps: 
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: define_cmake_var ===\ncmake_var: ${{inputs.cmake_var}}\n"
+        name: "define_cmake_var"
+        input_values: "cmake_var: ${{inputs.cmake_var}}"
 
     - name: Define CMake Var
       shell: bash
@@ -19,6 +20,4 @@ runs:
         value="$(cat cmake_vars.txt)"
         echo "Defined cmake_vars: $value"
 
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: define_cmake_var ==="
+    - uses: Silverlan/common_actions/action_end@main

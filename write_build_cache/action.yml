@@ -14,9 +14,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: write_build_cache ===\ncache_dir: ${{inputs.cache_dir}}\ncache_id: ${{inputs.cache_id}}\n"
+        name: "write_build_cache"
+        input_values: "cache_dir: ${{inputs.cache_dir}}\ncache_id: ${{inputs.cache_id}}"
 
     - name: Store in cache
       id: store-in-cache
@@ -31,7 +32,5 @@ runs:
           ${{ inputs.cache_dir }}/**/*.hpp
         key: ${{ inputs.cache_id }}-cv1-${{ hashFiles('${{ inputs.cache_dir }}/**') }}
  
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: write_build_cache ==="
+    - uses: Silverlan/common_actions/action_end@main
         

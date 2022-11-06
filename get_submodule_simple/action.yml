@@ -53,9 +53,10 @@ outputs:
 runs:
   using: "composite"
   steps: 
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: get_submodule_simple ===\nrepo: ${{inputs.repo}}\nworking-directory: ${{inputs.working-directory}}\nrepo_branch: ${{inputs.repo_branch}}\nshould_build: ${{inputs.should_build}}\ninclude_dir: ${{inputs.include_dir}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\ncheckout_submodules: ${{inputs.checkout_submodules}}\ncommit_id: ${{inputs.commit_id}}\n"
+        name: "get_submodule_simple"
+        input_values: "repo: ${{inputs.repo}}\nworking-directory: ${{inputs.working-directory}}\nrepo_branch: ${{inputs.repo_branch}}\nshould_build: ${{inputs.should_build}}\ninclude_dir: ${{inputs.include_dir}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\ncheckout_submodules: ${{inputs.checkout_submodules}}\ncommit_id: ${{inputs.commit_id}}"
 
     - name: Initialize Env
       id: init-env
@@ -122,6 +123,4 @@ runs:
       with:
         cmake_var: '${{ steps.clone.outputs.cmakeDefLocal }}'
         
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: get_submodule_simple ==="
+    - uses: Silverlan/common_actions/action_end@main

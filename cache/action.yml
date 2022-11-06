@@ -17,9 +17,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: cache ===\ndescription: ${{inputs.description}}\nkey: ${{inputs.key}}\ncache_version: ${{inputs.cache_version}}\nstep: ${{inputs.step}}\n"
+        name: "cache"
+        input_values: "description: ${{inputs.description}}\nkey: ${{inputs.key}}\ncache_version: ${{inputs.cache_version}}\nstep: ${{inputs.step}}"
 
     - name: Initialize Env
       id: init-env
@@ -50,6 +51,4 @@ runs:
             path: ${{ inputs.path }}
             key: ${{ inputs.key }}-v${{ inputs.cache_version }}
 
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: cache ==="
+    - uses: Silverlan/common_actions/action_end@main

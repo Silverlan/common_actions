@@ -3,9 +3,10 @@ description: 'Upload build binaries.'
 runs:
   using: "composite"
   steps: 
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: upload_build_binaries ===\n"
+        name: "upload_build_binaries"
+        input_values: ""
 
     - name: Initialize Env
       id: init-env
@@ -22,6 +23,4 @@ runs:
           ${{ matrix.config.build_dir }}/**/*.h
           ${{ matrix.config.build_dir }}/**/*.hpp
  
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: upload_build_binaries ==="
+    - uses: Silverlan/common_actions/action_end@main

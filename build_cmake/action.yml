@@ -98,9 +98,10 @@ outputs:
 runs:
   using: "composite"
   steps: 
-    - uses: Silverlan/common_actions/print_msg@main
+    - uses: Silverlan/common_actions/action_start@main
       with:
-        message: "=== Action Start: build_cmake ===\nbuild_type: ${{inputs.build_type}}\nbuild_generator: ${{inputs.build_generator}}\nbuild_target: ${{inputs.build_target}}\nbuild_target_windows: ${{inputs.build_target_windows}}\nbuild_target_linux: ${{inputs.build_target_linux}}\nlib_name: ${{inputs.lib_name}}\nlib_name_windows: ${{inputs.lib_name_windows}}\nlib_name_linux: ${{inputs.lib_name_linux}}\nbuild_dir: ${{inputs.build_dir}}\ncmake_script_location: ${{inputs.cmake_script_location}}\nis_cmake_script_location_absolute: ${{inputs.is_cmake_script_location_absolute}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_definitions_tmp: ${{inputs.cmake_definitions_tmp}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\nconfigure: ${{inputs.configure}}\nbuild: ${{inputs.build}}\nroot_dir: ${{inputs.root_dir}}\npre_build_cmd: ${{inputs.pre_build_cmd}}\nstatic_library: ${{inputs.static_library}}\ncache_id: ${{inputs.cache_id}}\nworking-directory: ${{inputs.working-directory}}\n"
+        name: "build_cmake"
+        input_values: "working-directory: build_type: ${{inputs.build_type}}\nbuild_generator: ${{inputs.build_generator}}\nbuild_target: ${{inputs.build_target}}\nbuild_target_windows: ${{inputs.build_target_windows}}\nbuild_target_linux: ${{inputs.build_target_linux}}\nlib_name: ${{inputs.lib_name}}\nlib_name_windows: ${{inputs.lib_name_windows}}\nlib_name_linux: ${{inputs.lib_name_linux}}\nbuild_dir: ${{inputs.build_dir}}\ncmake_script_location: ${{inputs.cmake_script_location}}\nis_cmake_script_location_absolute: ${{inputs.is_cmake_script_location_absolute}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_definitions_tmp: ${{inputs.cmake_definitions_tmp}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\nconfigure: ${{inputs.configure}}\nbuild: ${{inputs.build}}\nroot_dir: ${{inputs.root_dir}}\npre_build_cmd: ${{inputs.pre_build_cmd}}\nstatic_library: ${{inputs.static_library}}\ncache_id: ${{inputs.cache_id}}\nworking-directory: ${{inputs.working-directory}}"
 
     - name: Initialize Env
       id: init-env
@@ -320,6 +321,4 @@ runs:
       with:
         cmake_var: '${{ steps.build.outputs.cmakeDefLocal }}'
         
-    - uses: Silverlan/common_actions/print_msg@main
-      with:
-        message: "=== Action End: build_cmake ==="
+    - uses: Silverlan/common_actions/action_end@main
