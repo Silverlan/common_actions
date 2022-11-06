@@ -10,5 +10,10 @@ runs:
     - name: Print
       shell: bash
       run: |
-        printf "\033[0;31m${{ inputs.message }}\033[0m\n"
+        string="${{ inputs.message }}"
+        src='\\n'
+        dst='\\n\\033[0;31m'
+        
+        newMsg=$(echo "$string" | sed "s/$src/$dst/g")
+        printf "\033[0;31m$newMsg"
         
