@@ -105,7 +105,7 @@ inputs:
   working-directory:
     description: 'Working Directory'
     required: true
-    default: './'
+    default: '.'
 outputs:
   include_directory:
     description: 'The include directory for this library'

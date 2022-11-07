@@ -87,7 +87,7 @@ inputs:
   working-directory:
     description: 'Working Directory'
     required: true
-    default: './'
+    default: '.'
 outputs:
   library_file_path:
     description: 'The path (including filename and extension) of the generated library'

@@ -4,7 +4,7 @@ inputs:
   pragma_location:
     description: 'Pragma Root Location'
     required: true
-    default: './'
+    default: '.'
 outputs:
   cmake_defs:
     description: "CMake Definitions"

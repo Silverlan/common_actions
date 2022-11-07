@@ -12,7 +12,7 @@ inputs:
   working-directory:
     description: 'Working Directory'
     required: true
-    default: './'
+    default: '.'
 outputs:
   cmake_defs:
     description: "CMake Definitions"
