@@ -1,0 +1,305 @@
+name: 'Generic CMake build'
+description: 'Builds the specified project'
+inputs:
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: '.'
+  build_target_windows:
+    description: 'Main target to build'
+    required: true
+    default: ''
+  build_target_linux:
+    description: 'Main target to build'
+    required: true
+    default: ''
+  lib_name:
+    description: 'Name of the library'
+    required: true
+    default: ''
+  lib_name_windows:
+    description: 'Name of the library'
+    required: true
+    default: ''
+  lib_name_linux:
+    description: 'Name of the library'
+    required: true
+    default: ''
+  build_dir:
+    description: 'The directory to write the build files to'
+    required: true
+    default: 'build'
+  cmake_definitions:
+    description: 'CMake definitions'
+    required: true
+    default: ''
+  cmake_definitions_tmp:
+    description: 'Temporary CMake definitions'
+    required: true
+    default: ''
+  cmake_var:
+    description: 'Name of the CMake variable to set to the library path'
+    required: true
+    default: ''
+  cmake_var_alias:
+    description: 'Alias CMake variable name'
+    required: true
+    default: ''
+  configure:
+    description: 'Enable configuration'
+    required: true
+    default: '1'
+  build:
+    description: 'Enable build'
+    required: true
+    default: '1'
+  pre_build_cmd:
+    description: 'Command(s) to run before building'
+    required: true
+    default: ''
+  static_library:
+    description: 'Is this a static library?'
+    required: true
+    default: '0'
+  cache_id:
+    description: 'Cache id to identify this module'
+    required: true
+    default: ''
+  build_type:
+    description: 'Build Type'
+    required: true
+    default: '${{ matrix.config.build_type }}'
+outputs:
+  library_file_path:
+    description: 'The path (including filename and extension) of the generated library'
+    value: ${{ steps.init-vars.outputs.library-file-path }}
+  binary_file_path:
+    description: 'The path (including filename and extension) of the generated binary'
+    value: ${{ steps.init-vars.outputs.binary-file-path }}
+runs:
+  using: "composite"
+  steps: 
+    - uses: Silverlan/common_actions/action_start@main
+      with:
+        name: "build_cmake"
+        input_values: "working-directory: ${{inputs.working-directory}},build_target: ${{inputs.build_target}},build_target_windows: ${{inputs.build_target_windows}},build_target_linux: ${{inputs.build_target_linux}},lib_name: ${{inputs.lib_name}},lib_name_windows: ${{inputs.lib_name_windows}},lib_name_linux: ${{inputs.lib_name_linux}},build_dir: ${{inputs.build_dir}},cmake_definitions: ${{inputs.cmake_definitions}},cmake_definitions_tmp: ${{inputs.cmake_definitions_tmp}},cmake_var: ${{inputs.cmake_var}},cmake_var_alias: ${{inputs.cmake_var_alias}},configure: ${{inputs.configure}},build: ${{inputs.build}},pre_build_cmd: ${{inputs.pre_build_cmd}},static_library: ${{inputs.static_library}},cache_id: ${{inputs.cache_id}},build_type: ${{inputs.build_type}}"
+
+    - name: Initialize Env
+      id: init-env
+      uses: Silverlan/common_actions/set_common_env_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
+      
+    - name: Get CMake Vars
+      id: cmake_vars
+      uses: Silverlan/common_actions/get_cmake_vars@main
+      with:
+        working-directory: ${{inputs.working-directory}}
+      
+    - name: Initialize variables
+      id: init-vars
+      shell: bash
+      working-directory: ${{inputs.working-directory}}
+      run: |
+        root_dir=$PWD
+        build_target=${{ inputs.build_target }}
+        if [[ "${{ inputs.build_target_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
+          build_target=${{ inputs.build_target_linux }}
+        fi
+        if [[ "${{ inputs.build_target_windows }}" != "" && "$RUNNER_OS" == "Windows" ]]; then
+          build_target=${{ inputs.build_target_windows }}
+        fi
+        
+        baseLibName=${{ inputs.lib_name }}
+        if [[ "${{ inputs.lib_name_linux }}" != "" && "$RUNNER_OS" == "Linux" ]]; then
+          baseLibName=${{ inputs.lib_name_linux }}
+        fi
+        if [[ "${{ inputs.lib_name_windows }}" != "" && "$RUNNER_OS" == "Windows" ]]; then
+          baseLibName=${{ inputs.lib_name_windows }}
+        fi
+        
+        if [[ "$baseLibName" != "" ]]; then
+          libName="$baseLibName"
+        else
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            libName="${{ inputs.build_type }}/lib$build_target"
+          else
+            libName="${{ inputs.build_type }}/$build_target"
+          fi
+        fi
+        
+        if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
+          cmakeScriptLocation="${{ inputs.cmake_script_location }}"
+        else
+          cmakeScriptLocation="."
+        fi
+        
+        libPath="$root_dir/${{ inputs.build_dir }}"
+        libNameWithExt="$libName"
+        binNameWithExt="$libName"
+        if [[ "${{ inputs.static_library }}" == "1" && "$RUNNER_OS" == "Linux" ]]; then
+          libNameWithExt="$libNameWithExt${{ env.GA_STATIC_LINK_LIBRARY_EXT }}"
+          binNameWithExt="$binNameWithExt${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
+        else
+          libNameWithExt="$libNameWithExt${{ env.GA_SHARED_LINK_LIBRARY_EXT }}"
+          binNameWithExt="$binNameWithExt${{ env.GA_SHARED_BINARY_LIBRARY_EXT }}"
+        fi
+        libFilePath="$libPath/$libNameWithExt"
+        binFilePath="$libPath/$binNameWithExt"
+
+        # Replace "./" with ""
+        libFilePath="${libFilePath//.\//}"
+        # Replace "//" with "/"
+        libFilePath="${libFilePath//\/\//\/}"
+
+        # Same for $binFilePath
+        binFilePath="${binFilePath//.\//}"
+        binFilePath="${binFilePath//\/\//\/}"
+        
+        globalCacheVersion=3
+        cacheId="${{ inputs.cache_id }}-${{ inputs.build_type }}-${{ inputs.static_library }}-v$globalCacheVersion"
+        
+        echo "Set variables:"
+        echo "  root_dir: $root_dir"
+        echo "  cmake_script_location: ${{ inputs.cmake_script_location }}"
+        echo "  cmakeScriptLocation: $cmakeScriptLocation"
+        echo "  libName: $libName"
+        echo "  libNameWithExt: $libNameWithExt"
+        echo "  libPath: $libPath"
+        echo "  libFilePath: $libFilePath"
+        echo "  build_dir: ${{ inputs.build_dir }}"
+        echo "  build_type: ${{ inputs.build_type }}"
+        echo "  build_target: $build_target"
+        echo "  input lib_name: $baseLibName"
+        echo "  cacheId: $cacheId"
+        
+        echo "::set-output name=root-dir::$root_dir"
+        echo "::set-output name=library-file-path::$libFilePath"
+        echo "::set-output name=binary-file-path::$binFilePath"
+        echo "::set-output name=cmake-script-location::$cmakeScriptLocation"
+        echo "::set-output name=cache-id::$cacheId"
+        echo "::set-output name=build-target::$build_target"
+        
+    - name: Get cache
+      uses: actions/cache@v3.0.2
+      id: get-cache
+      with:
+        path: |
+          ${{ inputs.build_dir }}/**
+        key: ${{ steps.init-vars.outputs.cache-id }}
+        
+    - shell: bash
+      working-directory: ${{inputs.working-directory}}
+      run: |
+        echo "after get-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
+  
+    - name: Build
+      id: build
+      shell: bash
+      working-directory: ${{inputs.working-directory}}
+      run: |
+        root_dir="${{ steps.init-vars.outputs.root-dir }}"
+        libFilePath="${{ steps.init-vars.outputs.library-file-path }}"
+        cmakeScriptLocation="${{ steps.init-vars.outputs.cmake-script-location }}"
+        build_target="${{ steps.init-vars.outputs.build-target }}"
+        
+        if [ -f "$libFilePath" ]; then
+          echo "Library $libFilePath already exists! Skipping build..."
+          ${{ inputs.pre_build_cmd }}
+        else
+          echo "Library $libFilePath not found! Rebuilding..."
+          mkdir -p $root_dir/${{ inputs.build_dir }}
+          cd $root_dir/${{ inputs.build_dir }}
+          
+          echo "Current directory: $PWD"
+          if [[ "${{ inputs.configure }}" == "1" ]]; then
+            if [[ "${{ inputs.is_cmake_script_location_absolute }}" == "1" ]]; then
+              cms=$cmakeScriptLocation
+            else
+              cms=$root_dir/$cmakeScriptLocation
+            fi
+            echo "CMake configure $cms..."
+            cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
+            echo "Done!"
+          fi
+          echo "Running pre-build commands..."
+          ${{ inputs.pre_build_cmd }}
+          echo "Done!"
+          
+          echo "Build files in $PWD:"
+          ls -R
+          
+          if [[ "${{ inputs.build }}" == "1" ]]; then
+            echo "CMake build..."
+            cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
+            echo "Done!"
+            
+            echo "::set-output name=has-built::1"
+          fi
+          
+          # We may have to copy the binary file on Linux systems
+          baseName=$(basename $libFilePath)
+          dirName=$(dirname $libFilePath)
+          echo "Creating dir $dirName..."
+          echo "Copying ./$baseName to $libFilePath..."
+          mkdir -p "$dirName"
+          cp "./$baseName" "$libFilePath" || true
+          echo "Done!"
+        fi
+        
+        echo "Setting definitions..."
+        if [[ "${{ inputs.cmake_var }}" != "" ]]; then
+          newCmakeDef=" -D${{ inputs.cmake_var }}=$libFilePath"
+          if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
+            newCmakeDef="$newCmakeDef -D${{ inputs.cmake_var_alias }}=$libFilePath"
+          fi
+        else
+          newCmakeDef=""
+        fi
+        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+        echo "Done!"
+        
+    - shell: bash
+      working-directory: ${{inputs.working-directory}}
+      run: |
+        echo "before write-cache"
+        if [ -f "${{ steps.init-vars.outputs.library-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.library-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.library-file-path }} does not exist!"
+        fi
+        if [ -f "${{ steps.init-vars.outputs.binary-file-path }}" ]; then
+          echo "${{ steps.init-vars.outputs.binary-file-path }} exists!"
+        else
+          echo "${{ steps.init-vars.outputs.binary-file-path }} does not exist!"
+        fi
+        
+    - uses: ChristopherHX/conditional@b4a9649204f81002ec9a4ef7d4bf7d6b2ab7fa55
+      name: Update cache
+      with:
+        if: "${{steps.build.outputs.has-built=='1'}}"
+        step: |
+          name: Write cache
+          uses: actions/cache@v2
+          id: write-cache
+          with:
+            path: |
+              ${{ inputs.build_dir }}/**
+            key: ${{ steps.init-vars.outputs.cache-id }}
+
+    - name: Define CMake Variable
+      uses: Silverlan/common_actions/define_cmake_var@main
+      with:
+        cmake_var: '${{ steps.build.outputs.cmakeDefLocal }}'
+        
+    - uses: Silverlan/common_actions/action_end@main
