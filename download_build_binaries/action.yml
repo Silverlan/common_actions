@@ -8,11 +8,6 @@ inputs:
 runs:
   using: "composite"
   steps: 
-    - uses: Silverlan/common_actions/action_start@main
-      with:
-        name: "download_build_binaries"
-        input_values: "working-directory: ${{inputs.working-directory}}"
-
     - name: Initialize Env
       id: init-env
       uses: Silverlan/common_actions/set_common_env_vars@main
@@ -32,4 +27,3 @@ runs:
         check_artifacts:  false
         working-directory: ${{inputs.working-directory}}
       
-    - uses: Silverlan/common_actions/action_end@main
