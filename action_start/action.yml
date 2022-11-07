@@ -15,7 +15,7 @@ runs:
       shell: bash
       run: |
         # Add step to env variables
-        newTest=${{ env.GA_SUB_STEP }}"#${{inputs.name}}""?${{inputs.input_values}}"
+        newTest="${{ env.GA_SUB_STEP }}""#${{inputs.name}}""?${{inputs.input_values}}"
         echo "GA_SUB_STEP=$(echo $newTest)" >> $GITHUB_ENV
       
         # Print
