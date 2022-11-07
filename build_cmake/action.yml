@@ -248,6 +248,7 @@ runs:
               cms=$root_dir/$cmakeScriptLocation
             fi
             echo "CMake configure $cms..."
+            echo "cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G \"${{ inputs.build_generator }}\""
             cmake $cms ${{ steps.cmake_vars.outputs.cmake_vars }} ${{ inputs.cmake_definitions_tmp }} -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} -G "${{ inputs.build_generator }}"
             echo "Done!"
           fi
@@ -260,6 +261,7 @@ runs:
           
           if [[ "${{ inputs.build }}" == "1" ]]; then
             echo "CMake build..."
+            echo "cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target"
             cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
             echo "Done!"
             
