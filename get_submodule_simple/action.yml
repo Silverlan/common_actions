@@ -56,7 +56,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "get_submodule_simple"
-        input_values: "repo: ${{inputs.repo}}\nworking-directory: ${{inputs.working-directory}}\nrepo_branch: ${{inputs.repo_branch}}\nshould_build: ${{inputs.should_build}}\ninclude_dir: ${{inputs.include_dir}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\ncheckout_submodules: ${{inputs.checkout_submodules}}\ncommit_id: ${{inputs.commit_id}}"
+        input_values: "repo: ${{inputs.repo}},working-directory: ${{inputs.working-directory}},repo_branch: ${{inputs.repo_branch}},should_build: ${{inputs.should_build}},include_dir: ${{inputs.include_dir}},cmake_definitions: ${{inputs.cmake_definitions}},cmake_var: ${{inputs.cmake_var}},cmake_var_alias: ${{inputs.cmake_var_alias}},checkout_submodules: ${{inputs.checkout_submodules}},commit_id: ${{inputs.commit_id}}"
 
     - name: Initialize Env
       id: init-env

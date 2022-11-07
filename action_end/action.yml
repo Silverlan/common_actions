@@ -6,15 +6,13 @@ runs:
     - name: Print
       shell: bash
       run: |
-        actionName="${{ env.GA_SUB_STEP }}"
-        actionName=$(echo "${actionName##*:}")
-        
-        IFS=':' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
+        IFS='#' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
         str=""
-        tmpStr=""
         first='2'
+        curAction=''
+        args=''
         for i in "${ADDR[@]}"; do
-          str=$tmpStr
+          IFS='?' read -ra CMP <<< "$i"
           if [ $first -eq '2' ] 
           then
             first='1'
@@ -23,17 +21,20 @@ runs:
             then
               first='0'
             else
-              tmpStr="$tmpStr > "
+              str="$str > "
             fi
-            tmpStr="$tmpStr$i"
+            str="$str${CMP[0]}"
+            curAction=${CMP[0]}
+            args=${CMP[1]}
           fi
         done
-      
-        printf "\033[0;35m=== Action End: $actionName ===\n"
-        printf "\033[0;35mParent Actions: $str\n"
+        
+        output="Action End: $str"
+        printf "\033[0;35m=== $output ===\n"
         
         # Remove from env variables
-        envVars=$(echo ${{ env.GA_SUB_STEP }} | sed 's![^:]*$!!')
+        text="${{ env.GA_SUB_STEP }}"
+        envVars=$(echo $text | sed 's![^#]*$!!')
         envVars=${envVars%?}
         
         echo "GA_SUB_STEP=$(echo $envVars)" >> $GITHUB_ENV

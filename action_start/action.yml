@@ -14,10 +14,18 @@ runs:
     - name: Print
       shell: bash
       run: |
-        IFS=':' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
+        # Add step to env variables
+        newTest=${{ env.GA_SUB_STEP }}"#${{inputs.name}}""?${{inputs.input_values}}"
+        echo "GA_SUB_STEP=$(echo $newTest)" >> $GITHUB_ENV
+      
+        # Print
+        IFS='#' read -ra ADDR <<< "${{ env.GA_SUB_STEP }}"
         str=""
         first='2'
+        curAction=''
+        args=''
         for i in "${ADDR[@]}"; do
+          IFS='?' read -ra CMP <<< "$i"
           if [ $first -eq '2' ] 
           then
             first='1'
@@ -28,21 +36,16 @@ runs:
             else
               str="$str > "
             fi
-            str="$str$i"
+            str="$str${CMP[0]}"
           fi
         done
         
-        printf "\033[0;32m=== Action Start: ${{inputs.name}} ===\n"
-        printf "\033[1;32mParent Actions: $str\n"
-        printf "\033[0;33mInput Values:\n"
+        output="Action Start: $str > ${{inputs.name}}"
+        printf "\033[0;32m=== $output ===\n"
         
-        string="${{ inputs.input_values }}"
-        src='\\n'
-        dst='\\n\\033[0;31m'
-        
-        newMsg=$(echo "$string" | sed "s/$src/$dst/g")
-        printf "\033[0;31m$newMsg"
-        
-        # Add step to env variables
-        echo "GA_SUB_STEP=$(echo ${{ env.GA_SUB_STEP }}:${{ inputs.name }})" >> $GITHUB_ENV
+        printf "\033[0;32mInput Values:\n"
+        IFS=',' read -ra ADDR <<< "${{inputs.input_values}}"
+        for i in "${ADDR[@]}"; do
+          printf "\033[1;32m$i\n"
+        done
         

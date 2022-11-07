@@ -77,7 +77,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "get_submodule"
-        input_values: "repo: ${{inputs.repo}}\nrepo_name: ${{inputs.repo_name}}\ndir: ${{inputs.dir}}\nclone_dir: ${{inputs.clone_dir}}\nshould_build: ${{inputs.should_build}}\nbuild_type: ${{inputs.build_type}}\nbuild_generator: ${{inputs.build_generator}}\ninclude_dir: ${{inputs.include_dir}}\ncmake_definitions: ${{inputs.cmake_definitions}}\ncmake_var: ${{inputs.cmake_var}}\ncmake_var_alias: ${{inputs.cmake_var_alias}}\ncheckout_submodules: ${{inputs.checkout_submodules}}\ncommit_id: ${{inputs.commit_id}}\nforce: ${{inputs.force}}\nworking-directory: ${{inputs.working-directory}}"
+        input_values: "repo: ${{inputs.repo}},repo_name: ${{inputs.repo_name}},dir: ${{inputs.dir}},clone_dir: ${{inputs.clone_dir}},should_build: ${{inputs.should_build}},build_type: ${{inputs.build_type}},build_generator: ${{inputs.build_generator}},include_dir: ${{inputs.include_dir}},cmake_definitions: ${{inputs.cmake_definitions}},cmake_var: ${{inputs.cmake_var}},cmake_var_alias: ${{inputs.cmake_var_alias}},checkout_submodules: ${{inputs.checkout_submodules}},commit_id: ${{inputs.commit_id}},force: ${{inputs.force}},working-directory: ${{inputs.working-directory}}"
 
     - name: Initialize Env
       id: init-env

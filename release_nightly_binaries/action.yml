@@ -18,7 +18,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "release_nightly_binaries"
-        input_values: "token: ${{inputs.token}}\ncommit: ${{inputs.commit}}\nupdate_tag: ${{inputs.update_tag}}"
+        input_values: "token: ${{inputs.token}},commit: ${{inputs.commit}},update_tag: ${{inputs.update_tag}}"
 
     - name: Generate Release Archive
       shell: bash

@@ -20,7 +20,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "cache"
-        input_values: "description: ${{inputs.description}}\nkey: ${{inputs.key}}\ncache_version: ${{inputs.cache_version}}\nstep: ${{inputs.step}}"
+        input_values: "description: ${{inputs.description}},key: ${{inputs.key}},cache_version: ${{inputs.cache_version}},step: ${{inputs.step}}"
 
     - name: Initialize Env
       id: init-env

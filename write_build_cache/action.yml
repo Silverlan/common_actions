@@ -17,7 +17,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "write_build_cache"
-        input_values: "cache_dir: ${{inputs.cache_dir}}\ncache_id: ${{inputs.cache_id}}"
+        input_values: "cache_dir: ${{inputs.cache_dir}},cache_id: ${{inputs.cache_id}}"
 
     - name: Store in cache
       id: store-in-cache

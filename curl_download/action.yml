@@ -21,7 +21,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "curl_download"
-        input_values: "download_url: ${{inputs.download_url}}\nfile_name: ${{inputs.file_name}}\ndownload_dir: ${{inputs.download_dir}}\nworking-directory: ${{inputs.working-directory}}"
+        input_values: "download_url: ${{inputs.download_url}},file_name: ${{inputs.file_name}},download_dir: ${{inputs.download_dir}},working-directory: ${{inputs.working-directory}}"
 
     - name: Curl Download
       shell: bash

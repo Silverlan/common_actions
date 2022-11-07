@@ -23,7 +23,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "setup_pragma_module"
-        input_values: "cc_version: ${{inputs.cc_version}}\ncxx_version: ${{inputs.cxx_version}}\nworking-directory: ${{inputs.working-directory}}"
+        input_values: "cc_version: ${{inputs.cc_version}},cxx_version: ${{inputs.cxx_version}},working-directory: ${{inputs.working-directory}}"
 
     - name: Download dependencies
       shell: bash

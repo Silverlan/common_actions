@@ -17,7 +17,7 @@ runs:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "read_build_cache"
-        input_values: "cache_dir: ${{inputs.cache_id}}\ncache_dir: ${{inputs.cache_id}}"
+        input_values: "cache_dir: ${{inputs.cache_id}},cache_dir: ${{inputs.cache_id}}"
 
     - name: Restore
       id: restore-cache
