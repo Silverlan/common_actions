@@ -75,7 +75,7 @@ runs:
         
     - name: Discord notification
       env:
-        DISCORD_WEBHOOK: 'https://discord.com/api/webhooks/1039183893301035048/Ua8A2yo6CiI6F8UsCEUUbCYBykXezFkdBJJnMr9wXZDIOHO9azeOZPwHR2JU5yhnZjhU'
+        DISCORD_WEBHOOK: '${{ secrets.DISCORD_WEBHOOK }}'
       uses: Ilshidur/action-discord@master
       with:
         args: 'A workflow has failed!'
