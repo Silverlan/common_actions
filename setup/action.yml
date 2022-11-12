@@ -39,6 +39,12 @@ runs:
           sudo apt install ${{ inputs.cc_version }} ${{ inputs.cxx_version }}
         fi
         
+    - name: Install zip
+      shell: bash
+      if: runner.os == 'Windows'
+      run:   |
+        choco install zip
+        
     - name: Install Clang
       if: runner.os == 'Linux'
       uses: Silverlan/common_actions/setup_clang@main
