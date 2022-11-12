@@ -35,7 +35,7 @@ runs:
       id: pragma-cmake-defs
       uses: Silverlan/common_actions/get_pragma_cmake_defs@main
       with:
-        pragma_location: './pragma'
+        pragma_location: '${{inputs.working-directory}}/pragma'
         
     - name: Setup
       id: setup
