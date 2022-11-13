@@ -163,8 +163,8 @@ runs:
         build_type: ${{ steps.determine-build-type.outputs.build_type }}
         build_generator: ${{ matrix.config.generators }}
         build_target: ${{ inputs.build_target }}
-        build_target_windows: ${{ inputs.build_target_windows }}
-        build_target_linux: ${{ inputs.build_target_linux }}
+        build_target_windows: '${{ inputs.build_target_windows }}'
+        build_target_linux: '${{ inputs.build_target_linux }}'
         lib_name: ${{ inputs.lib_name }}
         lib_name_windows: ${{ inputs.lib_name_windows }}
         lib_name_linux: ${{ inputs.lib_name_linux }}
