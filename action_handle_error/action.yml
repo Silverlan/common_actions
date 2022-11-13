@@ -74,6 +74,7 @@ runs:
         sh action_print.sh
         
     - name: Discord notification
+      if: runner.os == 'Linux'
       env:
         DISCORD_WEBHOOK: 'https://discord.com/api/webhooks/1041012938858836008/cjglZV7ZfsG4-yqcxGP-52cQGqWDk9mV0907t1_4-BWAaTGVImhT-MGqVwOi0uNhvZOk'
       uses: Ilshidur/action-discord@master
