@@ -12,16 +12,21 @@ inputs:
     description: 'Update Tag?'
     required: true
     default: '1'
+  working-directory:
+    description: 'Working Directory'
+    required: true
+    default: '.'
 runs:
   using: "composite"
   steps:
     - uses: Silverlan/common_actions/action_start@main
       with:
         name: "release_nightly_binaries"
-        input_values: "token: ${{inputs.token}},commit: ${{inputs.commit}},update_tag: ${{inputs.update_tag}}"
+        input_values: "token: ${{inputs.token}},commit: ${{inputs.commit}},update_tag: ${{inputs.update_tag}},working-directory: ${{inputs.working-directory}}"
 
     - name: Generate Release Archive
       shell: bash
+      working-directory: ${{inputs.working-directory}}
       id: generate-archive
       run: |
         cd release
@@ -46,7 +51,7 @@ runs:
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "${{ steps.generate-archive.outputs.archive-name }}"
+        artifacts: "${{inputs.working-directory}}/${{ steps.generate-archive.outputs.archive-name }}"
         body: "Automatically generated binaries."
         commit: ${{ inputs.commit }}
         token: ${{ inputs.token }}
