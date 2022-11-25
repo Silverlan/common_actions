@@ -34,7 +34,8 @@ runs:
           tar -czvf $archiveName *
         else
           archiveName=binaries_windows64.zip
-          zip -r $archiveName *
+          tar.exe -cvf ../$archiveName *
+          mv ../$archiveName ./$archiveName
         fi
         mv $archiveName ../$archiveName
         echo "::set-output name=archive-name::$archiveName"
