@@ -25,9 +25,9 @@ runs:
       working-directory: ${{inputs.working-directory}}
       run:   |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "::set-output name=gt_build_target::Mathematics"
+          echo "gt_build_target=Mathematics" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=gt_build_target::GTE/GTMathematics.v17"
+          echo "gt_build_target=GTE/GTMathematics.v17" >> $GITHUB_OUTPUT
         fi
         
     - name: Build GeometricTools

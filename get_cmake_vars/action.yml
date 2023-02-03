@@ -21,6 +21,6 @@ runs:
         else
           value=""
         fi
-        echo "::set-output name=cmake_vars::$(echo $value)"
+        echo "cmake_vars=$(echo $value)" >> $GITHUB_OUTPUT
 
     - uses: Silverlan/common_actions/action_end@main

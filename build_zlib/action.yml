@@ -37,7 +37,7 @@ runs:
         else
           zlibLibName=zlib
         fi
-        echo "::set-output name=lib-name::$zlibLibName"
+        echo "lib-name=$zlibLibName" >> $GITHUB_OUTPUT
       
     - name: Build submodule - zlib
       uses: Silverlan/common_actions/build_submodule@main

@@ -38,7 +38,7 @@ runs:
           "7z.exe" a $archiveName "*.*" -r
         fi
         mv $archiveName ../$archiveName
-        echo "::set-output name=archive-name::$archiveName"
+        echo "archive-name=$archiveName" >> $GITHUB_OUTPUT
         
     - name: Update Nightly Tag
       uses: rickstaa/action-create-tag@v1.3.9

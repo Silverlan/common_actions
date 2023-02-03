@@ -173,12 +173,12 @@ runs:
         echo "  input lib_name: $baseLibName"
         echo "  cacheId: $cacheId"
         
-        echo "::set-output name=root-dir::$root_dir"
-        echo "::set-output name=library-file-path::$libFilePath"
-        echo "::set-output name=binary-file-path::$binFilePath"
-        echo "::set-output name=cmake-script-location::$cmakeScriptLocation"
-        echo "::set-output name=cache-id::$cacheId"
-        echo "::set-output name=build-target::$build_target"
+        echo "root-dir=$root_dir" >> $GITHUB_OUTPUT
+        echo "library-file-path=$libFilePath" >> $GITHUB_OUTPUT
+        echo "binary-file-path=$binFilePath" >> $GITHUB_OUTPUT
+        echo "cmake-script-location=$cmakeScriptLocation" >> $GITHUB_OUTPUT
+        echo "cache-id=$cacheId" >> $GITHUB_OUTPUT
+        echo "build-target=$build_target" >> $GITHUB_OUTPUT
         
     - name: Get cache
       uses: actions/cache@v3.0.2
@@ -244,7 +244,7 @@ runs:
             cmake --build ./ --verbose --config ${{ inputs.build_type }} --target $build_target
             echo "Done!"
             
-            echo "::set-output name=has-built::1"
+            echo "has-built=1" >> $GITHUB_OUTPUT
           fi
           
           # We may have to copy the binary file on Linux systems
@@ -266,7 +266,7 @@ runs:
         else
           newCmakeDef=""
         fi
-        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+        echo "cmakeDefLocal=$(echo $newCmakeDef)" >> $GITHUB_OUTPUT
         echo "Done!"
         
     - shell: bash

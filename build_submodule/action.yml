@@ -146,14 +146,14 @@ runs:
       working-directory: ${{inputs.working-directory}}
       run: |
         if [[ "${{ inputs.build_type }}" != "" ]]; then
-          echo "::set-output name=build_type::$(echo ${{ inputs.build_type }})"
+          echo "build_type=$(echo ${{ inputs.build_type }})" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=build_type::$(echo ${{ matrix.config.build_type }})"
+          echo "build_type=$(echo ${{ matrix.config.build_type }})" >> $GITHUB_OUTPUT
         fi
         if [[ "${{ inputs.cmake_script_location }}" != "" ]]; then
-          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.cmake_script_location }})"
+          echo "cmake_script_location=$(echo ${{ inputs.cmake_script_location }})" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=cmake_script_location::$(echo ${{ inputs.top_level_dir }}/${{ inputs.repo_name }})"
+          echo "cmake_script_location=$(echo ${{ inputs.top_level_dir }}/${{ inputs.repo_name }})" >> $GITHUB_OUTPUT
         fi
 
     - name: Build

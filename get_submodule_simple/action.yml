@@ -104,7 +104,7 @@ runs:
         fi
 
         commitId=$(git rev-parse --short=10 HEAD);
-        echo "::set-output name=commit-id::$commitId"
+        echo "commit-id=$commitId" >> $GITHUB_OUTPUT
         
         echo "Updating outputs and definitions..."
         fullIncludePath="$rootDir/${{ inputs.include_dir }}"
@@ -115,7 +115,7 @@ runs:
         # Replace "//" with "/"
         nfullIncludePath="${nfullIncludePath//\/\//\/}"
         
-        echo "::set-output name=include-directory::$nfullIncludePath"
+        echo "include-directory=$nfullIncludePath" >> $GITHUB_OUTPUT
         if [[ "${{ inputs.cmake_var }}" != "" ]]; then
           newCmakeDef=" -D${{ inputs.cmake_var }}=$nfullIncludePath"
           if [[ "${{ inputs.cmake_var_alias }}" != "" ]]; then
@@ -124,7 +124,7 @@ runs:
         else
           newCmakeDef=""
         fi
-        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+        echo "cmakeDefLocal=$(echo $newCmakeDef)" >> $GITHUB_OUTPUT
         echo "Done!"
 
     - name: Define CMake Variable

@@ -52,7 +52,7 @@ runs:
       working-directory: ${{inputs.working-directory}}
       run: |
         newCmakeDef=" -D${{ inputs.cmake_var }}=$PWD/third_party_libs/glm"
-        echo ::set-output name=cmakeDefLocal::$(echo $newCmakeDef)
+        echo "cmakeDefLocal=$(echo $newCmakeDef)" >> $GITHUB_OUTPUT
 
     - name: Define CMake Variable
       uses: Silverlan/common_actions/define_cmake_var@main
