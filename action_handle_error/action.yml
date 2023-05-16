@@ -81,5 +81,5 @@ runs:
       with:
         args: 'A workflow has failed!'
 
-    - uses: mxschmitt/action-tmate@v3.13
+    - uses: mxschmitt/action-tmate@v3.14
       name: CI
