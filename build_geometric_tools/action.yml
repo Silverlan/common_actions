@@ -24,10 +24,12 @@ runs:
       shell: bash
       working-directory: ${{inputs.working-directory}}
       run:   |
+        # Using github.workspace and replacing backward slashes with forward slashes
+        workspace=$(echo "${{ github.workspace }}" | sed 's/\\/\//g')
         if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "gt_build_target=Mathematics" >> $GITHUB_OUTPUT
+          echo "gt_build_target=$workspace/third_party_libs/GeometricTools/Mathematics" >> $GITHUB_OUTPUT
         else
-          echo "gt_build_target=GTE/GTMathematics.v17" >> $GITHUB_OUTPUT
+          echo "gt_build_target=$workspace/third_party_libs/GeometricTools/GTE/GTMathematics.v17" >> $GITHUB_OUTPUT
         fi
         
     - name: Build GeometricTools
@@ -35,7 +37,7 @@ runs:
       with:
         repo: 'https://github.com/davideberly/GeometricTools.git'
         repo_name: 'GeometricTools'
-        build_target_windows: '${{ github.workspace }}/third_party_libs/GeometricTools/${{ steps.setup-gt.outputs.gt_build_target }}'
+        build_target_windows: '${{ steps.setup-gt.outputs.gt_build_target }}'
         build_target_linux: 'Mathematics'
         lib_name: 'third_party_libs/GeometricTools/GTE/GTMathematics.v17'
         cmake_var: 'DEPENDENCY_GEOMETRIC_TOOLS_INCLUDE'
