@@ -19,7 +19,7 @@ runs:
       run:   |
         sudo add-apt-repository ppa:savoury1/llvm-defaults-14
         sudo apt update
-        sudo apt install clang-14
+        sudo apt install clang-15
         sudo apt install libstdc++-12-dev
         sudo apt install libstdc++6
         
@@ -27,7 +27,7 @@ runs:
       shell: bash
       working-directory: ${{inputs.working-directory}}
       run:   |
-        echo "CC=/usr/bin/clang-14" >> $GITHUB_ENV
-        echo "CXX=/usr/bin/clang++-14" >> $GITHUB_ENV
+        echo "CC=/usr/bin/clang-15" >> $GITHUB_ENV
+        echo "CXX=/usr/bin/clang++-15" >> $GITHUB_ENV
   
     - uses: Silverlan/common_actions/action_end@main
