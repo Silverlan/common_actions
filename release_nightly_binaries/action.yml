@@ -34,6 +34,12 @@ runs:
           tar -czvf $archiveName *
         else
           archiveName=binaries_windows64.zip
+
+          # Temporary workaround for https://github.com/microsoft/vcpkg/issues/41199#issuecomment-2378255699
+          export SystemDrive="$SYSTEMDRIVE"
+          export SystemRoot="$SYSTEMROOT"
+          export windir="$WINDIR"
+          
           vcpkg install 7zip
           "7z.exe" a $archiveName "*.*" -r
         fi
