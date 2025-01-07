@@ -81,7 +81,7 @@ runs:
     - name: Discord notification
       if: runner.os == 'Linux'
       env:
-        DISCORD_WEBHOOK: 'https://discord.com/api/webhooks/1041012938858836008/cjglZV7ZfsG4-yqcxGP-52cQGqWDk9mV0907t1_4-BWAaTGVImhT-MGqVwOi0uNhvZOk'
+        DISCORD_WEBHOOK: '${{ secrets.action_handle_error_discord_app_webhook }}'
       uses: Ilshidur/action-discord@master
       with:
         args: 'A workflow has failed!'
