@@ -77,14 +77,6 @@ runs:
         done
         echo "printf \"\033[0;31m$output\n\"" >> action_print.sh
         sh action_print.sh
-        
-    - name: Discord notification
-      if: runner.os == 'Linux'
-      env:
-        DISCORD_WEBHOOK: '${{ secrets.action_handle_error_discord_app_webhook }}'
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'A workflow has failed!'
 
     - uses: mxschmitt/action-tmate@v3.18
       name: CI
