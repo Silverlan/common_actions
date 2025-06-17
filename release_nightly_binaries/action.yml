@@ -16,6 +16,10 @@ inputs:
     description: 'Working Directory'
     required: true
     default: './release'
+  tag:
+    description: 'Release Tag'
+    required: true
+    default: 'latest'
 runs:
   using: "composite"
   steps:
@@ -51,7 +55,7 @@ runs:
       continue-on-error: true
       if: runner.os == 'Linux' && ${{ inputs.update_tag == '1' }}
       with:
-        tag: "latest"
+        tag: "${{inputs.tag}}"
         force_push_tag: true
 
     - name: Release
@@ -61,7 +65,7 @@ runs:
         body: "Automatically generated binaries."
         commit: ${{ inputs.commit }}
         token: ${{ inputs.token }}
-        tag: latest
+        tag: "${{inputs.tag}}"
         replacesArtifacts: true
         allowUpdates: true
 
