@@ -1,0 +1,21 @@
+name: Create Tag
+description: "Create and push a new tag if it doesn't already exist"
+inputs:
+  tag_name:
+    description: 'Name of the tag to create.'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Create Tag
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        if git rev-parse -q --verify "refs/tags/${{ inputs.tag_name }}" >/dev/null; then
+          echo "Tag ${{ inputs.tag_name }} already exists, skipping"
+        else
+          git tag "${{ inputs.tag_name }}"
+          git push origin "${{ inputs.tag_name }}"
+        fi
