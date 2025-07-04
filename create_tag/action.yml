@@ -4,12 +4,17 @@ inputs:
   tag_name:
     description: 'Name of the tag to create.'
     required: true
+  path:
+    description: 'Path to git repository.'
+    required: true
+    default: '.'
 runs:
   using: "composite"
   steps:
     - name: Create Tag
       shell: bash
       run: |
+        cd "${{ inputs.path }}"
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
