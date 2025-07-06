@@ -78,7 +78,7 @@ runs:
         echo "printf \"\033[0;31m$output\n\"" >> action_print.sh
         sh action_print.sh
 
-    - uses: mxschmitt/action-tmate@v3.18
+    - uses: mxschmitt/action-tmate@v3.22
       name: CI
       with:
         timeout-minutes: ${{inputs.timeout-minutes}}
