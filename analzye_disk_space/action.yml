@@ -1,0 +1,85 @@
+name: 'Analyze Disk Space'
+description: 'Print largest directories and files'
+runs:
+  using: "composite"
+  steps: 
+    - uses: Silverlan/common_actions/action_start@main
+      with:
+        name: "analyze_disk_space"
+
+    - name: Print Disk Space
+      shell: bash
+      run: |
+        echo "Available disk space:"
+        df -h
+
+        sudo bash -s -- --path / --top 500 --depth 20 <<'SCRIPT'
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        PATH_TO_CHECK="/"
+        TOP_N=25
+        DEPTH=20
+
+        while [[ $# -gt 0 ]]; do
+          case "$1" in
+            --path) PATH_TO_CHECK="$2"; shift 2;;
+            --top) TOP_N="$2"; shift 2;;
+            --depth) DEPTH="$2"; shift 2;;
+            --help)
+              cat <<'HELP'
+        Reduced disk-report (report-only)
+        Usage: run script with optional flags:
+          --path PATH    path to inspect (default /)
+          --top N        how many top items to show (default 25)
+          --depth D      max-depth for du (default 20)
+        HELP
+              exit 0
+              ;;
+            *)
+              echo "Unknown arg: $1" >&2
+              exit 2
+              ;;
+          esac
+        done
+
+        timestamp() { date -u +"%Y-%m-%d %H:%M:%SZ"; }
+
+        printf "\n=== Disk console report (NO FILES) ===\nTime: %s\nInspecting: %s  (top %s, du max-depth=%s)\n\n" \
+          "$(timestamp)" "$PATH_TO_CHECK" "$TOP_N" "$DEPTH"
+
+        # Show filesystem usage for the path (df on the mount containing path)
+        df -h "$PATH_TO_CHECK" || df -h
+
+        printf "\n--- Top %s directories (du --max-depth=%s) under %s ---\n" "$TOP_N" "$DEPTH" "$PATH_TO_CHECK"
+        sudo du -xh --max-depth="$DEPTH" "$PATH_TO_CHECK" 2>/dev/null \
+          | sort -hr 2>/dev/null \
+          | head -n "$TOP_N" \
+          | awk '{printf "%8s  %s\n",$1,$2}' 2>/dev/null || true
+
+        printf "\n--- Top %s files under %s ---\n" "$TOP_N" "$PATH_TO_CHECK"
+        (
+          set +o pipefail
+          sudo find "$PATH_TO_CHECK" -xdev -type f -printf '%s\t%p\n' 2>/dev/null \
+            | sort -nr 2>/dev/null \
+            | head -n "$TOP_N" \
+            | numfmt --field=1 --to=iec --suffix=B 2>/dev/null \
+            | awk -F"\t" '{printf "%10s\t%s\n",$1,$2}' 2>/dev/null
+        ) || true
+
+        printf "\n--- Top %s items (files + dirs) under %s (du --max-depth=%s) ---\n" "$TOP_N" "$PATH_TO_CHECK" "$DEPTH"
+        (
+          set +o pipefail
+          sudo du -ahx --max-depth="$DEPTH" "$PATH_TO_CHECK" 2>/dev/null \
+            | sort -hr 2>/dev/null \
+            | head -n "$TOP_N" \
+            | awk '{printf "%8s  %s\n",$1,$2}' 2>/dev/null
+        ) || true
+
+        printf "\nFinal df -h for %s:\n" "$PATH_TO_CHECK"
+        df -h "$PATH_TO_CHECK" || df -h
+
+        printf "\n=== END ===\n"
+        SCRIPT
+
+    - uses: Silverlan/common_actions/action_end@main
