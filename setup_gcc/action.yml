@@ -1,0 +1,25 @@
+name: 'Setup GCC'
+description: 'Install GCC'
+runs:
+  using: "composite"
+  steps: 
+    - uses: Silverlan/common_actions/action_start@main
+      with:
+        name: "setup_gcc"
+
+    - name: Download prebuilt GCC
+      run: |
+        curl -fL "https://github.com/Silverlan/gcc_prebuilt/releases/download/2025-11-26/gcc-16-opt.tar.xz" -o /tmp/gcc-16-opt.tar.xz
+        ls -lh /tmp/gcc-16-opt.tar.xz
+
+    - name: Extract to /opt
+      run: |
+        sudo tar -xJf /tmp/gcc-16-opt.tar.xz -C /opt
+        sudo ls -l /opt/gcc-16/bin || true
+
+    - name: Register alternatives
+      run: |
+        sudo update-alternatives --install /usr/bin/gcc-16 gcc-16 /opt/gcc-16/bin/gcc 160 --slave /usr/bin/g++-16 g++-16 /opt/gcc-16/bin/g++
+        sudo update-alternatives --install /usr/bin/gcc gcc /opt/gcc-16/bin/gcc 160 --slave /usr/bin/g++ g++ /opt/gcc-16/bin/g++
+
+    - uses: Silverlan/common_actions/action_end@main

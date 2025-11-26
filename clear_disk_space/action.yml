@@ -1,0 +1,34 @@
+name: 'Clear Disk Space'
+description: 'Clear Disk Space'
+runs:
+  using: "composite"
+  steps: 
+    - uses: Silverlan/common_actions/action_start@main
+      with:
+        name: "clear_disk_space"
+
+    - name: Print Disk Space (pre-clear)
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        echo "Available disk space before clearing:"
+        df -h
+
+    - name: Clear Disk Space
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        sudo rm -rf "/usr/local/lib/android"
+        sudo rm -rf "/usr/local/.ghcup"
+        sudo rm -rf "/opt/hostedtoolcache/CodeQL"
+        sudo rm -rf "/usr/local/julia1.12.1"
+        sudo rm -rf "/usr/lib/google-cloud-sdk"
+
+    - name: Print Disk Space (post-clear)
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        echo "Available disk space after clearing:"
+        df -h
+
+    - uses: Silverlan/common_actions/action_end@main
