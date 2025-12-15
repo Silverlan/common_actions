@@ -10,7 +10,7 @@ runs:
     - name: Download prebuilt GCC
       shell: bash
       run: |
-        curl -fL "https://github.com/Silverlan/gcc_prebuilt/releases/download/2025-11-26/gcc-16-opt.tar.xz" -o /tmp/gcc-16-opt.tar.xz
+        curl -fL "https://github.com/Silverlan/gcc_prebuilt/releases/download/2025-12-15/gcc-16-opt.tar.xz" -o /tmp/gcc-16-opt.tar.xz
         ls -lh /tmp/gcc-16-opt.tar.xz
 
     - name: Extract to /opt
