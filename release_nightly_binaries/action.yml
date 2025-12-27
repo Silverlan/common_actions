@@ -8,6 +8,10 @@ inputs:
     description: 'Commit Hash'
     required: true
     default: ''
+  release_suffix:
+    description: 'Release Suffix'
+    required: true
+    default: ''
   update_tag:
     description: 'Update Tag?'
     required: true
@@ -34,10 +38,10 @@ runs:
       id: generate-archive
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          archiveName=binaries_linux64.tar.gz
+          archiveName=binaries_linux64${{inputs.release_suffix}}.tar.gz
           tar -czvf $archiveName *
         else
-          archiveName=binaries_windows64.zip
+          archiveName=binaries_windows64${{inputs.release_suffix}}.zip
 
           # Temporary workaround for https://github.com/microsoft/vcpkg/issues/41199#issuecomment-2378255699
           export SystemDrive="$SYSTEMDRIVE"
