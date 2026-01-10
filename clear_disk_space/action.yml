@@ -29,6 +29,13 @@ runs:
       run: |
         rm -rf "/c/Program Files (x86)/Android"
         rm -rf "/c/Program Files/dotnet"
+        rm -rf "/c/ghcup"
+        rm -rf "/c/Program Files/MongoDB"
+        rm -rf "/c/Program Files/PostgreSQL"
+        rm -rf "/c/Program Files/Azure Cosmos DB Emulator"
+        rm -rf "/c/Program Files (x86)/Microsoft SDKs/UWPNuGetPackages"
+        rm -rf "/c/Windows/assembly/NativeImages_v4.0.30319_64"
+        rm -rf "/c/hostedtoolcache/windows/Java_Temurin-Hotspot_jdk"
         
     - name: Print Disk Space (post-clear)
       shell: bash
