@@ -8,13 +8,12 @@ runs:
         name: "clear_disk_space"
 
     - name: Print Disk Space (pre-clear)
-      if: ${{ runner.os == 'Linux' }}
       shell: bash
       run: |
         echo "Available disk space before clearing:"
         df -h
 
-    - name: Clear Disk Space
+    - name: Clear Disk Space (Linux)
       if: ${{ runner.os == 'Linux' }}
       shell: bash
       run: |
@@ -24,8 +23,14 @@ runs:
         sudo rm -rf "/usr/local/julia1.12.1"
         sudo rm -rf "/usr/lib/google-cloud-sdk"
 
+    - name: Clear Disk Space (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: bash
+      run: |
+        rm -rf "/c/Program Files (x86)/Android"
+        rm -rf "/c/Program Files/dotnet"
+        
     - name: Print Disk Space (post-clear)
-      if: ${{ runner.os == 'Linux' }}
       shell: bash
       run: |
         echo "Available disk space after clearing:"
